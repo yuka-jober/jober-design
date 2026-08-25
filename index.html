@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jober Design System</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-base);
+  background: var(--color-page);
+  color: var(--color-text);
+  padding: 64px 32px;
+}
+.wrap { max-width: 720px; margin: 0 auto; }
+h1 {
+  font-size: var(--fs-30);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+}
+.sub {
+  margin-top: 8px;
+  font-size: var(--fs-16);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.list { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+.item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+}
+.item b {
+  display: block;
+  font-size: var(--fs-20);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+.item span {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.item .chev { margin-left: auto; color: var(--color-disabled); }
+</style>
+</head>
+<body>
+<script src="assets/icons.js"></script>
+
+<div class="wrap">
+  <h1>Jober Design System</h1>
+  <p class="sub">Ant Design 팔레트 + Spoqa Han Sans Neo 기반 토큰 세트</p>
+
+  <div class="list">
+    <a class="card card-action item" href="preview.html">
+      <span class="tile" style="color:var(--color-primary)">
+        <svg class="icon icon-xl"><use href="#bg-colors-outlined"></use></svg>
+      </span>
+      <span>
+        <b>디자인 시스템 검수</b>
+        <span>팔레트 · 타이포 · 컴포넌트 · 아이콘 832개</span>
+      </span>
+      <svg class="icon icon-lg chev"><use href="#right-outlined"></use></svg>
+    </a>
+
+    <a class="card card-action item" href="prototypes/home-0825/index.html">
+      <span class="tile" style="color:var(--color-primary)">
+        <svg class="icon icon-xl"><use href="#home-outlined"></use></svg>
+      </span>
+      <span>
+        <b>자버 홈 화면</b>
+        <span>prototypes/home-0825</span>
+      </span>
+      <svg class="icon icon-lg chev"><use href="#right-outlined"></use></svg>
+    </a>
+  </div>
+</div>
+</body>
+</html>

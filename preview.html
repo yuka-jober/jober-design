@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jober Design System</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+  body { margin: 0; padding: 40px; background: var(--color-bg-base); font-family: var(--font-base); color: var(--color-text); }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  section { margin-bottom: 48px; padding: 24px; background: var(--color-surface); border-radius: var(--r-lg); box-shadow: var(--shadow-1); }
+  h2 { margin: 0 0 20px; font-size: var(--fs-20); font-weight: var(--fw-bold); line-height: var(--lh-base); letter-spacing: var(--ls-base); }
+  h3 { margin: 24px 0 8px; font-size: var(--fs-12); font-weight: var(--fw-medium); line-height: var(--lh-base); letter-spacing: var(--ls-base); color: var(--color-text-secondary); }
+  h3:first-of-type { margin-top: 0; }
+  .ramp { display: grid; grid-template-columns: 100px repeat(10, 1fr); gap: 4px; align-items: center; margin-bottom: 4px; }
+  .ramp > span { font-size: var(--fs-12); color: var(--color-text-secondary); }
+  .sw { height: 40px; border-radius: var(--r-xs); }
+  .tiles { display: flex; flex-wrap: wrap; gap: 12px; }
+  .tile { width: 168px; }
+  .tile .sw { border: 1px solid var(--color-border-split); }
+  .tile b { display: block; margin-top: 4px; font-size: var(--fs-12); font-weight: var(--fw-medium); line-height: var(--lh-base); }
+  .tile em { display: block; font-size: var(--fs-11); font-style: normal; color: var(--color-text-secondary); line-height: var(--lh-base); }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .type-row { display: grid; grid-template-columns: 88px 1fr 1fr 1fr; gap: 16px; align-items: baseline; padding: 8px 0; border-top: 1px solid var(--color-border-split); }
+  .type-row > span:first-child { font-size: var(--fs-12); color: var(--color-text-secondary); }
+  .stack { display: flex; flex-direction: column; gap: 8px; max-width: 320px; }
+</style>
+</head>
+<body>
+<script src="assets/icons.js"></script>
+<div class="wrap">
+
+  <section>
+    <h2>Palette</h2>
+    <div id="ramps"></div>
+    <h3>Black (alpha)</h3>
+    <div class="ramp" id="blackramp"><span>black</span></div>
+  </section>
+
+  <section>
+    <h2>Semantic Tokens</h2>
+    <h3>Primary</h3>
+    <div class="tiles" id="sem-primary"></div>
+    <h3>Neutral</h3>
+    <div class="tiles" id="sem-neutral"></div>
+    <h3>Functional</h3>
+    <div class="tiles" id="sem-func"></div>
+  </section>
+
+  <section>
+    <h2>Typography — Spoqa Han Sans Neo / 160% / -1%</h2>
+    <div class="type-row"><span></span><span>Regular</span><span>Medium</span><span>Bold</span></div>
+    <div id="type"></div>
+  </section>
+
+
+  <section>
+    <h2>Icons <span id="icount" style="font-weight:var(--fw-regular);color:var(--color-text-secondary)"></span></h2>
+    <div class="row" style="margin-bottom:16px;">
+      <input class="input" id="isearch" placeholder="아이콘 검색 (예: arrow, user, file)" style="max-width:280px;">
+      <select class="select" id="itheme" style="max-width:160px;">
+        <option value="">전체 테마</option>
+        <option value="-outlined">Outlined</option>
+        <option value="-filled">Filled</option>
+        <option value="-twotone">TwoTone</option>
+      </select>
+      <span class="text-12 text-secondary">아이콘을 클릭하면 마크업이 복사됩니다</span>
+    </div>
+    <div id="igrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;"></div>
+  </section>
+
+  <section>
+    <h2>Components</h2>
+
+    <h3>Button</h3>
+    <div class="row">
+      <button class="btn btn-md btn-primary">Primary</button>
+      <button class="btn btn-md btn-default">Default</button>
+      <button class="btn btn-md btn-dashed">Dashed</button>
+      <button class="btn btn-md btn-text">Text</button>
+      <button class="btn btn-md btn-link">Link</button>
+      <button class="btn btn-md btn-primary is-danger">Danger</button>
+      <button class="btn btn-md btn-primary" disabled>Disabled</button>
+      <button class="btn btn-md btn-primary is-loading">Loading</button>
+    </div>
+    <div class="row">
+      <button class="btn btn-sm btn-primary">Small</button>
+      <button class="btn btn-md btn-primary">Middle</button>
+      <button class="btn btn-lg btn-primary">Large</button>
+      <button class="btn btn-md btn-primary btn-pill">Pill</button>
+      <button class="icon-btn icon-btn-border">＋</button>
+      <button class="icon-btn icon-btn-fill">✓</button>
+    </div>
+
+    <h3>Form</h3>
+    <div class="row" style="align-items: flex-start;">
+      <div class="stack">
+        <label class="label label-required">이메일</label>
+        <input class="input" placeholder="name@jober.io">
+        <input class="input is-error" value="잘못된 값">
+        <p class="input-error-msg" style="margin:0;">올바른 이메일을 입력하세요.</p>
+        <select class="select"><option>선택하세요</option></select>
+        <textarea class="textarea" placeholder="내용을 입력하세요"></textarea>
+      </div>
+      <div class="stack">
+        <label class="row" style="gap:8px;margin:0;"><input type="checkbox" class="checkbox" checked> <span class="text-14">체크박스</span></label>
+        <label class="row" style="gap:8px;margin:0;"><input type="checkbox" class="checkbox"> <span class="text-14">해제됨</span></label>
+        <label class="row" style="gap:8px;margin:0;"><input type="radio" class="radio" name="r" checked> <span class="text-14">라디오</span></label>
+        <label class="row" style="gap:8px;margin:0;"><input type="radio" class="radio" name="r"> <span class="text-14">해제됨</span></label>
+        <label class="row" style="gap:8px;margin:0;"><input type="checkbox" class="toggle" checked> <span class="text-14">토글</span></label>
+        <label class="row" style="gap:8px;margin:0;"><input type="checkbox" class="toggle toggle-sm"> <span class="text-14">토글 small</span></label>
+      </div>
+    </div>
+
+    <h3>Badge</h3>
+    <div class="row">
+      <span class="badge badge-md badge-fill-primary">Primary</span>
+      <span class="badge badge-md badge-fill-success">Success</span>
+      <span class="badge badge-md badge-fill-warning">Warning</span>
+      <span class="badge badge-md badge-fill-error">Error</span>
+      <span class="badge badge-md badge-fill-neutral">Neutral</span>
+    </div>
+    <div class="row">
+      <span class="badge badge-sm badge-weak-primary">Primary</span>
+      <span class="badge badge-md badge-weak-success">Success</span>
+      <span class="badge badge-md badge-weak-warning">Warning</span>
+      <span class="badge badge-md badge-weak-error">Error</span>
+      <span class="badge badge-lg badge-weak-neutral">Neutral</span>
+    </div>
+
+    <h3>Alert</h3>
+    <div class="stack" style="max-width:none;">
+      <div class="alert alert-info"><span class="alert-icon">ⓘ</span><span>정보 안내 문구입니다.</span></div>
+      <div class="alert alert-success"><span class="alert-icon">✓</span><span>저장이 완료되었습니다.</span></div>
+      <div class="alert alert-warning"><span class="alert-icon">!</span><span>확인이 필요한 항목이 있습니다.</span></div>
+      <div class="alert alert-error"><span class="alert-icon">×</span><span>요청을 처리하지 못했습니다.</span></div>
+    </div>
+
+    <h3>Menu · Toast · Avatar</h3>
+    <div class="row" style="align-items: flex-start;">
+      <div class="menu">
+        <div class="menu-header">계정</div>
+        <button class="menu-item">프로필 보기</button>
+        <button class="menu-item is-selected">설정</button>
+        <button class="menu-item is-danger">삭제</button>
+      </div>
+      <div class="stack">
+        <div class="toast toast-success"><span class="toast-icon">✓</span><span>변경사항을 저장했습니다.</span></div>
+        <div class="toast toast-with-action"><span>1개 항목을 삭제했습니다.</span><button class="toast-action">실행 취소</button></div>
+      </div>
+      <div class="row" style="margin:0;">
+        <span class="avatar avatar-xs">J</span>
+        <span class="avatar avatar-sm">J</span>
+        <span class="avatar avatar-md">J</span>
+        <span class="avatar avatar-lg">J</span>
+        <span class="avatar avatar-xl avatar-rounded">J</span>
+      </div>
+    </div>
+
+    <h3>Dialog</h3>
+    <div style="position:relative;height:200px;border-radius:var(--r-md);overflow:hidden;">
+      <div class="dialog-overlay is-open" style="position:absolute;">
+        <div class="dialog">
+          <p class="dialog-title">이 항목을 삭제할까요?</p>
+          <p class="dialog-desc">삭제한 항목은 복구할 수 없습니다.</p>
+          <div class="dialog-actions">
+            <button class="btn btn-md btn-default">취소</button>
+            <button class="btn btn-md btn-primary is-danger">삭제</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<script>
+const HUES = ['red','volcano','orange','gold','yellow','lime','green','cyan','blue','geekblue','purple','magenta','primary','gray'];
+const LABEL = {red:'Dust Red',volcano:'Volcano',orange:'Sunset Orange',gold:'Calendula Gold',yellow:'Sunrise Yellow',lime:'Lime',green:'Polar Green',cyan:'Cyan',blue:'Daybreak Blue',geekblue:'Geek Blue',purple:'Golden Purple',magenta:'Magenta',primary:'Primary (alias)',gray:'Gray'};
+const cs = getComputedStyle(document.documentElement);
+const ramps = document.getElementById('ramps');
+HUES.forEach(h => {
+  const n = h === 'gray' ? 13 : 10;
+  const d = document.createElement('div');
+  d.className = 'ramp';
+  d.style.gridTemplateColumns = `100px repeat(${n}, 1fr)`;
+  d.innerHTML = `<span>${LABEL[h]}</span>` + Array.from({length:n}, (_,i) =>
+    `<div class="sw" style="background:var(--palette-${h}-${i+1});border:1px solid var(--color-border-split)" title="${h}.${i+1} ${cs.getPropertyValue(`--palette-${h}-${i+1}`).trim()}"></div>`).join('');
+  ramps.appendChild(d);
+});
+const BLACKS = [2,4,6,15,25,35,45,65,85,100];
+document.getElementById('blackramp').style.gridTemplateColumns = `100px repeat(${BLACKS.length}, 1fr)`;
+document.getElementById('blackramp').insertAdjacentHTML('beforeend',
+  BLACKS.map(a => `<div class="sw" style="background:var(--palette-black-${a});border:1px solid var(--color-border-split)" title="black.${a}"></div>`).join(''));
+
+const tile = (v, name) => `<div class="tile"><div class="sw" style="background:var(${v})"></div><b>${name}</b><em>${cs.getPropertyValue(v).trim()}</em></div>`;
+document.getElementById('sem-primary').innerHTML = [
+  ['--color-primary','primary'],['--color-primary-hover','primary-hover'],['--color-primary-active','primary-active'],
+  ['--color-primary-outline','primary-outline'],['--color-primary-bg','primary-bg'],['--color-primary-border','primary-border']
+].map(([v,n]) => tile(v,n)).join('');
+document.getElementById('sem-neutral').innerHTML = [
+  ['--color-text','text'],['--color-text-secondary','text-secondary'],['--color-disabled','disabled'],
+  ['--color-border','border'],['--color-border-split','border-split'],['--color-bg-base','bg-base'],['--color-bg-light','bg-light']
+].map(([v,n]) => tile(v,n)).join('');
+document.getElementById('sem-func').innerHTML = ['info','success','warning','error'].flatMap(k => {
+  const set = k === 'info' ? ['','-bg','-border'] : ['','-hover','-active','-outline','-bg','-border'];
+  return set.map(s => tile(`--color-${k}${s}`, `${k}${s}`));
+}).join('');
+
+const SIZES = [11,12,14,16,20,24,30,38,46,56];
+document.getElementById('type').innerHTML = SIZES.map(s =>
+  `<div class="type-row"><span>${s}px / 160% / -1%</span>
+   <span class="text-${s} font-regular">가나다 Ag</span>
+   <span class="text-${s} font-medium">가나다 Ag</span>
+   <span class="text-${s} font-bold">가나다 Ag</span></div>`).join('');
+
+// ── Icon gallery ──────────────────────────────────────────────
+(function () {
+  const ids = [...document.querySelectorAll('symbol[id]')].map(s => s.id);
+  const grid = document.getElementById('igrid');
+  const count = document.getElementById('icount');
+  const search = document.getElementById('isearch');
+  const theme = document.getElementById('itheme');
+
+  function render() {
+    const q = search.value.trim().toLowerCase();
+    const t = theme.value;
+    const list = ids.filter(id => id.includes(q) && (!t || id.endsWith(t)));
+    count.textContent = `${list.length} / ${ids.length}`;
+    grid.innerHTML = list.map(id => `
+      <button class="ibox" data-id="${id}" title="${id}"
+        style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 4px;border:1px solid var(--color-border-split);border-radius:var(--r-md);background:var(--color-surface);cursor:pointer;">
+        <svg class="icon icon-xl"><use href="#${id}"></use></svg>
+        <span style="font-size:var(--fs-11);line-height:var(--lh-base);color:var(--color-text-secondary);word-break:break-all;">${id}</span>
+      </button>`).join('');
+  }
+
+  grid.addEventListener('click', e => {
+    const b = e.target.closest('.ibox');
+    if (!b) return;
+    const markup = `<svg class="icon"><use href="#${b.dataset.id}"></use></svg>`;
+    navigator.clipboard?.writeText(markup);
+    const s = b.querySelector('span'); const old = s.textContent;
+    s.textContent = '복사됨!'; s.style.color = 'var(--color-success)';
+    setTimeout(() => { s.textContent = old; s.style.color = ''; }, 1000);
+  });
+
+  search.addEventListener('input', render);
+  theme.addEventListener('change', render);
+  render();
+})();
+</script>
+</body>
+</html>

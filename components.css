@@ -1,0 +1,724 @@
+/* ============================================
+   Jober Components
+   반드시 tokens.css 를 먼저 로드할 것.
+
+   모든 값은 tokens.css 의 변수를 참조한다. raw 값 하드코딩 금지.
+   ============================================ */
+
+
+/* ==========================================
+   LABEL
+   ========================================== */
+
+.label {
+  display: block;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+}
+
+.label-required::before {
+  content: '* ';
+  color: var(--color-error);
+}
+
+
+/* ==========================================
+   BUTTON
+   .btn + 크기 + 스타일 조합
+   ========================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  font-family: var(--font-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  border-radius: var(--r-md);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    border-color     var(--motion-standard) var(--ease-standard),
+    color            var(--motion-standard) var(--ease-standard),
+    box-shadow       var(--motion-standard) var(--ease-standard);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+
+.btn:disabled,
+.btn[disabled] {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--color-disabled);
+  background: var(--color-bg-base);
+  border-color: var(--color-border);
+}
+
+/* sizes */
+.btn-sm { height: var(--control-h-sm); padding: 0 var(--control-px-sm); font-size: var(--fs-12); }
+.btn-md { height: var(--control-h);    padding: 0 var(--control-px);    font-size: var(--fs-14); }
+.btn-lg { height: var(--control-h-lg); padding: 0 var(--control-px-lg); font-size: var(--fs-16); }
+.btn-xl { height: var(--control-h-xl); padding: 0 var(--control-px-xl); font-size: var(--fs-16); }
+
+.btn-block { width: 100%; }
+.btn-pill  { border-radius: var(--r-full); }
+
+/* primary — 채운 강조 버튼 */
+.btn-primary          { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.btn-primary:hover    { background: var(--color-primary-hover); border-color: var(--color-primary-hover); }
+.btn-primary:active   { background: var(--color-primary-active); border-color: var(--color-primary-active); }
+
+/* default — 테두리 버튼 */
+.btn-default          { background: var(--color-surface); border-color: var(--color-border); color: var(--color-text); }
+.btn-default:hover    { border-color: var(--color-primary-hover); color: var(--color-primary-hover); }
+.btn-default:active   { border-color: var(--color-primary-active); color: var(--color-primary-active); }
+
+/* dashed — 추가/생성 액션 */
+.btn-dashed           { background: var(--color-surface); border-color: var(--color-border); border-style: dashed; color: var(--color-text); }
+.btn-dashed:hover     { border-color: var(--color-primary-hover); color: var(--color-primary-hover); }
+.btn-dashed:active    { border-color: var(--color-primary-active); color: var(--color-primary-active); }
+
+/* text — 배경 없는 보조 액션 */
+.btn-text             { color: var(--color-text); }
+.btn-text:hover       { background: var(--color-bg-base); }
+.btn-text:active      { background: var(--color-border-split); }
+
+/* link — 링크형 액션 */
+.btn-link             { color: var(--color-primary); }
+.btn-link:hover       { color: var(--color-primary-hover); }
+.btn-link:active      { color: var(--color-primary-active); }
+
+/* white — 색이 깔린 면(배너·히어로) 위에 얹는 흰 버튼. 테두리 없이 그림자로 떠오른다 */
+.btn-white            { background: var(--color-surface); border-color: transparent; color: var(--color-text); }
+.btn-white:hover      { box-shadow: var(--shadow-2); }
+.btn-white:active     { box-shadow: var(--shadow-1); }
+
+/* danger — 위 스타일에 겹쳐 쓰는 위험 액션 모디파이어 */
+.btn-primary.is-danger        { background: var(--color-error); border-color: var(--color-error); color: var(--color-on-primary); }
+.btn-primary.is-danger:hover  { background: var(--color-error-hover); border-color: var(--color-error-hover); }
+.btn-primary.is-danger:active { background: var(--color-error-active); border-color: var(--color-error-active); }
+
+.btn-default.is-danger        { border-color: var(--color-error); color: var(--color-error); }
+.btn-default.is-danger:hover  { border-color: var(--color-error-hover); color: var(--color-error-hover); }
+
+.btn-text.is-danger,
+.btn-link.is-danger           { color: var(--color-error); }
+.btn-text.is-danger:hover     { background: var(--color-error-bg); }
+.btn-link.is-danger:hover     { color: var(--color-error-hover); }
+
+/* loading */
+.btn.is-loading {
+  pointer-events: none;
+  position: relative;
+  color: transparent;
+}
+.btn.is-loading::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--r-full);
+  color: var(--color-on-primary);
+  animation: jd-spin var(--motion-slow) linear infinite;
+}
+.btn-default.is-loading::after,
+.btn-dashed.is-loading::after,
+.btn-text.is-loading::after,
+.btn-link.is-loading::after { color: var(--color-primary); }
+
+@keyframes jd-spin { to { transform: rotate(360deg); } }
+
+
+/* ==========================================
+   ICON BUTTON
+   ========================================== */
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-h);
+  height: var(--control-h);
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: var(--r-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    color            var(--motion-standard) var(--ease-standard);
+}
+.icon-btn:hover  { background: var(--color-bg-base); color: var(--color-text); }
+.icon-btn:active { background: var(--color-border-split); }
+.icon-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.icon-btn:disabled { color: var(--color-disabled); cursor: not-allowed; pointer-events: none; }
+
+.icon-btn-sm { width: var(--control-h-sm); height: var(--control-h-sm); }
+.icon-btn-lg { width: var(--control-h-lg); height: var(--control-h-lg); }
+
+.icon-btn-border { border-color: var(--color-border); background: var(--color-surface); }
+.icon-btn-fill   { background: var(--color-primary); color: var(--color-on-primary); }
+.icon-btn-fill:hover { background: var(--color-primary-hover); color: var(--color-on-primary); }
+
+.icon-btn i,
+.icon-btn svg { width: 16px; height: 16px; }
+
+
+/* ==========================================
+   INPUT
+   ========================================== */
+
+.input {
+  display: block;
+  width: 100%;
+  height: var(--control-h);
+  padding: 0 var(--control-px);
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  transition:
+    border-color var(--motion-standard) var(--ease-standard),
+    box-shadow   var(--motion-standard) var(--ease-standard);
+}
+.input::placeholder { color: var(--color-disabled); }
+.input:hover        { border-color: var(--color-primary-hover); }
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.input:disabled {
+  background: var(--color-bg-base);
+  color: var(--color-disabled);
+  cursor: not-allowed;
+}
+.input.is-error         { border-color: var(--color-error); }
+.input.is-error:focus   { box-shadow: 0 0 0 var(--outline-w) var(--color-error-outline); }
+
+.input-sm { height: var(--control-h-sm); padding: 0 var(--control-px-sm); font-size: var(--fs-12); }
+.input-lg { height: var(--control-h-lg); padding: 0 var(--control-px-lg); font-size: var(--fs-16); }
+
+.input-error-msg {
+  margin-top: 4px;
+  font-family: var(--font-base);
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-error);
+}
+
+
+/* ==========================================
+   TEXTAREA
+   ========================================== */
+
+.textarea {
+  display: block;
+  width: 100%;
+  min-height: var(--textarea-h);
+  padding: var(--textarea-py) var(--control-px);
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  resize: vertical;
+  transition:
+    border-color var(--motion-standard) var(--ease-standard),
+    box-shadow   var(--motion-standard) var(--ease-standard);
+}
+.textarea::placeholder { color: var(--color-disabled); }
+.textarea:hover        { border-color: var(--color-primary-hover); }
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.textarea.is-error       { border-color: var(--color-error); }
+.textarea.is-error:focus { box-shadow: 0 0 0 var(--outline-w) var(--color-error-outline); }
+.textarea-auto { resize: none; overflow: hidden; }
+
+
+/* ==========================================
+   SELECT
+   ========================================== */
+
+.select {
+  display: block;
+  width: 100%;
+  height: var(--control-h);
+  padding: 0 var(--control-px);
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  cursor: pointer;
+  appearance: none;
+  transition:
+    border-color var(--motion-standard) var(--ease-standard),
+    box-shadow   var(--motion-standard) var(--ease-standard);
+}
+.select:hover { border-color: var(--color-primary-hover); }
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.select:disabled { background: var(--color-bg-base); color: var(--color-disabled); cursor: not-allowed; }
+
+
+/* ==========================================
+   CHECKBOX / RADIO
+   ========================================== */
+
+.checkbox,
+.radio {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    border-color     var(--motion-standard) var(--ease-standard);
+}
+.checkbox { border-radius: var(--r-xs); }
+.radio    { border-radius: var(--r-full); }
+
+.checkbox:hover,
+.radio:hover { border-color: var(--color-primary); }
+
+.checkbox:checked,
+.radio:checked { background: var(--color-primary); border-color: var(--color-primary); }
+
+.checkbox:checked::after {
+  content: '';
+  width: 4px;
+  height: 8px;
+  border: 2px solid var(--color-on-primary);
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg) translateY(-1px);
+}
+.radio:checked::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: var(--color-on-primary);
+}
+
+.checkbox:focus-visible,
+.radio:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.checkbox:disabled,
+.radio:disabled { background: var(--color-bg-base); border-color: var(--color-border); cursor: not-allowed; }
+
+
+/* ==========================================
+   TOGGLE (Switch)
+   ========================================== */
+
+.toggle {
+  appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  margin: 0;
+  background: var(--color-disabled);
+  border: none;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: background-color var(--motion-standard) var(--ease-standard);
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--color-surface);
+  border-radius: var(--r-full);
+  box-shadow: var(--shadow-1);
+  transition: transform var(--motion-standard) var(--ease-standard);
+}
+.toggle:checked        { background: var(--color-primary); }
+.toggle:checked::after { transform: translateX(20px); }
+.toggle:focus-visible  { outline: none; box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline); }
+.toggle:disabled       { opacity: 0.4; cursor: not-allowed; }
+
+.toggle-sm        { width: 32px; height: 16px; }
+.toggle-sm::after { top: 2px; left: 2px; width: 12px; height: 12px; }
+.toggle-sm:checked::after { transform: translateX(16px); }
+
+
+/* ==========================================
+   MENU (Dropdown)
+   ========================================== */
+
+.menu {
+  min-width: 160px;
+  padding: 4px 0;
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+}
+
+.menu-header {
+  padding: 8px var(--control-px);
+  font-family: var(--font-base);
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px var(--control-px);
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  transition: background-color var(--motion-fast) var(--ease-standard);
+}
+.menu-item:hover           { background: var(--color-bg-base); }
+.menu-item.is-selected     { background: var(--color-primary-bg); color: var(--color-primary); }
+.menu-item.is-danger       { color: var(--color-error); }
+.menu-item.is-danger:hover { background: var(--color-error-bg); }
+.menu-item:disabled        { color: var(--color-disabled); cursor: not-allowed; }
+
+
+/* ==========================================
+   BADGE (Tag)
+   ========================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-family: var(--font-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  white-space: nowrap;
+}
+
+.badge-sm { height: 20px; padding: 0 var(--control-px-sm); font-size: var(--fs-11); }
+.badge-md { height: 24px; padding: 0 var(--control-px-sm); font-size: var(--fs-12); }
+.badge-lg { height: 28px; padding: 0 var(--control-px);    font-size: var(--fs-14); }
+
+.badge-pill { border-radius: var(--r-full); }
+
+/* fill — 채운 배지 */
+.badge-fill-primary { background: var(--color-primary); color: var(--color-on-primary); }
+.badge-fill-success { background: var(--color-success); color: var(--color-on-primary); }
+.badge-fill-warning { background: var(--color-warning); color: var(--color-on-warning); }
+.badge-fill-error   { background: var(--color-error);   color: var(--color-on-primary); }
+.badge-fill-neutral { background: var(--color-text);    color: var(--color-on-primary); }
+
+/* weak — 옅은 배경 + 테두리 */
+.badge-weak-primary { background: var(--color-primary-bg); border-color: var(--color-primary-border); color: var(--color-primary); }
+.badge-weak-success { background: var(--color-success-bg); border-color: var(--color-success-border); color: var(--color-success); }
+.badge-weak-warning { background: var(--color-warning-bg); border-color: var(--color-warning-border); color: var(--color-warning); }
+.badge-weak-error   { background: var(--color-error-bg);   border-color: var(--color-error-border);   color: var(--color-error); }
+.badge-weak-neutral { background: var(--color-bg-base);    border-color: var(--color-border);         color: var(--color-text-secondary); }
+
+
+/* ==========================================
+   ALERT
+   ========================================== */
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px var(--control-px);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+}
+.alert-info    { background: var(--color-info-bg);    border-color: var(--color-info-border); }
+.alert-success { background: var(--color-success-bg); border-color: var(--color-success-border); }
+.alert-warning { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
+.alert-error   { background: var(--color-error-bg);   border-color: var(--color-error-border); }
+
+.alert-info    .alert-icon { color: var(--color-info); }
+.alert-success .alert-icon { color: var(--color-success); }
+.alert-warning .alert-icon { color: var(--color-warning); }
+.alert-error   .alert-icon { color: var(--color-error); }
+
+.alert-icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 4px; }
+
+
+/* ==========================================
+   DIALOG / MODAL
+   ========================================== */
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--control-px-lg);
+  background: var(--color-scrim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-standard) var(--ease-standard);
+}
+.dialog-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+.dialog {
+  width: 100%;
+  max-width: 416px;
+  padding: 20px 24px;
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+  transform: scale(0.96);
+  transition: transform var(--motion-standard) var(--ease-enter);
+}
+.dialog-overlay.is-open .dialog { transform: scale(1); }
+
+.dialog-title {
+  margin: 0;
+  font-family: var(--font-base);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+}
+.dialog-desc {
+  margin: 8px 0 0;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+
+/* ==========================================
+   TOAST
+   ========================================== */
+
+.toast-container {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 480px;
+  padding: 8px var(--control-px-lg);
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  pointer-events: auto;
+}
+.toast-icon { flex-shrink: 0; width: 16px; height: 16px; }
+.toast-success .toast-icon { color: var(--color-success); }
+.toast-warning .toast-icon { color: var(--color-warning); }
+.toast-error   .toast-icon { color: var(--color-error); }
+.toast-info    .toast-icon { color: var(--color-info); }
+
+.toast-with-action { padding-right: var(--control-px-sm); }
+.toast-action {
+  border: none;
+  background: transparent;
+  padding: 0 var(--control-px-sm);
+  cursor: pointer;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  color: var(--color-primary);
+}
+
+
+/* ==========================================
+   AVATAR
+   ========================================== */
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--color-bg-base);
+  border-radius: var(--r-full);
+  object-fit: cover;
+  font-family: var(--font-base);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-secondary);
+}
+.avatar-xs { width: 20px; height: 20px; font-size: var(--fs-11); }
+.avatar-sm { width: 24px; height: 24px; font-size: var(--fs-12); }
+.avatar-md { width: 32px; height: 32px; font-size: var(--fs-14); }
+.avatar-lg { width: 40px; height: 40px; font-size: var(--fs-16); }
+.avatar-xl { width: 64px; height: 64px; font-size: var(--fs-24); }
+
+.avatar-rounded { border-radius: var(--r-md); }
+
+
+/* ==========================================
+   CARD
+   배경색 위에 흰 면으로 떠 있는 기본 컨테이너.
+   .card-action 을 함께 쓰면 통째로 클릭 가능한 버튼이 된다.
+   ========================================== */
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-1);
+  padding: 24px;
+}
+
+.card-lg { padding: 40px; }
+
+.card-action {
+  display: block;
+  width: 100%;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-base);
+  color: var(--color-text);
+  transition:
+    box-shadow var(--motion-standard) var(--ease-standard),
+    transform  var(--motion-standard) var(--ease-standard);
+}
+.card-action:hover  { box-shadow: var(--shadow-3); transform: translateY(-2px); }
+.card-action:active { transform: translateY(0); box-shadow: var(--shadow-2); }
+.card-action:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-2), 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+
+
+/* ==========================================
+   ICON
+   스프라이트의 심볼을 <use> 로 참조한다.
+   색은 부모의 color 를 따라가므로 버튼·배지 안에 넣으면 자동으로 맞는다.
+
+     <svg class="icon icon-lg"><use href="assets/icons.svg#home-outlined"></use></svg>
+   ========================================== */
+
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  vertical-align: -0.15em;
+  fill: currentColor;
+}
+
+.icon-sm { width: var(--icon-sm); height: var(--icon-sm); }
+.icon-lg { width: var(--icon-lg); height: var(--icon-lg); }
+.icon-xl { width: var(--icon-xl); height: var(--icon-xl); }
+
+/* TwoTone 액센트를 지역적으로 바꿀 때 */
+.icon-accent-success { --icon-accent: var(--color-success); }
+.icon-accent-warning { --icon-accent: var(--color-warning); }
+.icon-accent-error   { --icon-accent: var(--color-error); }
+
+
+/* ==========================================
+   DIVIDER
+   ========================================== */
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-border-split);
+  margin: var(--control-px) 0;
+}
+.divider-vertical {
+  border: none;
+  border-left: 1px solid var(--color-border-split);
+  align-self: stretch;
+  margin: 0 var(--control-px-sm);
+}

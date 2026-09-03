@@ -226,13 +226,21 @@ body {
 
 /* 오른쪽 배너를 닫으면 왼쪽이 가로로 긴 배너가 된다 */
 .bottom.is-solo { grid-template-columns: 1fr; }
-.bottom.is-solo .onboard { grid-template-columns: auto 1fr; align-items: center; }
-.bottom.is-solo .onboard-left { justify-content: center; gap: 12px; }
-.bottom.is-solo .onboard-kicker { display: none; }   /* 가로 배너에선 제목만으로 충분 */
-.bottom.is-solo .onboard h2 { font-size: var(--fs-24); }
-.bottom.is-solo .guide-list { flex-direction: row; align-self: center; gap: 20px; }
-.bottom.is-solo .guide-row { flex: 1; min-width: 0; }
-.bottom.is-solo .guide-row span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* 가로 배너 변환은 넓은 화면에서만. 좁은 화면에선 기본 세로 스택을 그대로 쓴다
+   (미디어쿼리로 감싸지 않으면 .bottom.is-solo 쪽 특정도가 높아 모바일 규칙을 덮어쓴다)
+   기준점 1024px — 가이드 3개를 한 줄에 놓으려면 카드 안쪽으로 800px 넘게 필요한데,
+   좌측 네비 80px + 페이지 여백 80px 을 빼고 나면 그 아래에선 폭이 모자란다 */
+@media (min-width: 1024px) {
+  .bottom.is-solo .onboard { grid-template-columns: auto 1fr; align-items: center; }
+  .bottom.is-solo .onboard-left { justify-content: center; gap: 12px; }
+  .bottom.is-solo .onboard-kicker { display: none; }   /* 가로 배너에선 제목만으로 충분 */
+  .bottom.is-solo .onboard h2 { font-size: var(--fs-24); }
+  .bottom.is-solo .guide-list { flex-direction: row; align-self: center; gap: 20px; }
+  .bottom.is-solo .guide-row { flex: 1; min-width: 0; }
+  /* min-width:0 이 없으면 nowrap 라벨이 min-content 로 버텨서 카드가 넘친다 */
+  .bottom.is-solo .guide-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
 
 /* 제목은 왼쪽, 가이드 버튼은 오른쪽에 쌓아 가로 길이를 절반으로 줄인다 */
 .onboard {
@@ -341,7 +349,7 @@ body {
   .onboard { grid-template-columns: 1fr; gap: 24px; }
   .features { grid-template-columns: repeat(2, 1fr); }
   .connect-body { flex-direction: column; align-items: stretch; }
-  .compare { margin-left: 0; }
+  .connect-img { margin-left: 0; }
 }
 </style>
 </head>
@@ -433,17 +441,17 @@ body {
         <div class="guide-list">
         <button class="guide-row">
           <svg class="icon icon-lg" style="color:var(--color-success)"><use href="#rocket-outlined"></use></svg>
-          첫 이용 가이드
+          <span>첫 이용 가이드</span>
           <svg class="icon chev"><use href="#right-outlined"></use></svg>
         </button>
         <button class="guide-row">
           <svg class="icon icon-lg"><use href="#kakao"></use></svg>
-          카톡 보내기
+          <span>카톡 보내기</span>
           <svg class="icon chev"><use href="#right-outlined"></use></svg>
         </button>
         <button class="guide-row">
           <svg class="icon icon-lg" style="color:var(--color-primary)"><use href="#file-done-outlined"></use></svg>
-          전자서명 가이드
+          <span>전자서명 가이드</span>
           <svg class="icon chev"><use href="#right-outlined"></use></svg>
         </button>
         </div>
@@ -549,10 +557,13 @@ body {
       panel.remove();
       document.querySelector('.bottom').classList.add('is-solo');
 
-      /* 가로 배너에서는 전체보기 버튼을 한 단계 작게 */
-      var more = document.querySelector('.onboard-left .btn');
-      more.classList.remove('btn-xl');
-      more.classList.add('btn-md');
+      /* 가로 배너에서는 전체보기 버튼을 한 단계 작게.
+         세로 스택으로 남는 좁은 화면(1024px 미만)에서는 원래 크기를 유지한다 */
+      if (window.matchMedia('(min-width: 1024px)').matches) {
+        var more = document.querySelector('.onboard-left .btn');
+        more.classList.remove('btn-xl');
+        more.classList.add('btn-md');
+      }
     }, { once: true });
   });
 })();

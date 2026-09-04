@@ -397,6 +397,59 @@
 .toggle-sm::after { top: 2px; left: 2px; width: 12px; height: 12px; }
 .toggle-sm:checked::after { transform: translateX(16px); }
 
+/* ==========================================
+   SEGMENTED (Tab Toggle)
+   .segmented + .segmented-item (+ .is-selected)
+   ========================================== */
+
+.segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.segmented-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--control-h);
+  padding: 0 var(--control-px-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-full);
+  background: var(--color-surface);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    border-color     var(--motion-standard) var(--ease-standard),
+    color            var(--motion-standard) var(--ease-standard);
+}
+.segmented-item:hover { color: var(--color-text); }
+.segmented-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+
+.segmented-item.is-selected {
+  background: var(--color-primary-bg);
+  border-color: var(--color-primary-border);
+  color: var(--color-primary);
+}
+.segmented-item.is-selected:hover { color: var(--color-primary); }
+
+.segmented-item:disabled {
+  border-color: var(--color-border-split);
+  color: var(--color-disabled);
+  cursor: not-allowed;
+}
 
 /* ==========================================
    MENU (Dropdown)

@@ -244,6 +244,294 @@ body {
   background: var(--color-surface-veil);
   color: var(--color-primary);
 }
+/* ── 4. MOCKUP PLACEHOLDER ─────────────────── */
+/* 알림톡 목업은 아직 시안이 확정되지 않아 자리만 잡아둔다 */
+.mock-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  padding: 24px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--r-xl);
+  background: var(--color-bg-base);
+  text-align: center;
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.mock-slot-sm { min-height: 220px; }
+
+.s1-preview-head { margin-bottom: 12px; }
+.s1-preview-caption {
+  margin-top: 12px;
+  text-align: center;
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+/* ── 5. MODAL ──────────────────────────────── */
+.dialog-wide { width: 920px; max-width: calc(100vw - 64px); }
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border-split);
+}
+.modal-head .dialog-title { flex: 1; min-width: 0; }
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.field + .field { margin-top: 16px; }
+.field .label { margin-bottom: 4px; }
+
+.recipient-row { display: flex; gap: 8px; }
+.recipient-row .input { flex: 1; min-width: 0; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.chip-remove {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.65;
+}
+.chip-remove:hover { opacity: 1; }
+
+.modal-section-title {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+
+.modal-empty {
+  padding: 24px;
+  border-radius: var(--r-lg);
+  background: var(--color-bg-light);
+  text-align: center;
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+
+.modal-cta { margin-top: 24px; }
+.modal-hint {
+  margin-top: 8px;
+  text-align: center;
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+
+.select-search { position: relative; }
+.select-search .input { padding-right: 40px; }
+.select-search .select-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-text-secondary);
+}
+.select-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: none;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.select-search.is-open .select-menu { display: block; }
+/* ── 6. STEP 2 / STEP 3 ────────────────────── */
+.s2-panel {
+  padding: 32px;
+  border-radius: var(--r-xl);
+  background: var(--color-bg-light);
+  text-align: center;
+}
+.s2-panel-title {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.s2-image { display: block; width: 100%; max-width: 720px; height: auto; margin: 24px auto 0; }
+.s2-cta { margin-top: 24px; }
+.s2-foot {
+  margin-top: 16px;
+  text-align: right;
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.s2-foot a { color: var(--color-primary); }
+
+.s3-title {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+.s3-desc {
+  margin-top: 4px;
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.s3-cta { margin-top: 20px; }
+
+/* ── 7. DIALOGS ────────────────────────────── */
+.dialog-title-row { display: flex; align-items: center; gap: 8px; }
+.dialog-title-row .icon { flex-shrink: 0; color: var(--color-success); }
+
+.dialog-summary {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: var(--r-lg);
+  background: var(--color-bg-light);
+}
+.dialog-summary-row { display: flex; align-items: baseline; gap: 8px; }
+.dialog-summary-row + .dialog-summary-row { margin-top: 16px; }
+.dialog-summary-row b {
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+.dialog-summary-sub {
+  margin-top: 4px;
+  margin-left: 68px;
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+
+.dialog-xl { width: 760px; max-width: calc(100vw - 64px); }
+.ready-hero { text-align: center; }
+.ready-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-full);
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+.ready-hero .dialog-title { margin-top: 12px; }
+.ready-hero .dialog-desc { margin-top: 8px; }
+
+.addon-title {
+  margin-top: 24px;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+.addon-desc {
+  margin-top: 4px;
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.addon-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.addon-card { padding: 16px; border-radius: var(--r-xl); background: var(--color-bg-light); }
+.addon-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 96px;
+  border-radius: var(--r-lg);
+  background: var(--color-accent-lilac-bg);
+}
+.addon-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 40px;
+  padding: 8px 4px;
+  border-radius: var(--r-sm);
+  background: var(--color-surface);
+}
+.addon-sheet i { display: block; height: 4px; border-radius: var(--r-xs); background: var(--color-bg-base); }
+.addon-sheet i.is-accent { background: var(--color-kakao); }
+.addon-arrow { color: var(--color-accent-purple-fg); }
+.addon-card b {
+  display: block;
+  margin-top: 12px;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+.addon-card p {
+  margin-top: 4px;
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.addon-card a {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-primary);
+}
+
+.diy-title {
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+.diy-desc {
+  margin-top: 4px;
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.diy-links { display: flex; gap: 24px; margin-top: 12px; }
+.diy-links a {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-primary);
+}
 </style>
 </head>
 <body>
@@ -333,27 +621,175 @@ body {
 
             <button class="btn btn-xl btn-primary btn-block s1-cta" type="button" id="step1-cta">
               알림톡 발송하기
-              <span class="badge badge-sm badge-pill cta-count">무료 <span id="free-left">2</span>/2건</span>
+              <span class="badge badge-sm badge-pill cta-count" id="free-left">무료 2/2건</span>
             </button>
           </div>
 
-          <div class="s1-preview"></div>
+          <div class="s1-preview">
+            <div class="segmented s1-preview-head" role="tablist">
+              <button class="segmented-item is-selected" type="button" role="tab" aria-selected="true" data-preview="message">메시지</button>
+              <button class="segmented-item" type="button" role="tab" aria-selected="false" data-preview="link">링크·문서 연결</button>
+            </div>
+            <div class="mock-slot" id="s1-preview-body">알림톡 목업 자리</div>
+            <p class="s1-preview-caption">지금 발송하면 내 카카오톡에 이 모습 그대로 도착해요.</p>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="card step" data-step="2">
       <button class="step-head" aria-expanded="false" aria-controls="step2-body"></button>
-      <div class="step-body" id="step2-body"></div>
+      <div class="step-body" id="step2-body">
+        <div class="s2-panel">
+          <p class="s2-panel-title">카카오 채널을 연동해 우리 회사 이름으로 알림톡을 발송하세요.</p>
+          <img class="s2-image" src="../../assets/카카오 프로필 연동2.png"
+               alt="기본 알림톡 발송 프로필과 카카오 프로필 연동 후 비교">
+          <button class="btn btn-lg btn-primary s2-cta" type="button" id="step2-cta">카카오 비즈니스 채널 연동하기</button>
+        </div>
+        <p class="s2-foot">프로필 연동관련 문의가 있으신가요? <a href="#">자버팀 문의하기</a></p>
+      </div>
     </section>
 
     <section class="card step" data-step="3">
       <button class="step-head" aria-expanded="false" aria-controls="step3-body"></button>
-      <div class="step-body" id="step3-body"></div>
+      <div class="step-body" id="step3-body">
+        <p class="s3-title">필요한 만큼 포인트를 충전해 사용해보세요.</p>
+        <p class="s3-desc">메시지·설문폼·계약서 등 발송한 만큼 포인트가 차감됩니다.</p>
+        <button class="btn btn-lg btn-primary s3-cta" type="button" id="step3-cta">포인트 충전하기</button>
+      </div>
     </section>
   </div>
 
   <p class="page-foot">시안 확인용 · <button type="button" id="reset-state">상태 초기화</button></p>
+</div>
+
+<div class="dialog-overlay" id="test-modal">
+  <div class="dialog dialog-wide" role="dialog" aria-modal="true" aria-labelledby="test-modal-title">
+    <div class="modal-head">
+      <h2 class="dialog-title" id="test-modal-title">알림톡 테스트 발송</h2>
+      <button class="icon-btn" type="button" id="test-modal-close" aria-label="닫기">
+        <svg class="icon icon-lg"><use href="#close-outlined"></use></svg>
+      </button>
+    </div>
+
+    <div class="modal-grid">
+      <div class="modal-col">
+        <div class="field">
+          <label class="label" for="recipient-input">받는 사람</label>
+          <div class="recipient-row">
+            <input class="input" type="tel" id="recipient-input" placeholder="번호를 - 없이 입력해주세요.">
+            <button class="btn btn-md btn-primary" type="button" id="recipient-add">추가</button>
+          </div>
+          <p class="input-error-msg" id="recipient-error" hidden></p>
+          <div class="chips" id="recipient-chips"></div>
+        </div>
+
+        <p class="modal-section-title">알림톡 미리보기</p>
+        <div class="mock-slot mock-slot-sm" id="modal-preview">알림톡 목업 자리</div>
+      </div>
+
+      <div class="modal-col">
+        <div class="field">
+          <label class="label" for="template-input">템플릿 선택</label>
+          <div class="select-search" id="template-select">
+            <input class="input" type="text" id="template-input" placeholder="템플릿을 선택해주세요." autocomplete="off">
+            <svg class="icon select-icon"><use href="#search-outlined"></use></svg>
+            <div class="menu select-menu" id="template-menu"></div>
+          </div>
+        </div>
+
+        <p class="modal-section-title">내용 입력</p>
+        <div id="template-fields"></div>
+
+        <button class="btn btn-xl btn-primary btn-block modal-cta" type="button" id="modal-send" disabled>
+          알림톡 발송하기
+          <span class="badge badge-sm badge-pill cta-count" id="modal-free-left">무료 2/2건</span>
+        </button>
+        <p class="modal-hint" id="modal-hint">받는 번호를 추가하고 템플릿을 고르면 발송할 수 있어요.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dialog-overlay" id="dialog-linked">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-linked-title">
+    <div class="dialog-title-row">
+      <svg class="icon icon-lg"><use href="#check-circle-filled"></use></svg>
+      <h2 class="dialog-title" id="dialog-linked-title">카카오 비즈니스 채널 연동이 완료되었습니다.</h2>
+    </div>
+    <p class="dialog-desc">이제 포인트를 충전하면 우리 회사 프로필로 알림톡을 발송할 수 있어요.</p>
+    <div class="dialog-summary">
+      <div class="dialog-summary-row">
+        <span class="badge badge-sm badge-weak-success">✓ STEP 2</span>
+        <b>카카오 비즈니스 채널 연동하기</b>
+      </div>
+      <p class="dialog-summary-sub">연동을 완료했어요.</p>
+      <div class="dialog-summary-row">
+        <span class="badge badge-sm badge-fill-primary">STEP 3</span>
+        <b>포인트 충전하기</b>
+      </div>
+      <p class="dialog-summary-sub">발송에 사용할 포인트를 충전해 주세요.</p>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-lg btn-default" type="button" data-close-dialog="dialog-linked">닫기</button>
+      <button class="btn btn-lg btn-primary" type="button" id="goto-step3">STEP 3 포인트 충전하러 가기</button>
+    </div>
+  </div>
+</div>
+
+<div class="dialog-overlay" id="dialog-ready">
+  <div class="dialog dialog-xl" role="dialog" aria-modal="true" aria-labelledby="dialog-ready-title">
+    <div class="ready-hero">
+      <span class="ready-check"><svg class="icon icon-xl"><use href="#check-outlined"></use></svg></span>
+      <h2 class="dialog-title" id="dialog-ready-title">모든 준비가 끝났습니다!</h2>
+      <p class="dialog-desc">이제 우리 회사 이름으로 알림톡을 발송할 수 있어요.<br>공용 템플릿을 바로 사용하거나, 필요한 부가서비스를 추가해보세요.</p>
+    </div>
+    <p class="addon-title">부가서비스</p>
+    <p class="addon-desc">필요한 부가서비스를 추가해 더욱 편리하게 이용할 수 있습니다.</p>
+    <div class="addon-cards">
+      <div class="addon-card">
+        <div class="addon-art">
+          <span class="addon-sheet"><i></i><i></i><i></i><i></i></span>
+          <svg class="icon addon-arrow"><use href="#right-outlined"></use></svg>
+          <span class="addon-sheet"><i class="is-accent"></i><i></i><i></i></span>
+        </div>
+        <b>우리 회사 전용 템플릿 신청</b>
+        <p>공용 템플릿 외에 우리 회사만의 템플릿이 필요할 때</p>
+        <a href="#">전용 템플릿 신청하기 →</a>
+      </div>
+      <div class="addon-card">
+        <div class="addon-art">
+          <span class="addon-sheet"><i></i><i></i><i></i><i></i></span>
+          <svg class="icon addon-arrow"><use href="#right-outlined"></use></svg>
+          <span class="addon-sheet"><i></i><i></i><i></i></span>
+        </div>
+        <b>계약문서 세팅</b>
+        <p>사용 중인 계약서 양식을 자버에서 바로 발송할 수 있게</p>
+        <a href="#">계약문서 세팅 요청하기 →</a>
+      </div>
+      <div class="addon-card">
+        <div class="addon-art">
+          <span class="addon-sheet"><i></i><i></i><i></i><i></i></span>
+          <svg class="icon addon-arrow"><use href="#right-outlined"></use></svg>
+          <span class="addon-sheet"><i></i><i></i><i></i></span>
+        </div>
+        <b>마케팅 문서 세팅</b>
+        <p>보내고 싶은 내용을 발송 가능한 마케팅 문서로</p>
+        <a href="#">마케팅 문서 세팅 요청하기 →</a>
+      </div>
+    </div>
+    <hr class="divider">
+    <p class="diy-title">직접 만들어보고 싶다면?</p>
+    <p class="diy-desc">계약문서·마케팅 문서는 직접 만들어 알림톡과 연결해 발송할 수도 있어요.</p>
+    <div class="diy-links">
+      <a href="#">계약문서 세팅 가이드 &gt;</a>
+      <a href="#">마케팅 문서 세팅 가이드 &gt;</a>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-lg btn-default" type="button" data-close-dialog="dialog-ready">닫기</button>
+      <button class="btn btn-lg btn-primary" type="button" data-close-dialog="dialog-ready">공용 템플릿으로 시작하기</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -427,10 +863,205 @@ function render() {
   });
 
   const freeLeftEl = document.getElementById('free-left');
-  if (freeLeftEl) freeLeftEl.textContent = String(state.freeLeft);
+  if (freeLeftEl) freeLeftEl.textContent = '무료 ' + state.freeLeft + '/2건';
 
   const cta = document.getElementById('step1-cta');
   if (cta) cta.disabled = state.freeLeft <= 0;
+
+  const step2Cta = document.getElementById('step2-cta');
+  if (step2Cta) {
+    const linked = state.step2 === 'done';
+    step2Cta.disabled = linked;
+    step2Cta.classList.toggle('btn-primary', !linked);
+    step2Cta.classList.toggle('btn-default', linked);
+    step2Cta.innerHTML = linked
+      ? '<svg class="icon"><use href="#check-outlined"></use></svg>채널 연동 완료'
+      : '카카오 비즈니스 채널 연동하기';
+  }
+}
+
+/* ── 3. MODAL ──────────────────────────────── */
+const TEMPLATES = [
+  { id: 'schedule-1', name: '일정 안내 1 (이미지형)', fields: [
+      { key: '수신자명',   label: '수신자명',   placeholder: '홍길동',                 type: 'input' },
+      { key: '일정명',     label: '일정명',     placeholder: '온라인 마케팅 기초 교육', type: 'input' },
+      { key: '일시',       label: '일시',       placeholder: '3월 12일 오후 2시',      type: 'input' },
+      { key: '추가메시지', label: '추가메시지', placeholder: '잊지 말고 참석해주세요.', type: 'textarea' } ] },
+  { id: 'review-1', name: '수업 후기 요청 1 (버튼형)', fields: [
+      { key: '수신자명', label: '수신자명', placeholder: '홍길동',                 type: 'input' },
+      { key: '수업명',   label: '수업명',   placeholder: '온라인 마케팅 기초 교육', type: 'input' } ] },
+  { id: 'booking-1', name: '예약 안내 1 (기본형)', fields: [
+      { key: '수신자명', label: '수신자명', placeholder: '홍길동',            type: 'input' },
+      { key: '예약일시', label: '예약일시', placeholder: '3월 12일 오후 2시', type: 'input' } ] }
+];
+
+const MAX_RECIPIENTS = 2;
+let recipients = [];
+let selectedTemplate = null;
+let lastFocused = null;
+
+const modalEl = document.getElementById('test-modal');
+const recipientInput = document.getElementById('recipient-input');
+const recipientError = document.getElementById('recipient-error');
+const recipientChips = document.getElementById('recipient-chips');
+const modalPreview = document.getElementById('modal-preview');
+const templateSelect = document.getElementById('template-select');
+const templateInput = document.getElementById('template-input');
+
+function addRecipient(raw) {
+  const value = String(raw).replace(/[^0-9]/g, '');
+  if (!/^0\d{9,10}$/.test(value)) return { ok: false, msg: '올바른 번호를 입력해주세요.' };
+  if (recipients.indexOf(value) !== -1) return { ok: false, msg: '이미 추가된 번호입니다.' };
+  if (recipients.length >= MAX_RECIPIENTS) return { ok: false, msg: '무료 테스트 발송은 최대 2건까지 가능합니다.' };
+  recipients.push(value);
+  return { ok: true };
+}
+
+function showRecipientError(msg) {
+  recipientError.textContent = msg;
+  recipientError.hidden = false;
+  recipientInput.classList.add('is-error');
+}
+
+function clearRecipientError() {
+  recipientError.hidden = true;
+  recipientInput.classList.remove('is-error');
+}
+
+function renderRecipients() {
+  recipientChips.innerHTML = recipients.map(function (num, i) {
+    return '<span class="badge badge-md badge-pill badge-weak-primary">' + num
+      + '<button class="chip-remove" type="button" data-remove="' + i + '" aria-label="' + num + ' 삭제">'
+      +   '<svg class="icon icon-sm"><use href="#close-outlined"></use></svg>'
+      + '</button></span>';
+  }).join('');
+}
+
+// 알림톡 목업은 시안 미확정이라 자리표시만 한다
+function renderModalPreview() {
+  modalPreview.textContent = selectedTemplate
+    ? '알림톡 목업 자리 (' + selectedTemplate.name + ')'
+    : '템플릿을 선택해주세요.';
+}
+
+function renderModalFields() {
+  const wrap = document.getElementById('template-fields');
+  if (!selectedTemplate) {
+    wrap.innerHTML = '<div class="modal-empty">템플릿을 고르면 입력할 내용이 표시돼요.</div>';
+    return;
+  }
+  wrap.innerHTML = selectedTemplate.fields.map(function (f) {
+    const control = f.type === 'textarea'
+      ? '<textarea class="textarea" id="f-' + f.key + '" placeholder="' + f.placeholder + '"></textarea>'
+      : '<input class="input" type="text" id="f-' + f.key + '" placeholder="' + f.placeholder + '">';
+    return '<div class="field"><label class="label" for="f-' + f.key + '">' + f.label + '</label>' + control + '</div>';
+  }).join('');
+}
+
+function updateSendButton() {
+  const btn = document.getElementById('modal-send');
+  const hint = document.getElementById('modal-hint');
+  const ready = recipients.length > 0 && !!selectedTemplate && state.freeLeft > 0;
+
+  btn.disabled = !ready;
+  document.getElementById('modal-free-left').textContent = '무료 ' + state.freeLeft + '/2건';
+
+  if (state.freeLeft <= 0) {
+    hint.textContent = '무료 테스트 발송을 모두 사용했어요.';
+    hint.hidden = false;
+  } else if (!ready) {
+    hint.textContent = '받는 번호를 추가하고 템플릿을 고르면 발송할 수 있어요.';
+    hint.hidden = false;
+  } else {
+    hint.hidden = true;
+  }
+}
+
+function renderTemplateMenu(query) {
+  const menu = document.getElementById('template-menu');
+  const q = String(query || '').trim();
+  const list = TEMPLATES.filter(function (t) { return !q || t.name.indexOf(q) !== -1; });
+  menu.innerHTML = list.length
+    ? list.map(function (t) {
+        const on = selectedTemplate && selectedTemplate.id === t.id ? ' is-selected' : '';
+        return '<button class="menu-item' + on + '" type="button" data-template="' + t.id + '">' + t.name + '</button>';
+      }).join('')
+    : '<div class="menu-header">검색 결과가 없어요.</div>';
+}
+
+function selectTemplate(id) {
+  selectedTemplate = TEMPLATES.filter(function (t) { return t.id === id; })[0] || null;
+  templateInput.value = selectedTemplate ? selectedTemplate.name : '';
+  templateSelect.classList.remove('is-open');
+  renderModalFields();
+  renderModalPreview();
+  updateSendButton();
+}
+
+function refreshModal() {
+  renderRecipients();
+  renderModalPreview();
+  renderModalFields();
+  updateSendButton();
+}
+
+function openTestModal() {
+  lastFocused = document.activeElement;
+  recipients = [];
+  selectedTemplate = null;
+  recipientInput.value = '';
+  templateInput.value = '';
+  templateSelect.classList.remove('is-open');
+  clearRecipientError();
+  refreshModal();
+  modalEl.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+  recipientInput.focus();
+}
+
+function closeTestModal() {
+  modalEl.classList.remove('is-open');
+  document.body.style.overflow = '';
+  if (lastFocused) lastFocused.focus();
+}
+
+/* ── 4. DIALOG / TOAST ─────────────────────── */
+function openDialog(id) {
+  const overlay = document.getElementById(id);
+  overlay.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+  const first = overlay.querySelector('.dialog-actions .btn');
+  if (first) first.focus();
+}
+
+function closeDialog(id) {
+  document.getElementById(id).classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+function showToast(msg) {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-success';
+  toast.innerHTML = '<svg class="icon toast-icon"><use href="#check-circle-filled"></use></svg>' + msg;
+  container.appendChild(toast);
+  setTimeout(function () { toast.remove(); }, 3000);
+}
+
+function sendTest() {
+  closeTestModal();
+  state.freeLeft = Math.max(0, state.freeLeft - 1);
+  state.step1 = 'done';
+  state.step2 = 'active';
+  state.expanded = 2;
+  saveState();
+  render();
+  showToast('알림톡을 발송했어요. 카카오톡을 확인해 주세요.');
 }
 
 /* ── 5. BOOT ───────────────────────────────── */
@@ -454,6 +1085,117 @@ disclosureToggle.addEventListener('click', function () {
   const open = !disclosure.classList.contains('is-open');
   disclosure.classList.toggle('is-open', open);
   disclosureToggle.setAttribute('aria-expanded', String(open));
+});
+
+const previewBody = document.getElementById('s1-preview-body');
+const previewTabs = document.querySelectorAll('[data-preview]');
+const PREVIEW_LABELS = { message: '알림톡 목업 자리 (메시지)', link: '알림톡 목업 자리 (링크·문서 연결)' };
+
+function selectPreview(key) {
+  previewTabs.forEach(function (tab) {
+    const on = tab.dataset.preview === key;
+    tab.classList.toggle('is-selected', on);
+    tab.setAttribute('aria-selected', String(on));
+  });
+  previewBody.textContent = PREVIEW_LABELS[key];
+}
+
+previewTabs.forEach(function (tab) {
+  tab.addEventListener('click', function () { selectPreview(tab.dataset.preview); });
+});
+
+selectPreview('message');
+
+document.getElementById('step1-cta').addEventListener('click', openTestModal);
+document.getElementById('test-modal-close').addEventListener('click', closeTestModal);
+
+modalEl.addEventListener('click', function (e) {
+  if (e.target === modalEl) closeTestModal();
+});
+
+function submitRecipient() {
+  const result = addRecipient(recipientInput.value);
+  if (!result.ok) { showRecipientError(result.msg); return; }
+  clearRecipientError();
+  recipientInput.value = '';
+  refreshModal();
+}
+
+document.getElementById('recipient-add').addEventListener('click', submitRecipient);
+
+recipientInput.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') { e.preventDefault(); submitRecipient(); }
+});
+
+recipientChips.addEventListener('click', function (e) {
+  const btn = e.target.closest('[data-remove]');
+  if (!btn) return;
+  recipients.splice(Number(btn.dataset.remove), 1);
+  clearRecipientError();
+  refreshModal();
+});
+
+templateInput.addEventListener('focus', function () {
+  renderTemplateMenu('');
+  templateSelect.classList.add('is-open');
+});
+templateInput.addEventListener('input', function () {
+  renderTemplateMenu(templateInput.value);
+  templateSelect.classList.add('is-open');
+});
+
+document.getElementById('template-menu').addEventListener('click', function (e) {
+  const item = e.target.closest('[data-template]');
+  if (item) selectTemplate(item.dataset.template);
+});
+
+document.addEventListener('click', function (e) {
+  if (!templateSelect.contains(e.target)) templateSelect.classList.remove('is-open');
+});
+
+document.getElementById('modal-send').addEventListener('click', sendTest);
+
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape') return;
+  if (modalEl.classList.contains('is-open')) { closeTestModal(); return; }
+  const open = document.querySelector('.dialog-overlay.is-open');
+  if (open) closeDialog(open.id);
+});
+
+// render() 가 step2-cta 를 다시 그리므로 컨테이너에 위임한다
+document.querySelector('.steps').addEventListener('click', function (e) {
+  if (e.target.closest('#step2-cta')) {
+    state.step2 = 'done';
+    saveState();
+    render();
+    openDialog('dialog-linked');
+  }
+  if (e.target.closest('#step3-cta')) {
+    state.step3 = 'done';
+    saveState();
+    render();
+    openDialog('dialog-ready');
+  }
+});
+
+document.addEventListener('click', function (e) {
+  const closer = e.target.closest('[data-close-dialog]');
+  if (closer) closeDialog(closer.dataset.closeDialog);
+});
+
+document.getElementById('goto-step3').addEventListener('click', function () {
+  closeDialog('dialog-linked');
+  state.step3 = 'active';
+  state.expanded = 3;
+  saveState();
+  render();
+});
+
+document.querySelectorAll('.dialog-overlay').forEach(function (overlay) {
+  if (overlay.id === 'test-modal') return;
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) closeDialog(overlay.id);
+  });
 });
 
 render();

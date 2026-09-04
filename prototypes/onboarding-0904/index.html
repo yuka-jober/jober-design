@@ -1053,15 +1053,24 @@ function showToast(msg) {
   setTimeout(function () { toast.remove(); }, 3000);
 }
 
+// 무료 2건을 모두 써야 STEP 1 이 완료된다. 남아 있으면 STEP 1 에 머문다.
 function sendTest() {
   closeTestModal();
   state.freeLeft = Math.max(0, state.freeLeft - 1);
+
+  if (state.freeLeft > 0) {
+    saveState();
+    render();
+    showToast('알림톡을 발송했어요. ' + state.freeLeft + '건 더 보내면 STEP 1 이 완료돼요.');
+    return;
+  }
+
   state.step1 = 'done';
   state.step2 = 'active';
   state.expanded = 2;
   saveState();
   render();
-  showToast('알림톡을 발송했어요. 카카오톡을 확인해 주세요.');
+  showToast('알림톡 2건을 모두 발송했어요. 카카오톡을 확인해 주세요.');
 }
 
 /* ── 5. BOOT ───────────────────────────────── */

@@ -106,13 +106,7 @@ body {
 .step-body { padding: 0 24px 24px; }
 .step:not(.is-open) .step-body { display: none; }
 
-/* ── 3. STEP 1 LEFT ────────────────────────── */
-.s1-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-  gap: 40px;
-  align-items: start;
-}
+/* ── 3. STEP 1 ─────────────────────────────── */
 
 .s1-lead {
   font-size: var(--fs-14);
@@ -263,7 +257,34 @@ body {
 }
 .mock-slot-sm { min-height: 220px; }
 
-.s1-preview-head { margin-bottom: 12px; }
+/* 목업 가로 배치 — 알림톡 2종 + 연결되는 문서 화면 */
+.mock-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  margin-top: 24px;
+}
+.mock-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+.mock-item-doc { flex: 1; min-width: 0; }
+.mock-item .mock-slot { flex: 1; }
+.mock-slot-phone { width: 240px; }
+
+/* 두 번째 목업에서 문서 화면으로 이어지는 확대 연결선 */
+.mock-zoom {
+  align-self: stretch;
+  /* 라벨 줄(배지 + gap) 만큼 내려서 목업 박스와 위아래를 맞춘다 */
+  margin-top: 28px;
+  width: 40px;
+  flex-shrink: 0;
+  background: var(--color-bg-light);
+  clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%);
+}
+
 .s1-preview-caption {
   margin-top: 12px;
   text-align: center;
@@ -544,96 +565,103 @@ body {
     <section class="card step" data-step="1">
       <button class="step-head" aria-expanded="false" aria-controls="step1-body"></button>
       <div class="step-body" id="step1-body">
-        <div class="s1-grid">
-          <div class="s1-left">
-            <p class="s1-lead">알림톡은 평소 쓰는 카카오톡과 보내는 방식이 달라요.</p>
+        <p class="s1-lead">알림톡은 평소 쓰는 카카오톡과 보내는 방식이 달라요.</p>
 
-            <dl class="compare">
-              <div class="compare-row">
-                <dt>개인 카카오톡</dt>
-                <dd>쓰고 싶은 내용을 그대로 입력해서 보내요.</dd>
-              </div>
-              <div class="compare-row is-highlight">
-                <dt>자버 알림톡</dt>
-                <dd>카카오에 승인된 템플릿을 골라서 보내요.</dd>
-              </div>
-            </dl>
-
-            <div class="disclosure" id="s1-disclosure">
-              <button class="disclosure-toggle" type="button" aria-expanded="false" aria-controls="s1-vs">
-                알림톡과 친구톡은 뭐가 다른가요?
-                <svg class="icon icon-sm"><use href="#down-outlined"></use></svg>
-              </button>
-              <div class="disclosure-panel" id="s1-vs">
-                <table class="vs-table">
-                  <thead>
-                    <tr>
-                      <th class="vs-label"></th>
-                      <th class="vs-main">알림톡</th>
-                      <th class="vs-sub">친구톡</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="vs-label">누구에게</td>
-                      <td class="vs-main">전화번호만 알면 발송 가능</td>
-                      <td class="vs-sub">채널 친구에게만 발송 가능</td>
-                    </tr>
-                    <tr>
-                      <td class="vs-label">어떻게</td>
-                      <td class="vs-main">승인된 템플릿으로 발송</td>
-                      <td class="vs-sub">원하는 내용으로 자유롭게 발송</td>
-                    </tr>
-                    <tr>
-                      <td class="vs-label">광고·마케팅</td>
-                      <td class="vs-no">× 불가</td>
-                      <td class="vs-yes">○ 가능</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <p class="s1-subtitle">어떤 알림톡을 보낼 수 있나요?</p>
-            <div class="type-cards">
-              <div class="type-card">
-                <span class="type-tile type-tile-message">
-                  <svg class="icon icon-lg"><use href="#message-outlined"></use></svg>
-                </span>
-                <b>메시지</b>
-                <span>안내 내용을 알림톡으로 보내요.</span>
-              </div>
-              <div class="type-card">
-                <span class="type-tile type-tile-link">
-                  <svg class="icon icon-lg"><use href="#link-outlined"></use></svg>
-                </span>
-                <b>링크 연결</b>
-                <span>알림톡에 외부 링크를 연결해요.</span>
-              </div>
-              <div class="type-card">
-                <span class="type-tile type-tile-doc">
-                  <svg class="icon icon-lg"><use href="#file-text-outlined"></use></svg>
-                </span>
-                <b>문서 연결</b>
-                <span>자버 문서를 연결해 함께 보내요.</span>
-              </div>
-            </div>
-
-            <button class="btn btn-xl btn-primary btn-block s1-cta" type="button" id="step1-cta">
-              알림톡 발송하기
-              <span class="badge badge-sm badge-pill cta-count" id="free-left">무료 2/2건</span>
-            </button>
+        <dl class="compare">
+          <div class="compare-row">
+            <dt>개인 카카오톡</dt>
+            <dd>쓰고 싶은 내용을 그대로 입력해서 보내요.</dd>
           </div>
+          <div class="compare-row is-highlight">
+            <dt>자버 알림톡</dt>
+            <dd>카카오에 승인된 템플릿을 골라서 보내요.</dd>
+          </div>
+        </dl>
 
-          <div class="s1-preview">
-            <div class="segmented s1-preview-head" role="tablist">
-              <button class="segmented-item is-selected" type="button" role="tab" aria-selected="true" data-preview="message">메시지</button>
-              <button class="segmented-item" type="button" role="tab" aria-selected="false" data-preview="link">링크·문서 연결</button>
-            </div>
-            <div class="mock-slot" id="s1-preview-body">알림톡 목업 자리</div>
-            <p class="s1-preview-caption">지금 발송하면 내 카카오톡에 이 모습 그대로 도착해요.</p>
+        <div class="disclosure" id="s1-disclosure">
+          <button class="disclosure-toggle" type="button" aria-expanded="false" aria-controls="s1-vs">
+            알림톡과 친구톡은 뭐가 다른가요?
+            <svg class="icon icon-sm"><use href="#down-outlined"></use></svg>
+          </button>
+          <div class="disclosure-panel" id="s1-vs">
+            <table class="vs-table">
+              <thead>
+                <tr>
+                  <th class="vs-label"></th>
+                  <th class="vs-main">알림톡</th>
+                  <th class="vs-sub">친구톡</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="vs-label">누구에게</td>
+                  <td class="vs-main">전화번호만 알면 발송 가능</td>
+                  <td class="vs-sub">채널 친구에게만 발송 가능</td>
+                </tr>
+                <tr>
+                  <td class="vs-label">어떻게</td>
+                  <td class="vs-main">승인된 템플릿으로 발송</td>
+                  <td class="vs-sub">원하는 내용으로 자유롭게 발송</td>
+                </tr>
+                <tr>
+                  <td class="vs-label">광고·마케팅</td>
+                  <td class="vs-no">× 불가</td>
+                  <td class="vs-yes">○ 가능</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
+
+        <p class="s1-subtitle">어떤 알림톡을 보낼 수 있나요?</p>
+        <div class="type-cards">
+          <div class="type-card">
+            <span class="type-tile type-tile-message">
+              <svg class="icon icon-lg"><use href="#message-outlined"></use></svg>
+            </span>
+            <b>메시지</b>
+            <span>안내 내용을 알림톡으로 보내요.</span>
+          </div>
+          <div class="type-card">
+            <span class="type-tile type-tile-link">
+              <svg class="icon icon-lg"><use href="#link-outlined"></use></svg>
+            </span>
+            <b>링크 연결</b>
+            <span>알림톡에 외부 링크를 연결해요.</span>
+          </div>
+          <div class="type-card">
+            <span class="type-tile type-tile-doc">
+              <svg class="icon icon-lg"><use href="#file-text-outlined"></use></svg>
+            </span>
+            <b>문서 연결</b>
+            <span>자버 문서를 연결해 함께 보내요.</span>
+          </div>
+        </div>
+
+        <div class="mock-row">
+          <figure class="mock-item">
+            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">메시지</span></figcaption>
+            <div class="mock-slot mock-slot-phone">알림톡 목업 자리</div>
+          </figure>
+
+          <figure class="mock-item">
+            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">링크·문서 연결</span></figcaption>
+            <div class="mock-slot mock-slot-phone">알림톡 목업 자리</div>
+          </figure>
+
+          <div class="mock-zoom" aria-hidden="true"></div>
+
+          <figure class="mock-item mock-item-doc">
+            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">연결 결과</span></figcaption>
+            <div class="mock-slot">연결되는 문서 예시화면</div>
+          </figure>
+        </div>
+        <p class="s1-preview-caption">지금 발송하면 내 카카오톡에 이 모습 그대로 도착해요.</p>
+
+        <button class="btn btn-xl btn-primary btn-block s1-cta" type="button" id="step1-cta">
+          알림톡 발송하기
+          <span class="badge badge-sm badge-pill cta-count" id="free-left">무료 2/2건</span>
+        </button>
       </div>
     </section>
 
@@ -1096,24 +1124,6 @@ disclosureToggle.addEventListener('click', function () {
   disclosureToggle.setAttribute('aria-expanded', String(open));
 });
 
-const previewBody = document.getElementById('s1-preview-body');
-const previewTabs = document.querySelectorAll('[data-preview]');
-const PREVIEW_LABELS = { message: '알림톡 목업 자리 (메시지)', link: '알림톡 목업 자리 (링크·문서 연결)' };
-
-function selectPreview(key) {
-  previewTabs.forEach(function (tab) {
-    const on = tab.dataset.preview === key;
-    tab.classList.toggle('is-selected', on);
-    tab.setAttribute('aria-selected', String(on));
-  });
-  previewBody.textContent = PREVIEW_LABELS[key];
-}
-
-previewTabs.forEach(function (tab) {
-  tab.addEventListener('click', function () { selectPreview(tab.dataset.preview); });
-});
-
-selectPreview('message');
 
 document.getElementById('step1-cta').addEventListener('click', openTestModal);
 document.getElementById('test-modal-close').addEventListener('click', closeTestModal);

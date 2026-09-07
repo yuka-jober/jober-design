@@ -280,16 +280,25 @@ body {
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
 }
-/* 히어로는 전체 폭에서 한 줄로 읽히게 위에 둔다 */
-.s1-hero { margin-bottom: 24px; }
+/* 히어로는 전체 폭에서 한 줄로 읽히게 위에 두고, 옅은 면으로 묶어 경계를 준다 */
+.s1-hero {
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  border-radius: var(--r-xl);
+  background: var(--color-bg-light);
+}
 
 /* 좌: 안내 · 우: 유형 선택과 그 유형의 목업. CTA 는 그 아래 전체 폭 */
 .s1-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: 32px;
-  align-items: start;
+  align-items: stretch;
 }
+.s1-grid > :first-child {
+  padding-right: 24px;
+  border-right: 1px solid var(--color-border-split);
+}
+.s1-grid > :last-child { padding-left: 24px; }
 
 .s1-lead {
   margin-top: 4px;
@@ -714,7 +723,7 @@ body {
         <div class="s1-grid">
           <div>
             <p class="s1-subtitle">카카오 알림톡이 무엇인가요?</p>
-            <p class="s1-lead">고객에게 안내를 보내는 카카오톡 메시지예요. 평소 쓰는 카카오톡과 보내는 방식이 달라요.</p>
+            <p class="s1-lead">고객에게 안내를 보내는 카카오톡 메시지예요.<br>평소 쓰는 카카오톡과 보내는 방식이 달라요.</p>
 
             <div class="compare-cards">
               <div class="compare-card">

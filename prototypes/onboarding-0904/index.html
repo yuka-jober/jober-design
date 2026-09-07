@@ -220,20 +220,6 @@ body {
   color: var(--color-text-secondary);
 }
 
-/* 예시 갤러리 — 앞 둘은 안내, 뒤 둘은 혜택·참여 */
-.gallery-row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 20px;
-}
-.mock-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 0;
-}
-.mock-item .mock-slot { flex: 1; }
 
 /* 신뢰 한 줄 — 승인 템플릿을 규칙이 아니라 안심 근거로만 쓴다 */
 .s1-trust {
@@ -304,58 +290,77 @@ body {
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
 }
-/* 카드 두 장. 링크·문서 연결은 목업 하나를 공유하므로 한 카드로 묶는다 */
-.s1-groups {
+/* 좌: 설명과 CTA · 우: 유형 선택과 그 유형의 목업 */
+.s1-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: 16px;
-  margin-top: 12px;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 32px;
+  align-items: start;
 }
 
-/* 합친 카드의 머리 — 유형 설명 두 개가 나란히, 목업은 아래에서 공유한다 */
-.type-heads {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-.type-card {
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  border: 1px solid var(--color-border-split);
-  border-radius: var(--r-xl);
-  background: var(--color-surface);
-}
-/* 목업은 카드 하단을 채운다 */
-.type-card .mock-slot {
-  flex: 1;
-  margin-top: 16px;
-  min-height: 240px;
-}
-/* 유형별 아이콘은 크기·모양을 통일한다. 색은 이미지가 자체적으로 갖는다 */
-.type-tile {
-  display: block;
-  width: 36px;
-  height: 36px;
-}
-.type-card b {
-  display: block;
-  margin-top: 12px;
+.s1-subtitle {
   font-size: var(--fs-14);
   font-weight: var(--fw-bold);
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
 }
+.type-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+/* 유형 카드는 목업을 바꾸는 선택지다 */
+.type-card {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color-border-split);
+  border-radius: var(--r-xl);
+  background: var(--color-surface);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-base);
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    border-color     var(--motion-standard) var(--ease-standard);
+}
+.type-card:hover { border-color: var(--color-border); }
+.type-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.type-card.is-selected {
+  border-color: var(--color-primary-border);
+  background: var(--color-primary-bg);
+}
+/* 유형별 아이콘은 크기·모양을 통일한다. 색은 이미지가 자체적으로 갖는다 */
+.type-tile {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+.type-card b {
+  display: block;
+  margin-top: 8px;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+.type-card.is-selected b { color: var(--color-primary); }
 .type-card span {
   display: block;
   margin-top: 4px;
-  font-size: var(--fs-14);
+  font-size: var(--fs-12);
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
   color: var(--color-text-secondary);
 }
 
-.s1-cta { margin-top: 24px; }
+#type-mock { margin-top: 12px; min-height: 260px; }
+
+.s1-cta { margin-top: 20px; }
 .cta-count {
   background: var(--color-surface-veil);
   color: var(--color-primary);
@@ -378,21 +383,6 @@ body {
   color: var(--color-text-secondary);
 }
 .mock-slot-sm { min-height: 220px; }
-.mock-slot-card {
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 180px;
-  padding: 16px;
-  font-size: var(--fs-14);
-}
-.mock-slot-card .mock-btn {
-  width: 100%;
-  padding: 8px;
-  border-radius: var(--r-sm);
-  background: var(--color-surface);
-  color: var(--color-disabled);
-}
 
 
 
@@ -680,116 +670,81 @@ body {
     <section class="card step" data-step="1">
       <button class="step-head" aria-expanded="false" aria-controls="step1-body"></button>
       <div class="step-body" id="step1-body">
-        <h2 class="s1-hero-title">번호만 있으면, 채널 친구가 아니어도 보낼 수 있어요</h2>
-        <p class="s1-hero-sub">예약 안내부터 쿠폰·설문까지, 고객이 반가워하는 메시지를 카카오톡으로.</p>
+        <div class="s1-grid">
+          <div>
+            <h2 class="s1-hero-title">번호만 있으면, 채널 친구가 아니어도 보낼 수 있어요</h2>
+            <p class="s1-hero-sub">예약 안내부터 쿠폰·설문까지, 고객이 반가워하는 메시지를 카카오톡으로.</p>
 
-        <p class="s1-trust">
-          <svg class="icon"><use href="#check-circle-filled"></use></svg>
-          일반 카카오톡 메시지와 달리, 카카오에 미리 승인된 템플릿으로 보내요.
-        </p>
+            <p class="s1-trust">
+              <svg class="icon"><use href="#check-circle-filled"></use></svg>
+              일반 카카오톡 메시지와 달리, 카카오에 미리 승인된 템플릿으로 보내요.
+            </p>
 
-        <div class="gallery-row">
-          <figure class="mock-item">
-            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">예약 확인</span></figcaption>
-            <div class="mock-slot mock-slot-card">
-              <span>1월 20일 객실 예약이 완료됐어요. 예약번호 1234</span>
-              <span class="mock-btn">예약 확인하기</span>
+            <div class="disclosure" id="s1-disclosure">
+              <button class="disclosure-toggle" type="button" aria-expanded="false" aria-controls="s1-vs">
+                알림톡과 친구톡은 뭐가 다른가요?
+                <svg class="icon icon-sm"><use href="#down-outlined"></use></svg>
+              </button>
+              <div class="disclosure-panel" id="s1-vs">
+                <table class="vs-table">
+                  <thead>
+                    <tr>
+                      <th class="vs-label"></th>
+                      <th class="vs-main">알림톡</th>
+                      <th class="vs-sub">친구톡</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="vs-label">누구에게</td>
+                      <td class="vs-main">전화번호만 알면 발송 가능</td>
+                      <td class="vs-sub">채널 친구에게만 발송 가능</td>
+                    </tr>
+                    <tr>
+                      <td class="vs-label">어떻게</td>
+                      <td class="vs-main">승인된 템플릿으로 발송</td>
+                      <td class="vs-sub">원하는 내용으로 자유롭게 발송</td>
+                    </tr>
+                    <tr>
+                      <td class="vs-label">광고·마케팅</td>
+                      <td class="vs-no">× 불가</td>
+                      <td class="vs-yes">○ 가능</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </figure>
 
-          <figure class="mock-item">
-            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">배송 알림</span></figcaption>
-            <div class="mock-slot mock-slot-card">
-              <span>주문하신 상품이 오늘 도착 예정이에요.</span>
-              <span class="mock-btn">배송 조회</span>
-            </div>
-          </figure>
-
-          <figure class="mock-item">
-            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">쿠폰·혜택</span></figcaption>
-            <div class="mock-slot mock-slot-card">
-              <span>감사 쿠폰 10,000원이 발급됐어요. 이달 말까지 사용 가능.</span>
-              <span class="mock-btn">쿠폰 받기</span>
-            </div>
-          </figure>
-
-          <figure class="mock-item">
-            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">고객 설문</span></figcaption>
-            <div class="mock-slot mock-slot-card">
-              <span>이용해 주셔서 감사해요. 만족도 설문에 참여해 주세요.</span>
-              <span class="mock-btn">설문 참여</span>
-            </div>
-          </figure>
-        </div>
-
-
-        <div class="disclosure" id="s1-disclosure">
-          <button class="disclosure-toggle" type="button" aria-expanded="false" aria-controls="s1-vs">
-            알림톡과 친구톡은 뭐가 다른가요?
-            <svg class="icon icon-sm"><use href="#down-outlined"></use></svg>
-          </button>
-          <div class="disclosure-panel" id="s1-vs">
-            <table class="vs-table">
-              <thead>
-                <tr>
-                  <th class="vs-label"></th>
-                  <th class="vs-main">알림톡</th>
-                  <th class="vs-sub">친구톡</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="vs-label">누구에게</td>
-                  <td class="vs-main">전화번호만 알면 발송 가능</td>
-                  <td class="vs-sub">채널 친구에게만 발송 가능</td>
-                </tr>
-                <tr>
-                  <td class="vs-label">어떻게</td>
-                  <td class="vs-main">승인된 템플릿으로 발송</td>
-                  <td class="vs-sub">원하는 내용으로 자유롭게 발송</td>
-                </tr>
-                <tr>
-                  <td class="vs-label">광고·마케팅</td>
-                  <td class="vs-no">× 불가</td>
-                  <td class="vs-yes">○ 가능</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <p class="s1-subtitle">어떤 알림톡을 보낼 수 있나요?</p>
-        <div class="s1-groups">
-          <div class="type-card">
-            <img class="type-tile" src="../../assets/message_1.png" alt="" width="36" height="36">
-            <b>메시지</b>
-            <span>안내 내용을 알림톡으로 보내요.</span>
-            <div class="mock-slot">알림톡 목업 자리</div>
+            <button class="btn btn-xl btn-primary btn-block s1-cta" type="button" id="step1-cta">
+              알림톡 발송하기
+              <span class="badge badge-sm badge-pill cta-count" id="free-left">잔여 2건</span>
+            </button>
           </div>
 
-          <div class="type-card">
-            <div class="type-heads">
-              <div>
-                <img class="type-tile" src="../../assets/link_1.png" alt="" width="36" height="36">
+          <div>
+            <p class="s1-subtitle">어떤 알림톡을 보낼 수 있나요?</p>
+            <div class="type-cards" role="tablist">
+              <button class="type-card is-selected" type="button" role="tab" aria-selected="true" data-type="메시지">
+                <img class="type-tile" src="../../assets/message_1.png" alt="" width="32" height="32">
+                <b>메시지</b>
+                <span>안내 내용을 알림톡으로 보내요.</span>
+              </button>
+              <button class="type-card" type="button" role="tab" aria-selected="false" data-type="링크 연결">
+                <img class="type-tile" src="../../assets/link_1.png" alt="" width="32" height="32">
                 <b>링크 연결</b>
                 <span>알림톡에 외부 링크를 연결해요.</span>
-              </div>
-              <div>
-                <img class="type-tile" src="../../assets/docs_1.png" alt="" width="36" height="36">
+              </button>
+              <button class="type-card" type="button" role="tab" aria-selected="false" data-type="문서 연결">
+                <img class="type-tile" src="../../assets/docs_1.png" alt="" width="32" height="32">
                 <b>문서 연결</b>
                 <span>자버 문서를 연결해 함께 보내요.</span>
-              </div>
+              </button>
             </div>
-            <div class="mock-slot">알림톡 목업 자리</div>
+
+            <div class="mock-slot" id="type-mock">알림톡 목업 자리 (메시지)</div>
+            <p class="s1-preview-caption">지금 발송하면 내 카카오톡에 이 모습 그대로 도착해요.</p>
           </div>
         </div>
-
-        <p class="s1-preview-caption">지금 발송하면 내 카카오톡에 이 모습 그대로 도착해요.</p>
-
-        <button class="btn btn-xl btn-primary btn-block s1-cta" type="button" id="step1-cta">
-          알림톡 발송하기
-          <span class="badge badge-sm badge-pill cta-count" id="free-left">잔여 2건</span>
-        </button>
       </div>
     </section>
 
@@ -1398,6 +1353,21 @@ document.getElementById('charge-done').addEventListener('click', function () {
 });
 
 document.getElementById('topbar-charge').addEventListener('click', openChargeSheet);
+
+// 유형을 누르면 그 유형의 목업으로 바뀐다
+const typeCards = document.querySelectorAll('[data-type]');
+const typeMock = document.getElementById('type-mock');
+
+typeCards.forEach(function (card) {
+  card.addEventListener('click', function () {
+    typeCards.forEach(function (c) {
+      const on = c === card;
+      c.classList.toggle('is-selected', on);
+      c.setAttribute('aria-selected', String(on));
+    });
+    typeMock.textContent = '알림톡 목업 자리 (' + card.dataset.type + ')';
+  });
+});
 
 document.getElementById('dialog-free-used').addEventListener('click', function () {
   closeDialog('dialog-free-used');

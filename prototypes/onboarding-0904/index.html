@@ -130,6 +130,13 @@ body {
   gap: 12px;
   margin-top: 20px;
 }
+.mock-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+.mock-item .mock-slot { flex: 1; }
 
 /* 신뢰 한 줄 — 승인 템플릿을 규칙이 아니라 안심 근거로만 쓴다 */
 .s1-trust {
@@ -208,11 +215,8 @@ body {
   gap: 32px;
   margin-top: 12px;
 }
-.s1-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+.s1-group { display: grid; gap: 12px; }
+.s1-group-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .type-cards {
   display: grid;
@@ -221,10 +225,18 @@ body {
 }
 .type-cards-single { grid-template-columns: minmax(0, 1fr); }
 .type-card {
+  display: flex;
+  flex-direction: column;
   padding: 16px;
   border: 1px solid var(--color-border-split);
   border-radius: var(--r-xl);
   background: var(--color-surface);
+}
+/* 목업은 카드 하단을 채운다 */
+.type-card .mock-slot {
+  flex: 1;
+  margin-top: 16px;
+  min-height: 240px;
 }
 /* 유형별 아이콘은 크기·모양을 통일한다. 색은 이미지가 자체적으로 갖는다 */
 .type-tile {
@@ -288,30 +300,7 @@ body {
   color: var(--color-disabled);
 }
 
-/* 목업 가로 배치 — 알림톡 2종 + 연결되는 문서 화면 */
-.mock-row {
-  display: flex;
-  align-items: stretch;
-  gap: 12px;
-  margin-top: auto;
-}
-.mock-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 0;
-}
-.mock-item { flex: 1; min-width: 0; }
-.mock-item .mock-slot { flex: 1; }
 
-/* 두 번째 목업에서 문서 화면으로 이어지는 확대 연결선 */
-.mock-zoom {
-  align-self: stretch;
-  width: 32px;
-  flex-shrink: 0;
-  background: var(--color-bg-base);
-  clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%);
-}
 
 .s1-preview-caption {
   margin-top: 12px;
@@ -674,48 +663,30 @@ body {
         <p class="s1-subtitle">어떤 알림톡을 보낼 수 있나요?</p>
         <div class="s1-groups">
           <div class="s1-group">
-            <div class="type-cards type-cards-single">
-              <div class="type-card">
-                <img class="type-tile" src="../../assets/message_1.png" alt="" width="36" height="36">
-                <b>메시지</b>
-                <span>안내 내용을 알림톡으로 보내요.</span>
-              </div>
-            </div>
-
-            <div class="mock-row">
-              <figure class="mock-item">
-                <div class="mock-slot">알림톡 목업 자리</div>
-              </figure>
+            <div class="type-card">
+              <img class="type-tile" src="../../assets/message_1.png" alt="" width="36" height="36">
+              <b>메시지</b>
+              <span>안내 내용을 알림톡으로 보내요.</span>
+              <div class="mock-slot">알림톡 목업 자리</div>
             </div>
           </div>
 
-          <div class="s1-group">
-            <div class="type-cards">
-              <div class="type-card">
-                <img class="type-tile" src="../../assets/link_1.png" alt="" width="36" height="36">
-                <b>링크 연결</b>
-                <span>알림톡에 외부 링크를 연결해요.</span>
-              </div>
-              <div class="type-card">
-                <img class="type-tile" src="../../assets/docs_1.png" alt="" width="36" height="36">
-                <b>문서 연결</b>
-                <span>자버 문서를 연결해 함께 보내요.</span>
-              </div>
+          <div class="s1-group s1-group-pair">
+            <div class="type-card">
+              <img class="type-tile" src="../../assets/link_1.png" alt="" width="36" height="36">
+              <b>링크 연결</b>
+              <span>알림톡에 외부 링크를 연결해요.</span>
+              <div class="mock-slot">알림톡 목업 자리</div>
             </div>
-
-            <div class="mock-row">
-              <figure class="mock-item">
-                <div class="mock-slot">알림톡 목업 자리</div>
-              </figure>
-
-              <div class="mock-zoom" aria-hidden="true"></div>
-
-              <figure class="mock-item">
-                <div class="mock-slot">연결되는 문서 예시화면</div>
-              </figure>
+            <div class="type-card">
+              <img class="type-tile" src="../../assets/docs_1.png" alt="" width="36" height="36">
+              <b>문서 연결</b>
+              <span>자버 문서를 연결해 함께 보내요.</span>
+              <div class="mock-slot">연결되는 문서 예시화면</div>
             </div>
           </div>
         </div>
+
         <p class="s1-preview-caption">지금 발송하면 내 카카오톡에 이 모습 그대로 도착해요.</p>
 
         <button class="btn btn-xl btn-primary btn-block s1-cta" type="button" id="step1-cta">

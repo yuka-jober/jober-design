@@ -206,24 +206,20 @@ body {
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
 }
-/* 유형 카드와 그 결과 목업을 세로로 짝지어 두 묶음으로 나눈다.
-   묶음은 면을 깔지 않고 여백 차이로만 읽히게 한다 — 카드 안의 카드를 만들지 않기 위해서다.
-   묶음 사이 32px > 묶음 안 12px */
+/* 카드 두 장. 링크·문서 연결은 목업 하나를 공유하므로 한 카드로 묶는다 */
 .s1-groups {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: 32px;
+  gap: 16px;
   margin-top: 12px;
 }
-.s1-group { display: grid; gap: 12px; }
-.s1-group-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-.type-cards {
+/* 합친 카드의 머리 — 유형 설명 두 개가 나란히, 목업은 아래에서 공유한다 */
+.type-heads {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
-.type-cards-single { grid-template-columns: minmax(0, 1fr); }
 .type-card {
   display: flex;
   flex-direction: column;
@@ -662,28 +658,27 @@ body {
 
         <p class="s1-subtitle">어떤 알림톡을 보낼 수 있나요?</p>
         <div class="s1-groups">
-          <div class="s1-group">
-            <div class="type-card">
-              <img class="type-tile" src="../../assets/message_1.png" alt="" width="36" height="36">
-              <b>메시지</b>
-              <span>안내 내용을 알림톡으로 보내요.</span>
-              <div class="mock-slot">알림톡 목업 자리</div>
-            </div>
+          <div class="type-card">
+            <img class="type-tile" src="../../assets/message_1.png" alt="" width="36" height="36">
+            <b>메시지</b>
+            <span>안내 내용을 알림톡으로 보내요.</span>
+            <div class="mock-slot">알림톡 목업 자리</div>
           </div>
 
-          <div class="s1-group s1-group-pair">
-            <div class="type-card">
-              <img class="type-tile" src="../../assets/link_1.png" alt="" width="36" height="36">
-              <b>링크 연결</b>
-              <span>알림톡에 외부 링크를 연결해요.</span>
-              <div class="mock-slot">알림톡 목업 자리</div>
+          <div class="type-card">
+            <div class="type-heads">
+              <div>
+                <img class="type-tile" src="../../assets/link_1.png" alt="" width="36" height="36">
+                <b>링크 연결</b>
+                <span>알림톡에 외부 링크를 연결해요.</span>
+              </div>
+              <div>
+                <img class="type-tile" src="../../assets/docs_1.png" alt="" width="36" height="36">
+                <b>문서 연결</b>
+                <span>자버 문서를 연결해 함께 보내요.</span>
+              </div>
             </div>
-            <div class="type-card">
-              <img class="type-tile" src="../../assets/docs_1.png" alt="" width="36" height="36">
-              <b>문서 연결</b>
-              <span>자버 문서를 연결해 함께 보내요.</span>
-              <div class="mock-slot">연결되는 문서 예시화면</div>
-            </div>
+            <div class="mock-slot">알림톡 목업 자리</div>
           </div>
         </div>
 

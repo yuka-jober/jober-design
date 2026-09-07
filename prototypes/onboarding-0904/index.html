@@ -312,9 +312,11 @@ body {
   border-radius: var(--r-xl);
   background: var(--color-surface);
 }
+/* 옆의 유형 선택 카드와 헷갈리지 않게, 선택 상태처럼 보이는 파란 면 대신
+   카톡 계열 옅은 노랑을 깔고 테두리는 없앤다 */
 .compare-card.is-highlight {
-  border-color: var(--color-primary-border);
-  background: var(--color-primary-bg);
+  border-color: transparent;
+  background: var(--color-kakao-subtle);
 }
 .compare-card b {
   display: block;
@@ -323,7 +325,7 @@ body {
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
 }
-.compare-card.is-highlight b { color: var(--color-primary); }
+.compare-card.is-highlight p { color: var(--color-text); }
 .compare-card p {
   margin-top: 4px;
   font-size: var(--fs-12);

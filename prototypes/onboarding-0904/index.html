@@ -1070,7 +1070,6 @@ const TEMPLATES = [
       { key: '예약일시', label: '예약일시', placeholder: '3월 12일 오후 2시', type: 'input' } ] }
 ];
 
-const MAX_RECIPIENTS = 2;
 let recipients = [];
 let selectedTemplate = null;
 let lastFocused = null;
@@ -1087,7 +1086,11 @@ function addRecipient(raw) {
   const value = String(raw).replace(/[^0-9]/g, '');
   if (!/^0\d{9,10}$/.test(value)) return { ok: false, msg: '올바른 번호를 입력해주세요.' };
   if (recipients.indexOf(value) !== -1) return { ok: false, msg: '이미 추가된 번호입니다.' };
-  if (recipients.length >= MAX_RECIPIENTS) return { ok: false, msg: '무료 테스트 발송은 최대 2건까지 가능합니다.' };
+  // 번호 하나가 1건이므로 남은 무료 건수보다 많이 담을 수 없다
+  if (state.freeLeft <= 0) return { ok: false, msg: '무료 테스트 발송을 모두 사용했어요.' };
+  if (recipients.length >= state.freeLeft) {
+    return { ok: false, msg: '남은 무료 발송은 ' + state.freeLeft + '건이에요.' };
+  }
   recipients.push(value);
   return { ok: true };
 }
@@ -1233,13 +1236,14 @@ function showToast(msg) {
 
 // 무료 2건을 모두 써야 STEP 1 이 완료된다. 남아 있으면 STEP 1 에 머문다.
 function sendTest() {
+  const sent = recipients.length;
   closeTestModal();
-  state.freeLeft = Math.max(0, state.freeLeft - 1);
+  state.freeLeft = Math.max(0, state.freeLeft - sent);
 
   if (state.freeLeft > 0) {
     saveState();
     render();
-    showToast('알림톡을 발송했어요. ' + state.freeLeft + '건 더 보내면 STEP 1 이 완료돼요.');
+    showToast('알림톡 ' + sent + '건을 발송했어요. ' + state.freeLeft + '건 더 보내면 STEP 1 이 완료돼요.');
     return;
   }
 

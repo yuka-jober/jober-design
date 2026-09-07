@@ -224,19 +224,6 @@ body {
 }
 
 
-/* 신뢰 한 줄 — 승인 템플릿을 규칙이 아니라 안심 근거로만 쓴다 */
-.s1-trust {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 12px;
-  font-size: var(--fs-14);
-  line-height: var(--lh-base);
-  letter-spacing: var(--ls-base);
-  color: var(--color-text-secondary);
-}
-.s1-trust .icon { flex-shrink: 0; color: var(--color-success); }
-
 /* 디스클로저 */
 .disclosure { margin-top: 0; }
 .disclosure-toggle {
@@ -302,6 +289,47 @@ body {
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: 32px;
   align-items: start;
+}
+
+.s1-lead {
+  margin-top: 4px;
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+
+/* 개인 카카오톡 ↔ 자버 알림톡 — 카드 대 카드로 나란히 */
+.compare-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+.compare-card {
+  padding: 16px;
+  border: 1px solid var(--color-border-split);
+  border-radius: var(--r-xl);
+  background: var(--color-surface);
+}
+.compare-card.is-highlight {
+  border-color: var(--color-primary-border);
+  background: var(--color-primary-bg);
+}
+.compare-card b {
+  display: block;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+}
+.compare-card.is-highlight b { color: var(--color-primary); }
+.compare-card p {
+  margin-top: 4px;
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
 }
 
 .s1-subtitle {
@@ -679,14 +707,24 @@ body {
         <div class="s1-hero">
           <h2 class="s1-hero-title">번호만 있으면, 채널 친구가 아니어도 보낼 수 있어요</h2>
           <p class="s1-hero-sub">예약 안내부터 쿠폰·설문까지, 고객이 반가워하는 메시지를 카카오톡으로.</p>
-          <p class="s1-trust">
-            <svg class="icon"><use href="#check-circle-filled"></use></svg>
-            일반 카카오톡 메시지와 달리, 카카오에 미리 승인된 템플릿으로 보내요.
-          </p>
         </div>
 
         <div class="s1-grid">
           <div>
+            <p class="s1-subtitle">카카오 알림톡이 무엇인가요?</p>
+            <p class="s1-lead">고객에게 안내를 보내는 카카오톡 메시지예요. 평소 쓰는 카카오톡과 보내는 방식이 달라요.</p>
+
+            <div class="compare-cards">
+              <div class="compare-card">
+                <b>개인 카카오톡</b>
+                <p>쓰고 싶은 내용을 그대로 입력해서 보내요.</p>
+              </div>
+              <div class="compare-card is-highlight">
+                <b>자버 알림톡</b>
+                <p>카카오에 승인된 템플릿을 골라서 보내요.</p>
+              </div>
+            </div>
+
             <div class="disclosure" id="s1-disclosure">
               <button class="disclosure-toggle" type="button" aria-expanded="false" aria-controls="s1-vs">
                 알림톡과 친구톡은 뭐가 다른가요?

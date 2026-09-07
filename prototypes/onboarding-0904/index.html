@@ -199,20 +199,19 @@ body {
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
 }
-/* 유형 카드와 그 결과 목업을 세로로 짝지어 두 묶음으로 나눈다 */
+/* 유형 카드와 그 결과 목업을 세로로 짝지어 두 묶음으로 나눈다.
+   묶음은 면을 깔지 않고 여백 차이로만 읽히게 한다 — 카드 안의 카드를 만들지 않기 위해서다.
+   묶음 사이 32px > 묶음 안 12px */
 .s1-groups {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: 16px;
+  gap: 32px;
   margin-top: 12px;
 }
 .s1-group {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
-  border-radius: var(--r-2xl);
-  background: var(--color-bg-light);
 }
 
 .type-cards {
@@ -310,7 +309,7 @@ body {
   align-self: stretch;
   width: 32px;
   flex-shrink: 0;
-  background: var(--color-bg-light);
+  background: var(--color-bg-base);
   clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%);
 }
 

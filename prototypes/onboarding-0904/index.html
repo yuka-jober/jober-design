@@ -597,27 +597,13 @@ body {
   margin-top: 12px;
 }
 .addon-card { padding: 16px; border-radius: var(--r-xl); background: var(--color-bg-light); }
+/* 일러스트는 연보라 면까지 이미지가 갖고 있다 */
 .addon-art {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 96px;
+  display: block;
+  width: 100%;
+  height: auto;
   border-radius: var(--r-lg);
-  background: var(--color-accent-lilac-bg);
 }
-.addon-sheet {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 40px;
-  padding: 8px 4px;
-  border-radius: var(--r-sm);
-  background: var(--color-surface);
-}
-.addon-sheet i { display: block; height: 4px; border-radius: var(--r-xs); background: var(--color-bg-base); }
-.addon-sheet i.is-accent { background: var(--color-kakao); }
-.addon-arrow { color: var(--color-accent-purple-fg); }
 .addon-card b {
   display: block;
   margin-top: 12px;
@@ -907,31 +893,19 @@ body {
     <p class="addon-desc">필요한 부가서비스를 추가해 더욱 편리하게 이용할 수 있습니다.</p>
     <div class="addon-cards">
       <div class="addon-card">
-        <div class="addon-art">
-          <span class="addon-sheet"><i></i><i></i><i></i><i></i></span>
-          <svg class="icon addon-arrow"><use href="#right-outlined"></use></svg>
-          <span class="addon-sheet"><i class="is-accent"></i><i></i><i></i></span>
-        </div>
+        <img class="addon-art" src="마케팅_전용템플릿신청.png" alt="우리 회사 전용 템플릿 신청 예시" width="1186" height="384">
         <b>우리 회사 전용 템플릿 신청</b>
         <p>공용 템플릿 외에 우리 회사만의 템플릿이 필요할 때</p>
         <a href="#">전용 템플릿 신청하기 →</a>
       </div>
       <div class="addon-card">
-        <div class="addon-art">
-          <span class="addon-sheet"><i></i><i></i><i></i><i></i></span>
-          <svg class="icon addon-arrow"><use href="#right-outlined"></use></svg>
-          <span class="addon-sheet"><i></i><i></i><i></i></span>
-        </div>
+        <img class="addon-art" src="계약문서%20세팅.png" alt="계약문서 세팅 예시" width="1186" height="384">
         <b>계약문서 세팅</b>
         <p>사용 중인 계약서 양식을 자버에서 바로 발송할 수 있게</p>
         <a href="#">계약문서 세팅 요청하기 →</a>
       </div>
       <div class="addon-card">
-        <div class="addon-art">
-          <span class="addon-sheet"><i></i><i></i><i></i><i></i></span>
-          <svg class="icon addon-arrow"><use href="#right-outlined"></use></svg>
-          <span class="addon-sheet"><i></i><i></i><i></i></span>
-        </div>
+        <img class="addon-art" src="마케팅%20문서%20세팅.png" alt="마케팅 문서 세팅 예시" width="1186" height="384">
         <b>마케팅 문서 세팅</b>
         <p>보내고 싶은 내용을 발송 가능한 마케팅 문서로</p>
         <a href="#">마케팅 문서 세팅 요청하기 →</a>

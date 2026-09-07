@@ -96,6 +96,7 @@ Palette          Main Token              Semantic Token
 - **TextArea:** `.textarea` (+ `.textarea-auto`, `.is-error`)
 - **Select:** `.select`
 - **Checkbox:** `.checkbox` / **Radio:** `.radio` / **Toggle:** `.toggle` (+ `.toggle-sm`)
+- **Segmented:** `.segmented .segmented-item` (+ `.is-selected`) — 탭 토글. 선택 항목은 primary 약면
 - **Menu:** `.menu .menu-header .menu-item` (+ `.is-selected .is-danger`)
 - **Badge:** `.badge` + `.badge-sm/md/lg` + `.badge-pill`
   + `.badge-fill-*` / `.badge-weak-*` (primary/success/warning/error/neutral)

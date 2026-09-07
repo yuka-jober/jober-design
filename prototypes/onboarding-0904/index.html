@@ -108,34 +108,41 @@ body {
 
 /* ── 3. STEP 1 ─────────────────────────────── */
 
-.s1-lead {
-  font-size: var(--fs-14);
+/* 히어로 — 도달 범위(1행) + 쓰임새 폭(2행) */
+.s1-hero-title {
+  font-size: var(--fs-24);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+}
+.s1-hero-sub {
+  margin-top: 8px;
+  font-size: var(--fs-16);
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
   color: var(--color-text-secondary);
 }
 
-/* 개인 카카오톡 ↔ 자버 알림톡 대비 표 */
-.compare {
-  margin-top: 16px;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-}
-.compare-row {
+/* 예시 갤러리 — 앞 둘은 안내, 뒤 둘은 혜택·참여 */
+.gallery-row {
   display: grid;
-  grid-template-columns: 140px minmax(0, 1fr);
-  gap: 16px;
-  padding: 16px 20px;
-  background: var(--color-bg-light);
-  font-size: var(--fs-14);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* 신뢰 한 줄 — 승인 템플릿을 규칙이 아니라 안심 근거로만 쓴다 */
+.s1-trust {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: var(--fs-12);
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
 }
-.compare-row + .compare-row { border-top: 1px solid var(--color-border-split); }
-.compare-row dt { font-weight: var(--fw-medium); color: var(--color-text-secondary); }
-.compare-row dd { color: var(--color-text); }
-.compare-row.is-highlight { background: var(--color-primary-bg); }
-.compare-row.is-highlight dt { color: var(--color-primary); font-weight: var(--fw-bold); }
+.s1-trust .icon { flex-shrink: 0; color: var(--color-success); }
 
 /* 디스클로저 */
 .disclosure { margin-top: 16px; }
@@ -250,6 +257,21 @@ body {
   color: var(--color-text-secondary);
 }
 .mock-slot-sm { min-height: 220px; }
+.mock-slot-card {
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 180px;
+  padding: 16px;
+  font-size: var(--fs-12);
+}
+.mock-slot-card .mock-btn {
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--r-sm);
+  background: var(--color-surface);
+  color: var(--color-disabled);
+}
 
 /* 목업 가로 배치 — 알림톡 2종 + 연결되는 문서 화면 */
 .mock-row {
@@ -559,18 +581,47 @@ body {
     <section class="card step" data-step="1">
       <button class="step-head" aria-expanded="false" aria-controls="step1-body"></button>
       <div class="step-body" id="step1-body">
-        <p class="s1-lead">알림톡은 평소 쓰는 카카오톡과 보내는 방식이 달라요.</p>
+        <h2 class="s1-hero-title">번호만 있으면, 채널 친구가 아니어도 보낼 수 있어요</h2>
+        <p class="s1-hero-sub">예약 안내부터 쿠폰·설문까지, 고객이 반가워하는 메시지를 카카오톡으로.</p>
 
-        <dl class="compare">
-          <div class="compare-row">
-            <dt>개인 카카오톡</dt>
-            <dd>쓰고 싶은 내용을 그대로 입력해서 보내요.</dd>
-          </div>
-          <div class="compare-row is-highlight">
-            <dt>자버 알림톡</dt>
-            <dd>카카오에 승인된 템플릿을 골라서 보내요.</dd>
-          </div>
-        </dl>
+        <div class="gallery-row">
+          <figure class="mock-item">
+            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">예약 확인</span></figcaption>
+            <div class="mock-slot mock-slot-card">
+              <span>1월 20일 객실 예약이 완료됐어요. 예약번호 1234</span>
+              <span class="mock-btn">예약 확인하기</span>
+            </div>
+          </figure>
+
+          <figure class="mock-item">
+            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">배송 알림</span></figcaption>
+            <div class="mock-slot mock-slot-card">
+              <span>주문하신 상품이 오늘 도착 예정이에요.</span>
+              <span class="mock-btn">배송 조회</span>
+            </div>
+          </figure>
+
+          <figure class="mock-item">
+            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">쿠폰·혜택</span></figcaption>
+            <div class="mock-slot mock-slot-card">
+              <span>감사 쿠폰 10,000원이 발급됐어요. 이달 말까지 사용 가능.</span>
+              <span class="mock-btn">쿠폰 받기</span>
+            </div>
+          </figure>
+
+          <figure class="mock-item">
+            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">고객 설문</span></figcaption>
+            <div class="mock-slot mock-slot-card">
+              <span>이용해 주셔서 감사해요. 만족도 설문에 참여해 주세요.</span>
+              <span class="mock-btn">설문 참여</span>
+            </div>
+          </figure>
+        </div>
+
+        <p class="s1-trust">
+          <svg class="icon icon-sm"><use href="#check-circle-filled"></use></svg>
+          카카오가 미리 확인한 메시지라 스팸 걱정 없이 도착해요.
+        </p>
 
         <div class="disclosure" id="s1-disclosure">
           <button class="disclosure-toggle" type="button" aria-expanded="false" aria-controls="s1-vs">

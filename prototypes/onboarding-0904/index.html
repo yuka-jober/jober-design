@@ -14,6 +14,9 @@ body {
   font-family: var(--font-base);
   background: var(--color-page);
   color: var(--color-text);
+  /* 한글이 어절 중간에서 끊기지 않게 한다 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
   /* 좌측 네비게이션 자리(1440 기준 약 80px). 이 프로토타입에서는 그리지 않고 폭만 비워둔다 */
   padding-left: 80px;
 }
@@ -235,7 +238,7 @@ body {
 .s1-trust .icon { flex-shrink: 0; color: var(--color-success); }
 
 /* 디스클로저 */
-.disclosure { margin-top: 16px; }
+.disclosure { margin-top: 0; }
 .disclosure-toggle {
   display: inline-flex;
   align-items: center;
@@ -290,7 +293,10 @@ body {
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
 }
-/* 좌: 설명과 CTA · 우: 유형 선택과 그 유형의 목업 */
+/* 히어로는 전체 폭에서 한 줄로 읽히게 위에 둔다 */
+.s1-hero { margin-bottom: 24px; }
+
+/* 좌: 안내 · 우: 유형 선택과 그 유형의 목업. CTA 는 그 아래 전체 폭 */
 .s1-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
@@ -670,16 +676,17 @@ body {
     <section class="card step" data-step="1">
       <button class="step-head" aria-expanded="false" aria-controls="step1-body"></button>
       <div class="step-body" id="step1-body">
+        <div class="s1-hero">
+          <h2 class="s1-hero-title">번호만 있으면, 채널 친구가 아니어도 보낼 수 있어요</h2>
+          <p class="s1-hero-sub">예약 안내부터 쿠폰·설문까지, 고객이 반가워하는 메시지를 카카오톡으로.</p>
+          <p class="s1-trust">
+            <svg class="icon"><use href="#check-circle-filled"></use></svg>
+            일반 카카오톡 메시지와 달리, 카카오에 미리 승인된 템플릿으로 보내요.
+          </p>
+        </div>
+
         <div class="s1-grid">
           <div>
-            <h2 class="s1-hero-title">번호만 있으면, 채널 친구가 아니어도 보낼 수 있어요</h2>
-            <p class="s1-hero-sub">예약 안내부터 쿠폰·설문까지, 고객이 반가워하는 메시지를 카카오톡으로.</p>
-
-            <p class="s1-trust">
-              <svg class="icon"><use href="#check-circle-filled"></use></svg>
-              일반 카카오톡 메시지와 달리, 카카오에 미리 승인된 템플릿으로 보내요.
-            </p>
-
             <div class="disclosure" id="s1-disclosure">
               <button class="disclosure-toggle" type="button" aria-expanded="false" aria-controls="s1-vs">
                 알림톡과 친구톡은 뭐가 다른가요?
@@ -714,11 +721,6 @@ body {
                 </table>
               </div>
             </div>
-
-            <button class="btn btn-xl btn-primary btn-block s1-cta" type="button" id="step1-cta">
-              알림톡 발송하기
-              <span class="badge badge-sm badge-pill cta-count" id="free-left">잔여 2건</span>
-            </button>
           </div>
 
           <div>
@@ -745,6 +747,11 @@ body {
             <p class="s1-preview-caption">지금 발송하면 내 카카오톡에 이 모습 그대로 도착해요.</p>
           </div>
         </div>
+
+        <button class="btn btn-xl btn-primary btn-block s1-cta" type="button" id="step1-cta">
+          알림톡 발송하기
+          <span class="badge badge-sm badge-pill cta-count" id="free-left">잔여 2건</span>
+        </button>
       </div>
     </section>
 

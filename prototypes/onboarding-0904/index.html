@@ -95,6 +95,10 @@ body {
 .sheet-body { flex: 1; min-height: 0; background: var(--color-surface); }
 .sheet-body iframe { display: block; width: 100%; height: 100%; border: none; }
 
+/* 연동창은 자기 스크림을 갖고 있으므로 껍데기를 씌우지 않는다 */
+.sheet-bare { background: none; }
+.sheet-bare iframe { display: block; width: 100%; height: 100%; border: none; }
+
 /* 충전 화면은 시안이 없어 자리만 잡는다 */
 .charge-stub {
   display: flex;
@@ -113,38 +117,7 @@ body {
   color: var(--color-text-secondary);
 }
 
-/* 시작하기 밖에서 뜨는 알럿 — 참고용 모음 */
 .dialog-shot { margin-top: 20px; }
-.ref { margin-top: 48px; }
-.ref-title {
-  font-size: var(--fs-16);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-base);
-  letter-spacing: var(--ls-base);
-}
-.ref-desc {
-  margin-top: 4px;
-  font-size: var(--fs-12);
-  line-height: var(--lh-base);
-  letter-spacing: var(--ls-base);
-  color: var(--color-text-secondary);
-}
-.ref-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 16px;
-}
-.ref-item { margin: 0; }
-.ref-item figcaption {
-  margin-bottom: 8px;
-  font-size: var(--fs-12);
-  font-weight: var(--fw-medium);
-  line-height: var(--lh-base);
-  letter-spacing: var(--ls-base);
-  color: var(--color-text-secondary);
-}
-
 .page-title {
   font-size: var(--fs-20);
   font-weight: var(--fw-bold);
@@ -842,15 +815,6 @@ body {
   </div>
 
 
-  <section class="ref">
-    <h2 class="ref-title">시작하기 밖에서 뜨는 알럿 (참고)</h2>
-    <p class="ref-desc">프로필 미연동·포인트 부족 상황에서 뜨는 알럿입니다. 시작하기 플로우에는 포함되지 않아 시안만 모아둡니다.</p>
-    <div class="ref-grid">
-    <figure class="ref-item"><figcaption>연동된 카카오 비즈니스 채널이 없습니다</figcaption><img class="shot" src="../../assets/alert-no-channel.png" alt="연동된 카카오 비즈니스 채널이 없습니다" onerror="this.outerHTML='<div class=&quot;shot-missing&quot;>시안 이미지 자리<br>assets/alert-no-channel.png'+'</div>'"></figure>
-    <figure class="ref-item"><figcaption>메시지 보내기 — 발송 프로필 안내</figcaption><img class="shot" src="../../assets/alert-send-modal.png" alt="메시지 보내기 — 발송 프로필 안내" onerror="this.outerHTML='<div class=&quot;shot-missing&quot;>시안 이미지 자리<br>assets/alert-send-modal.png'+'</div>'"></figure>
-    <figure class="ref-item"><figcaption>충전 후 발송해주세요 — 포인트 부족</figcaption><img class="shot" src="../../assets/alert-need-points.png" alt="충전 후 발송해주세요 — 포인트 부족" onerror="this.outerHTML='<div class=&quot;shot-missing&quot;>시안 이미지 자리<br>assets/alert-need-points.png'+'</div>'"></figure>
-    </div>
-  </section>
 
   <p class="page-foot">시안 확인용 · <button type="button" id="reset-state">상태 초기화</button></p>
 </div>
@@ -996,15 +960,9 @@ body {
   </div>
 </div>
 
-<div class="sheet-overlay" id="sheet-link">
-  <div class="sheet-head">
-    <span class="sheet-title">카카오 비즈니스 채널 연동</span>
-    <button class="btn btn-md btn-primary" type="button" id="link-done">연동 완료</button>
-    <button class="icon-btn" type="button" data-close-sheet="sheet-link" aria-label="닫기">
-      <svg class="icon icon-lg"><use href="#close-outlined"></use></svg>
-    </button>
-  </div>
-  <div class="sheet-body"><iframe id="link-frame" title="카카오 채널 연동" src="about:blank"></iframe></div>
+<!-- 연동창은 자체 스크림과 모달을 갖고 있어 그대로 얹는다 -->
+<div class="sheet-overlay sheet-bare" id="sheet-link">
+  <iframe id="link-frame" title="카카오 채널 연동" src="about:blank"></iframe>
 </div>
 
 <div class="sheet-overlay" id="sheet-charge">
@@ -1407,10 +1365,28 @@ function closeSheet(id) {
   document.body.style.overflow = '';
 }
 
-// 실제 연동창을 그대로 얹는다
+function completeLink() {
+  closeSheet('sheet-link');
+  state.step2 = 'done';
+  saveState();
+  render();
+  openDialog('dialog-linked');
+}
+
+// 실제 연동창을 그대로 얹고, 그 안의 닫기·연동하기 버튼을 이쪽 흐름에 잇는다
 function openLinkSheet() {
   const frame = document.getElementById('link-frame');
-  if (frame.getAttribute('src') === 'about:blank') frame.src = 'A안_접기_수정.html';
+  if (frame.getAttribute('src') === 'about:blank') {
+    frame.addEventListener('load', function () {
+      const doc = frame.contentDocument;
+      if (!doc) return;
+      const close = doc.querySelector('.modal-close');
+      if (close) close.addEventListener('click', function () { closeSheet('sheet-link'); });
+      const submit = doc.getElementById('submitBtn');
+      if (submit) submit.addEventListener('click', completeLink);
+    });
+    frame.src = 'A안_접기_수정.html';
+  }
   openSheet('sheet-link');
 }
 
@@ -1419,14 +1395,6 @@ function openChargeSheet() { openSheet('sheet-charge'); }
 document.addEventListener('click', function (e) {
   const closer = e.target.closest('[data-close-sheet]');
   if (closer) closeSheet(closer.dataset.closeSheet);
-});
-
-document.getElementById('link-done').addEventListener('click', function () {
-  closeSheet('sheet-link');
-  state.step2 = 'done';
-  saveState();
-  render();
-  openDialog('dialog-linked');
 });
 
 document.getElementById('charge-done').addEventListener('click', function () {

@@ -561,7 +561,12 @@ body {
   color: var(--color-text-secondary);
 }
 
-.dialog-xl { width: 760px; max-width: calc(100vw - 64px); }
+.dialog-xl {
+  width: 760px;
+  max-width: calc(100vw - 64px);
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
 .ready-hero { text-align: center; }
 .ready-check {
   display: inline-flex;
@@ -590,13 +595,22 @@ body {
   letter-spacing: var(--ls-base);
   color: var(--color-text-secondary);
 }
+/* 일러스트를 크게 보여주려고 카드를 세로로 쌓고, 카드 안은 이미지|설명 2열로 나눈다 */
 .addon-cards {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   margin-top: 12px;
 }
-.addon-card { padding: 16px; border-radius: var(--r-xl); background: var(--color-bg-light); }
+.addon-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  padding: 16px;
+  border-radius: var(--r-xl);
+  background: var(--color-bg-light);
+}
 /* 일러스트는 연보라 면까지 이미지가 갖고 있다 */
 .addon-art {
   display: block;
@@ -606,7 +620,6 @@ body {
 }
 .addon-card b {
   display: block;
-  margin-top: 12px;
   font-size: var(--fs-14);
   font-weight: var(--fw-bold);
   line-height: var(--lh-base);
@@ -894,21 +907,27 @@ body {
     <div class="addon-cards">
       <div class="addon-card">
         <img class="addon-art" src="마케팅_전용템플릿신청.png" alt="우리 회사 전용 템플릿 신청 예시" width="1186" height="384">
-        <b>우리 회사 전용 템플릿 신청</b>
-        <p>공용 템플릿 외에 우리 회사만의 템플릿이 필요할 때</p>
-        <a href="#">전용 템플릿 신청하기 →</a>
+        <div class="addon-text">
+          <b>우리 회사 전용 템플릿 신청</b>
+          <p>공용 템플릿 외에 우리 회사만의 템플릿이 필요할 때</p>
+          <a href="#">전용 템플릿 신청하기 →</a>
+        </div>
       </div>
       <div class="addon-card">
         <img class="addon-art" src="계약문서%20세팅.png" alt="계약문서 세팅 예시" width="1186" height="384">
-        <b>계약문서 세팅</b>
-        <p>사용 중인 계약서 양식을 자버에서 바로 발송할 수 있게</p>
-        <a href="#">계약문서 세팅 요청하기 →</a>
+        <div class="addon-text">
+          <b>계약문서 세팅</b>
+          <p>사용 중인 계약서 양식을 자버에서 바로 발송할 수 있게</p>
+          <a href="#">계약문서 세팅 요청하기 →</a>
+        </div>
       </div>
       <div class="addon-card">
         <img class="addon-art" src="마케팅%20문서%20세팅.png" alt="마케팅 문서 세팅 예시" width="1186" height="384">
-        <b>마케팅 문서 세팅</b>
-        <p>보내고 싶은 내용을 발송 가능한 마케팅 문서로</p>
-        <a href="#">마케팅 문서 세팅 요청하기 →</a>
+        <div class="addon-text">
+          <b>마케팅 문서 세팅</b>
+          <p>보내고 싶은 내용을 발송 가능한 마케팅 문서로</p>
+          <a href="#">마케팅 문서 세팅 요청하기 →</a>
+        </div>
       </div>
     </div>
     <hr class="divider">
@@ -1192,8 +1211,11 @@ function openDialog(id) {
   const overlay = document.getElementById(id);
   overlay.classList.add('is-open');
   document.body.style.overflow = 'hidden';
+  // 내용이 길어 스크롤되는 다이얼로그에서 포커스가 화면을 끌어내리지 않게 한다
+  const box = overlay.querySelector('.dialog');
+  if (box) box.scrollTop = 0;
   const first = overlay.querySelector('.dialog-actions .btn');
-  if (first) first.focus();
+  if (first) first.focus({ preventScroll: true });
 }
 
 function closeDialog(id) {

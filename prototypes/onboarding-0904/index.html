@@ -1370,22 +1370,21 @@ function completeLink() {
   openDialog('dialog-linked');
 }
 
-// 실제 연동창을 그대로 얹고, 그 안의 닫기·연동하기 버튼을 이쪽 흐름에 잇는다
+// 실제 연동창을 그대로 얹는다.
+// 연동창이 postMessage 로 결과를 알려준다 — file:// 에서는 iframe 문서에 직접 접근할 수 없다.
 function openLinkSheet() {
   const frame = document.getElementById('link-frame');
-  if (frame.getAttribute('src') === 'about:blank') {
-    frame.addEventListener('load', function () {
-      const doc = frame.contentDocument;
-      if (!doc) return;
-      const close = doc.querySelector('.modal-close');
-      if (close) close.addEventListener('click', function () { closeSheet('sheet-link'); });
-      const submit = doc.getElementById('submitBtn');
-      if (submit) submit.addEventListener('click', completeLink);
-    });
-    frame.src = 'A안_접기_수정.html';
-  }
+  // 시안을 계속 고치는 중이라 브라우저 캐시를 타지 않게 한다
+  if (frame.getAttribute('src') === 'about:blank') frame.src = 'A안_접기_수정.html?v=' + Date.now();
   openSheet('sheet-link');
 }
+
+window.addEventListener('message', function (e) {
+  const msg = e.data;
+  if (!msg || msg.source !== 'jober-link') return;
+  if (msg.type === 'close') closeSheet('sheet-link');
+  if (msg.type === 'submit') completeLink();
+});
 
 function openChargeSheet() { openSheet('sheet-charge'); }
 

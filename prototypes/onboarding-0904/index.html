@@ -137,7 +137,7 @@ body {
   align-items: center;
   gap: 4px;
   margin-top: 12px;
-  font-size: var(--fs-12);
+  font-size: var(--fs-14);
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
   color: var(--color-text-secondary);
@@ -214,8 +214,8 @@ body {
 /* 유형별 아이콘은 크기·모양을 통일한다. 색은 이미지가 자체적으로 갖는다 */
 .type-tile {
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
 }
 .type-card b {
   display: block;
@@ -228,7 +228,7 @@ body {
 .type-card span {
   display: block;
   margin-top: 4px;
-  font-size: var(--fs-12);
+  font-size: var(--fs-14);
   line-height: var(--lh-base);
   letter-spacing: var(--ls-base);
   color: var(--color-text-secondary);
@@ -263,7 +263,7 @@ body {
   gap: 12px;
   min-height: 180px;
   padding: 16px;
-  font-size: var(--fs-12);
+  font-size: var(--fs-14);
 }
 .mock-slot-card .mock-btn {
   width: 100%;
@@ -584,9 +584,14 @@ body {
         <h2 class="s1-hero-title">번호만 있으면, 채널 친구가 아니어도 보낼 수 있어요</h2>
         <p class="s1-hero-sub">예약 안내부터 쿠폰·설문까지, 고객이 반가워하는 메시지를 카카오톡으로.</p>
 
+        <p class="s1-trust">
+          <svg class="icon"><use href="#check-circle-filled"></use></svg>
+          일반 카카오톡 메시지와 달리, 카카오에 미리 승인된 템플릿으로 보내요.
+        </p>
+
         <div class="gallery-row">
           <figure class="mock-item">
-            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">예약 확인</span></figcaption>
+            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">예약 확인</span></figcaption>
             <div class="mock-slot mock-slot-card">
               <span>1월 20일 객실 예약이 완료됐어요. 예약번호 1234</span>
               <span class="mock-btn">예약 확인하기</span>
@@ -594,7 +599,7 @@ body {
           </figure>
 
           <figure class="mock-item">
-            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">배송 알림</span></figcaption>
+            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">배송 알림</span></figcaption>
             <div class="mock-slot mock-slot-card">
               <span>주문하신 상품이 오늘 도착 예정이에요.</span>
               <span class="mock-btn">배송 조회</span>
@@ -602,7 +607,7 @@ body {
           </figure>
 
           <figure class="mock-item">
-            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">쿠폰·혜택</span></figcaption>
+            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">쿠폰·혜택</span></figcaption>
             <div class="mock-slot mock-slot-card">
               <span>감사 쿠폰 10,000원이 발급됐어요. 이달 말까지 사용 가능.</span>
               <span class="mock-btn">쿠폰 받기</span>
@@ -610,7 +615,7 @@ body {
           </figure>
 
           <figure class="mock-item">
-            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">고객 설문</span></figcaption>
+            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">고객 설문</span></figcaption>
             <div class="mock-slot mock-slot-card">
               <span>이용해 주셔서 감사해요. 만족도 설문에 참여해 주세요.</span>
               <span class="mock-btn">설문 참여</span>
@@ -618,10 +623,6 @@ body {
           </figure>
         </div>
 
-        <p class="s1-trust">
-          <svg class="icon icon-sm"><use href="#check-circle-filled"></use></svg>
-          일반 카카오톡 메시지와 달리, 카카오에 미리 승인된 템플릿으로 보내요.
-        </p>
 
         <div class="disclosure" id="s1-disclosure">
           <button class="disclosure-toggle" type="button" aria-expanded="false" aria-controls="s1-vs">
@@ -661,17 +662,17 @@ body {
         <p class="s1-subtitle">어떤 알림톡을 보낼 수 있나요?</p>
         <div class="type-cards">
           <div class="type-card">
-            <img class="type-tile" src="../../assets/message_1.png" alt="" width="32" height="32">
+            <img class="type-tile" src="../../assets/message_1.png" alt="" width="36" height="36">
             <b>메시지</b>
             <span>안내 내용을 알림톡으로 보내요.</span>
           </div>
           <div class="type-card">
-            <img class="type-tile" src="../../assets/link_1.png" alt="" width="32" height="32">
+            <img class="type-tile" src="../../assets/link_1.png" alt="" width="36" height="36">
             <b>링크 연결</b>
             <span>알림톡에 외부 링크를 연결해요.</span>
           </div>
           <div class="type-card">
-            <img class="type-tile" src="../../assets/docs_1.png" alt="" width="32" height="32">
+            <img class="type-tile" src="../../assets/docs_1.png" alt="" width="36" height="36">
             <b>문서 연결</b>
             <span>자버 문서를 연결해 함께 보내요.</span>
           </div>
@@ -679,19 +680,19 @@ body {
 
         <div class="mock-row">
           <figure class="mock-item">
-            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">메시지</span></figcaption>
+            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">메시지</span></figcaption>
             <div class="mock-slot mock-slot-phone">알림톡 목업 자리</div>
           </figure>
 
           <figure class="mock-item">
-            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">링크·문서 연결</span></figcaption>
+            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">링크·문서 연결</span></figcaption>
             <div class="mock-slot mock-slot-phone">알림톡 목업 자리</div>
           </figure>
 
           <div class="mock-zoom" aria-hidden="true"></div>
 
           <figure class="mock-item mock-item-doc">
-            <figcaption><span class="badge badge-sm badge-pill badge-weak-neutral">연결 결과</span></figcaption>
+            <figcaption><span class="badge badge-md badge-pill badge-weak-neutral">연결 결과</span></figcaption>
             <div class="mock-slot">연결되는 문서 예시화면</div>
           </figure>
         </div>

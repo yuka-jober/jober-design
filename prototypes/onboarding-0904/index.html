@@ -192,7 +192,8 @@ body {
 .vs-table td { padding: 12px 20px; text-align: left; font-weight: var(--fw-regular); }
 .vs-table thead th { font-weight: var(--fw-medium); }
 .vs-table tbody tr { border-top: 1px solid var(--color-border-split); }
-.vs-table .vs-label { width: 96px; color: var(--color-text-secondary); }
+/* 라벨은 폭보다 한 줄 유지가 우선이다 (광고·마케팅이 96px 안에서 줄바꿈됐다) */
+.vs-table .vs-label { width: 96px; white-space: nowrap; color: var(--color-text-secondary); }
 .vs-table .vs-main { color: var(--color-primary); font-weight: var(--fw-medium); }
 .vs-table .vs-sub { color: var(--color-text); }
 .vs-table .vs-no { color: var(--color-text-secondary); }

@@ -234,6 +234,41 @@
   color: var(--color-error);
 }
 
+/* Input Affix — 입력칸 안 앞·뒤에 아이콘이나 기호(#)를 둔다. .select 에도 쓴다 (화살표 자리)
+   <span class="input-affix has-end"><input class="input"><span class="input-affix-end">…</span></span> */
+.input-affix { position: relative; display: block; }
+.input-affix-start,
+.input-affix-end {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+.input-affix-start { left: var(--control-px); }
+.input-affix-end   { right: var(--control-px); }
+.input-affix-start button,
+.input-affix-end button { pointer-events: auto; }
+.input-affix.has-start > .input,
+.input-affix.has-start > .select { padding-left: calc(var(--control-px) + var(--icon-lg)); }
+.input-affix.has-end > .input,
+.input-affix.has-end > .select { padding-right: calc(var(--control-px) + var(--icon-md) * 2 + 8px); }
+
+/* 입력칸 안 지우기(✕) 버튼 — 입력값이 있을 때만 보인다 */
+.input-clear {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-disabled);
+  cursor: pointer;
+}
+.input-clear:hover { color: var(--color-text-secondary); }
+.input-clear[hidden] { display: none; }
+
 
 /* ==========================================
    TEXTAREA
@@ -301,6 +336,8 @@
   box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
 }
 .select:disabled { background: var(--color-bg-base); color: var(--color-disabled); cursor: not-allowed; }
+
+.select-lg { height: var(--control-h-lg); padding: 0 var(--control-px-lg); font-size: var(--fs-16); }
 
 
 /* ==========================================

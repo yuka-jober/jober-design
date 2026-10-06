@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메시지 보내기 모달 — 자버</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../components.css">
+<style>
+/* ── 1. RESET / LAYOUT ─────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-base);
+  background: var(--color-page);
+  color: var(--color-text);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 휴대폰·이메일 발송 시안을 나란히 비교한다 */
+.board {
+  display: grid;
+  grid-template-columns: repeat(2, 440px);
+  justify-content: center;
+  gap: 64px 80px;
+  padding: 48px 24px 80px;
+}
+@media (max-width: 1000px) {
+  .board { grid-template-columns: minmax(0, 440px); }
+}
+
+.frame-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* ── 2. SEND MODAL ─────────────────────────── */
+/* 기본 .dialog 는 확인창용(단일 패딩)이라, 헤더·본문·하단 버튼이 분리된 발송 모달은 따로 둔다 */
+.send-modal {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+  overflow: hidden;
+}
+
+.send-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px 12px 20px;
+  border-bottom: 1px solid var(--color-border-split);
+}
+
+.send-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+/* 받는사람 요약 카드 */
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--color-bg-base);
+  border-radius: var(--r-lg);
+}
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.summary-divider {
+  height: 1px;
+  background: var(--color-border-split);
+}
+.channel-row  { margin-top: 12px; }
+.summary-hint { margin-top: 8px; }
+
+/* 발송 채널 표시 — 자버문서 알림톡 채널 */
+.channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+/* 실제 알림톡 프로필 사진과 같은 모양 — 검정 바탕에 흰 jober 워드마크 */
+.channel-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+  border-radius: var(--r-sm);
+  background: var(--color-jober);
+  color: var(--color-on-jober);
+}
+.channel-logo .icon { width: 72%; height: auto; aspect-ratio: 764 / 250; }
+.channel .btn-link { height: auto; padding: 0; }
+
+/* 테두리 박스 안 체크박스 — 보내기 예약, 휴대폰 본인인증 */
+.check-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+.check-field-inline {
+  display: inline-flex;
+  background: var(--color-surface-sub);
+}
+
+/* 추가 설정 아코디언 */
+.extra {
+  border-top: 1px solid var(--color-border-split);
+}
+.extra-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 0 4px;
+  border: 0;
+  background: none;
+  font-family: var(--font-base);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.extra-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.extra-toggle .chevron {
+  color: var(--color-text-secondary);
+  transition: transform var(--motion-standard) var(--ease-standard);
+}
+.extra.is-open .chevron { transform: rotate(180deg); }
+.extra-panel {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+}
+.extra.is-open .extra-panel { display: flex; }
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field .label { font-weight: var(--fw-regular); }
+.field-hash { font-size: var(--fs-16); color: var(--color-text); }
+
+/* 폴더 설정 — 현재 폴더(링크)를 누르면 아래에 폴더 선택기가 열린다 */
+.folder-current { align-self: flex-start; height: auto; padding: 0; }
+.folder-picker { display: none; flex-direction: column; gap: 8px; }
+.folder-picker.is-open { display: flex; }
+.folder-picker-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.folder-picker-bar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.folder-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-sm);
+}
+.folder-list { list-style: none; }
+.folder-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 12px;
+  border: 0;
+  background: none;
+  font-family: var(--font-base);
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+.folder-item:hover { background: var(--color-bg-light); }
+.folder-item.is-selected { background: var(--color-primary-bg); color: var(--color-primary); }
+.folder-empty { padding: 4px 12px; }
+
+
+/* 하단 버튼 — 좌우 반반, 모달 가장자리까지 꽉 채운다 */
+.send-modal-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 8px;
+}
+.send-modal-footer .btn { border-radius: 0; }
+</style>
+</head>
+<body>
+<script src="../../assets/icons.js"></script>
+
+<!-- 같은 모달 마크업을 템플릿으로 두고, 발송 수단별로 채널 안내 유무·연락처만 바꿔 찍는다 -->
+<template id="send-modal-tpl">
+  <div class="send-modal" role="dialog" aria-modal="true">
+    <div class="send-modal-header">
+      <h2 class="text-16 font-bold">메시지 보내기</h2>
+      <button class="icon-btn" type="button" aria-label="닫기">
+        <svg class="icon icon-lg"><use href="#close-outlined"></use></svg>
+      </button>
+    </div>
+
+    <div class="send-modal-body">
+      <div class="summary">
+        <div class="summary-row">
+          <span class="text-14 font-bold">받는사람</span>
+          <span class="text-14">교보DTS 서다영님</span>
+        </div>
+        <div class="summary-row">
+          <span class="text-14 font-bold">받는 사람 연락처</span>
+          <span class="text-14" data-slot="contact"></span>
+        </div>
+
+        <!-- 휴대폰 발송: 받는사람 카드 안에 발송 채널 안내 -->
+        <div data-slot="channel-card">
+          <div class="summary-divider"></div>
+          <div class="summary-row channel-row">
+            <span class="text-14 font-bold">발송 채널</span>
+            <span class="channel text-14">
+              <span class="channel-logo" role="img" aria-label="자버문서 프로필"><svg class="icon" aria-hidden="true"><use href="#jober-wordmark"></use></svg></span>
+              자버문서
+              <button class="btn btn-link text-14" type="button">변경</button>
+            </span>
+          </div>
+          <p class="text-12 text-secondary summary-hint">
+            회사 카카오 비즈니스 채널을 연동하면 언제든 회사 이름으로 보낼 수 있어요.
+          </p>
+        </div>
+      </div>
+
+      <label class="check-field">
+        <input type="checkbox" class="checkbox">
+        <span class="text-14">보내기 예약</span>
+      </label>
+
+      <div class="extra">
+        <button class="extra-toggle" type="button" aria-expanded="false">
+          <span class="extra-toggle-label">
+            <svg class="icon icon-lg"><use href="#setting-outlined"></use></svg>
+            <span class="text-16 font-bold">추가 설정</span>
+          </span>
+          <svg class="icon chevron"><use href="#down-outlined"></use></svg>
+        </button>
+        <div class="extra-panel">
+          <div class="field">
+            <span class="label">폴더 설정</span>
+            <button class="btn btn-link text-16 folder-current" type="button" aria-expanded="false">
+              <svg class="icon icon-lg"><use href="#folder-open-outlined"></use></svg>
+              <span data-slot="folder-name">02 마케팅 콘텐츠 폴더</span>
+            </button>
+
+            <div class="folder-picker">
+              <div class="folder-picker-bar">
+                <label>
+                  <input type="checkbox" class="checkbox">
+                  <span class="text-14">선택한 폴더를 기본 폴더로 저장</span>
+                </label>
+                <button class="btn btn-md btn-default folder-fold" type="button">
+                  <svg class="icon icon-sm"><use href="#caret-right-filled"></use></svg>
+                  <span>모두 접기</span>
+                </button>
+              </div>
+
+              <div class="folder-box">
+                <span class="input-affix has-end">
+                  <input class="input input-lg folder-search" type="text" placeholder="폴더명으로 검색">
+                  <span class="input-affix-end">
+                    <button class="input-clear" type="button" aria-label="검색어 지우기" hidden>
+                      <svg class="icon"><use href="#close-circle-filled"></use></svg>
+                    </button>
+                    <svg class="icon"><use href="#search-outlined"></use></svg>
+                  </span>
+                </span>
+                <ul class="folder-list"></ul>
+                <p class="text-14 text-secondary folder-empty" hidden>검색 결과가 없어요.</p>
+              </div>
+
+              <button class="btn btn-lg btn-default btn-block" type="button">
+                <svg class="icon"><use href="#plus-outlined"></use></svg>새로운 폴더 추가하기
+              </button>
+            </div>
+          </div>
+
+          <label class="field">
+            <span class="label">연락처 태그 추가</span>
+            <input class="input input-lg" type="text" placeholder="보내는 연락처에 추가할 태그를 선택해주세요.(선택입력)">
+          </label>
+
+          <label class="field">
+            <span class="label">문서 태그 추가</span>
+            <span class="input-affix has-start">
+              <span class="input-affix-start field-hash">#</span>
+              <input class="input input-lg" type="text" placeholder="문서 관리를 위한 태그를 선택해주세요.(선택입력)">
+            </span>
+          </label>
+
+          <label class="field">
+            <span class="label">제출 기한 설정</span>
+            <span class="input-affix has-end">
+              <input class="input input-lg" type="text" placeholder="무제한" readonly>
+              <span class="input-affix-end"><svg class="icon icon-lg"><use href="#calendar-outlined"></use></svg></span>
+            </span>
+          </label>
+
+          <label class="field">
+            <span class="label">받는 사람이 사용하는 언어</span>
+            <span class="input-affix has-end">
+              <select class="select select-lg">
+                <option>한국어</option>
+                <option>English</option>
+                <option>日本語</option>
+              </select>
+              <span class="input-affix-end"><svg class="icon"><use href="#down-outlined"></use></svg></span>
+            </span>
+          </label>
+
+          <div>
+            <label class="check-field check-field-inline">
+              <input type="checkbox" class="checkbox">
+              <span class="text-14">휴대폰 본인인증 진행</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="send-modal-footer">
+      <button class="btn btn-xl btn-text" type="button">임시 저장</button>
+      <button class="btn btn-xl btn-primary font-bold" type="button">바로 보내기</button>
+    </div>
+  </div>
+</template>
+
+<main class="board">
+  <section data-variant="card" data-contact="010-0000-0000">
+    <div class="frame-caption">
+      <span class="text-12 text-secondary">휴대폰 발송 · 카카오 알림톡</span>
+      <span class="badge badge-sm badge-weak-neutral">채널 안내 노출</span>
+    </div>
+  </section>
+
+  <section data-variant="none" data-contact="dys2407@kyobodts.co.kr">
+    <div class="frame-caption">
+      <span class="text-12 text-secondary">이메일 발송</span>
+      <span class="badge badge-sm badge-weak-neutral">채널 안내 미노출</span>
+    </div>
+  </section>
+</main>
+
+<script>
+const tpl = document.getElementById('send-modal-tpl');
+const FOLDERS = [
+  '01 공유 폴더', '02 마케팅 콘텐츠 폴더', '03 계약서 폴더',
+  '2026-09-18-19:29:43_[카카오 메시지]', '2026-09-18-20:11:42_[카카오 메시지]',
+  '테스트 폴더', '펠로우즈 1회차 안내', '휴지통', '미분류',
+];
+
+function setupFolderPicker(modal) {
+  const current = modal.querySelector('.folder-current');
+  const currentName = current.querySelector('[data-slot="folder-name"]');
+  const picker = modal.querySelector('.folder-picker');
+  const list = picker.querySelector('.folder-list');
+  const search = picker.querySelector('.folder-search');
+  const clear = picker.querySelector('.input-clear');
+  const empty = picker.querySelector('.folder-empty');
+  const fold = picker.querySelector('.folder-fold');
+
+  list.innerHTML = FOLDERS.map((name) => `
+    <li><button class="folder-item text-14" type="button" data-name="${name}">
+      <svg class="icon"><use href="#folder-outlined"></use></svg>${name}
+    </button></li>`).join('');
+
+  const markSelected = () => list.querySelectorAll('.folder-item').forEach((b) =>
+    b.classList.toggle('is-selected', b.dataset.name === currentName.textContent));
+  markSelected();
+
+  current.addEventListener('click', () => {
+    const open = picker.classList.toggle('is-open');
+    current.setAttribute('aria-expanded', open);
+  });
+
+  list.addEventListener('click', (e) => {
+    const item = e.target.closest('.folder-item');
+    if (!item) return;
+    currentName.textContent = item.dataset.name;
+    markSelected();
+  });
+
+  const filter = () => {
+    const q = search.value.trim();
+    let shown = 0;
+    list.querySelectorAll('li').forEach((li) => {
+      const hit = li.firstElementChild.dataset.name.includes(q);
+      li.hidden = !hit;
+      if (hit) shown++;
+    });
+    empty.hidden = shown > 0;
+    clear.hidden = !search.value;
+  };
+  search.addEventListener('input', filter);
+  clear.addEventListener('click', () => { search.value = ''; filter(); search.focus(); });
+
+  // 하위 폴더 접기/펼치기 — 라벨과 화살표만 바뀐다 (목업에 하위 폴더가 없음)
+  fold.addEventListener('click', () => {
+    const folded = fold.classList.toggle('is-folded');
+    fold.querySelector('span').textContent = folded ? '모두 펼치기' : '모두 접기';
+    fold.querySelector('use').setAttribute('href', folded ? '#caret-down-filled' : '#caret-right-filled');
+  });
+}
+
+document.querySelectorAll('[data-variant]').forEach((frame) => {
+  const modal = tpl.content.firstElementChild.cloneNode(true);
+  const variant = frame.dataset.variant;
+
+  modal.querySelector('[data-slot="contact"]').textContent = frame.dataset.contact;
+  if (variant !== 'card') modal.querySelector('[data-slot="channel-card"]').remove();
+
+  const extra = modal.querySelector('.extra');
+  const toggle = extra.querySelector('.extra-toggle');
+  const gear = toggle.querySelector('.extra-toggle-label use');
+  toggle.addEventListener('click', () => {
+    const open = extra.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open);
+    gear.setAttribute('href', open ? '#setting-filled' : '#setting-outlined');
+  });
+
+  setupFolderPicker(modal);
+
+  frame.appendChild(modal);
+});
+</script>
+</body>
+</html>

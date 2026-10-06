@@ -283,6 +283,10 @@
   --color-on-kakao:     var(--palette-kakao-ink);
   --color-kakao-subtle: var(--palette-gold-1);  /* 흰 카드들 사이에서 카톡 카드만 띄울 때 */
 
+  /* Social Brand — 자버 프로필 (검정 바탕 + 흰 워드마크, 테마와 무관하게 고정) */
+  --color-jober:    var(--palette-gray-13);
+  --color-on-jober: var(--palette-gray-1);
+
   /* Functional — Info */
   --color-info:        var(--color-primary);
   --color-info-bg:     var(--palette-primary-1);

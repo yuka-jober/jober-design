@@ -21,7 +21,7 @@ Palette          Main Token              Semantic Token
 ## 파일
 - `tokens.css` — 단일 진실 공급원. **반드시 먼저 로드.**
 - `components.css` — tokens.css에 의존. 그다음 로드.
-- `assets/icons.svg` — 아이콘 스프라이트 832개. **직접 수정 금지 (빌드 산출물).**
+- `assets/icons.svg` — 아이콘 스프라이트 833개. **직접 수정 금지 (빌드 산출물).**
 - `assets/icons.js` — 같은 스프라이트를 문서에 심어주는 스크립트. **화면에서는 이쪽을 쓴다.**
 - `icon/` — Figma export 원본. **스프라이트의 소스이므로 지우지 않는다.** 아이콘 추가/교체는 여기에 넣는다.
 - `build-icons.py` — `icon/` → `assets/icons.svg` 빌드. 아이콘 바꾸면 재실행.
@@ -53,6 +53,7 @@ Palette          Main Token              Semantic Token
 - **Inverse:** `--color-on-primary` `--color-on-warning` `--color-scrim`
 - **Social Brand:** `--color-kakao` / `--color-on-kakao` — 카카오. 브랜드 가이드상 색 고정이라
   `currentColor` 나 테마 변경의 영향을 받지 않는다
+  `--color-jober` / `--color-on-jober` — 자버 알림톡 프로필(검정 바탕 + 흰 워드마크). 마찬가지로 고정
 - **Functional:** `--color-{info|success|warning|error}` + 각각 `-hover / -active / -outline / -bg / -border`
   (info는 `-bg / -border`만 — primary의 별칭)
 
@@ -93,8 +94,10 @@ Palette          Main Token              Semantic Token
   + 모디파이어 `.is-danger` `.is-loading`
 - **IconButton:** `.icon-btn` + `.icon-btn-sm/lg` + `.icon-btn-border / -fill`
 - **Input:** `.input` + `.input-sm/lg` (+ `.is-error`), 에러문구 `.input-error-msg`
+  + 앞·뒤 아이콘 `.input-affix` (+ `.has-start / .has-end`) `.input-affix-start / -end`,
+    지우기 버튼 `.input-clear` — `.select` 를 감싸 화살표 자리로도 쓴다
 - **TextArea:** `.textarea` (+ `.textarea-auto`, `.is-error`)
-- **Select:** `.select`
+- **Select:** `.select` (+ `.select-lg`)
 - **Checkbox:** `.checkbox` / **Radio:** `.radio` / **Toggle:** `.toggle` (+ `.toggle-sm`)
 - **Segmented:** `.segmented .segmented-item` (+ `.is-selected`) — 탭 토글. 선택 항목은 primary 약면
 - **Menu:** `.menu .menu-header .menu-item` (+ `.is-selected .is-danger`)
@@ -133,14 +136,16 @@ Ant Design 아이콘 세트(Figma export) + 커스텀 아이콘. 스프라이트
 
 - **이름 규칙:** PascalCase 파일명 → kebab-case 심볼 id
   (`HomeOutlined.svg` → `home-outlined`, `HeartTwoTone.svg` → `heart-twotone`)
-- **테마별 개수:** outlined 443 · filled 231 · twotone 151 · 커스텀 7 (총 832)
-  커스텀: `divider` `form-document` `kakao` `linear-question` `paper-airplane-document`
+- **테마별 개수:** outlined 443 · filled 231 · twotone 151 · 커스텀 8 (총 833)
+  커스텀: `divider` `form-document` `jober-wordmark` `kakao` `linear-question` `paper-airplane-document`
   `remove-duplicate` `tooltip`
 - **색:** 단색 아이콘은 `currentColor`라 부모 `color`를 따라간다. 아이콘에 색을 직접 칠하지 말고
   **부모 요소의 `color`를 바꾼다.**
 - **TwoTone:** 액센트가 `--icon-accent`(기본 primary)라 브랜드 색을 바꾸면 함께 따라온다.
   지역적으로 바꾸려면 `.icon-accent-success` 등을 쓴다.
 - **브랜드 아이콘(kakao):** 고정색이라 `currentColor`의 영향을 받지 않는다.
+- **`jober-wordmark`:** 자버 워드마크(2023 로고 파일). 단색 `currentColor` 라 프로필 타일은
+  `--color-jober` 바탕 + `--color-on-jober` 글씨색으로 감싸서 쓴다. 비율 764:250.
 - 전체 목록은 `preview.html`의 Icons 섹션에서 검색·복사할 수 있다.
 
 > **미처리 3개** — `간단히 추가` `엑셀 추가` `중복없이 추가` 는 SVG 안에 래스터 비트맵이

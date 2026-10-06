@@ -18,17 +18,18 @@ body {
   overflow-wrap: break-word;
 }
 
-/* 휴대폰·이메일 발송 시안을 나란히 비교한다 */
+/* 발송 흐름(①→②→③)을 왼쪽부터 나란히 놓는다 */
 .board {
-  display: grid;
-  grid-template-columns: repeat(2, 440px);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 64px 80px;
+  align-items: flex-start;
+  gap: 64px 40px;
   padding: 48px 24px 80px;
 }
-@media (max-width: 1000px) {
-  .board { grid-template-columns: minmax(0, 440px); }
-}
+.frame { width: 400px; max-width: 100%; }
+.frame-stage { position: relative; }
+.frame-hint { margin-top: 12px; }
 
 .frame-caption {
   display: flex;
@@ -59,8 +60,7 @@ body {
 .send-modal-body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
+  padding: 20px 20px 4px;
 }
 
 /* 받는사람 요약 카드 */
@@ -69,6 +69,7 @@ body {
   flex-direction: column;
   gap: 12px;
   padding: 16px 20px;
+  margin-bottom: 8px;
   background: var(--color-bg-base);
   border-radius: var(--r-lg);
 }
@@ -104,6 +105,12 @@ body {
 }
 .channel-logo .icon { width: 72%; height: auto; aspect-ratio: 764 / 250; }
 .channel .btn-link { height: auto; padding: 0; }
+.channel .divider-vertical {
+  align-self: center;
+  height: 12px;
+  margin: 0;
+  border-color: var(--color-border);
+}
 
 /* 테두리 박스 안 체크박스 — 보내기 예약, 휴대폰 본인인증 */
 .check-field {
@@ -120,22 +127,23 @@ body {
   background: var(--color-surface-sub);
 }
 
-/* 추가 설정 아코디언 */
-.extra {
-  border-top: 1px solid var(--color-border-split);
-}
+/* 옵션 행 — 보내기 예약(토글)과 추가 설정(아코디언)이 같은 머리 모양을 쓴다 */
+.option { border-top: 1px solid var(--color-border-split); }
+.option-head,
 .extra-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 16px 0 4px;
+  min-height: 56px;
+  padding: 16px 0;
   border: 0;
   background: none;
   font-family: var(--font-base);
   color: var(--color-text);
   cursor: pointer;
 }
+.option-label,
 .extra-toggle-label {
   display: inline-flex;
   align-items: center;
@@ -150,8 +158,20 @@ body {
   display: none;
   flex-direction: column;
   gap: 20px;
-  padding-top: 20px;
+  padding: 4px 0 16px;
 }
+
+/* 예약 완료 후 — 토글 아래 보조 문구로 예약 일시를 보여준다 (아이콘 폭만큼 들여씀) */
+.schedule-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -8px 0 16px;
+  padding-left: calc(var(--icon-md) + 8px);
+}
+.schedule-summary[hidden] { display: none; }
+.schedule-summary .btn-link { height: auto; padding: 0; }
+.schedule-summary .divider-vertical { align-self: center; height: 12px; margin: 0; border-color: var(--color-border); }
 .extra.is-open .extra-panel { display: flex; }
 
 .field { display: flex; flex-direction: column; gap: 8px; }
@@ -206,8 +226,62 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-top: 8px;
+  border-top: 1px solid var(--color-border-split);
 }
 .send-modal-footer .btn { border-radius: 0; }
+
+/* ── 3. 보내기 예약 모달 ───────────────────── */
+.reserve-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+.reserve-date { display: flex; flex-direction: column; gap: 8px; }
+.reserve-date [hidden] { display: none; }
+
+/* 선택된 프리셋을 "오늘  2026-10-06 (화)" 처럼 날짜만 흐리게 보여준다.
+   네이티브 select 는 부분 색을 못 넣어서, 글씨를 숨기고 위에 같은 문구를 덮는다 */
+.select-display {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--control-px-lg);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-16);
+  pointer-events: none;
+}
+.select-display ~ .select { color: transparent; }
+.select-display ~ .select option { color: var(--color-text); }
+.select-display-sub { font-size: var(--fs-14); color: var(--color-text-secondary); }
+
+.native-date { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+.input-trigger { cursor: pointer; }
+
+.info-note {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--color-bg-base);
+  border-radius: var(--r-md);
+  color: var(--color-text-secondary);
+}
+.info-note .icon { margin-top: 4px; }
+
+/* 시안 안에서 띄우는 예약 모달 — 발송 모달 위에 딤을 깔고 가운데에 둔다 */
+.frame-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--color-scrim);
+  border-radius: var(--r-lg);
+}
+.frame-overlay .send-modal { width: 100%; }
 </style>
 </head>
 <body>
@@ -242,25 +316,34 @@ body {
             <span class="channel text-14">
               <span class="channel-logo" role="img" aria-label="자버문서 프로필"><svg class="icon" aria-hidden="true"><use href="#jober-wordmark"></use></svg></span>
               자버문서
+              <span class="divider-vertical" aria-hidden="true"></span>
               <button class="btn btn-link text-14" type="button">변경</button>
             </span>
           </div>
-          <p class="text-12 text-secondary summary-hint">
-            회사 카카오 비즈니스 채널을 연동하면 언제든 회사 이름으로 보낼 수 있어요.
-          </p>
+          <p class="text-12 text-secondary summary-hint">채널만 연동하면 우리 회사 프로필로 보낼 수 있어요.</p>
         </div>
       </div>
 
-      <label class="check-field">
-        <input type="checkbox" class="checkbox">
-        <span class="text-14">보내기 예약</span>
-      </label>
+      <div class="option">
+        <label class="option-head">
+          <span class="option-label">
+            <svg class="icon"><use href="#clock-circle-outlined"></use></svg>
+            <span class="text-14 font-bold">보내기 예약</span>
+          </span>
+          <input type="checkbox" class="toggle schedule-toggle" aria-label="보내기 예약">
+        </label>
+        <div class="schedule-summary" hidden>
+          <span class="text-14 text-secondary"><span class="schedule-when"></span> 발송 예정</span>
+          <span class="divider-vertical" aria-hidden="true"></span>
+          <button class="btn btn-link text-14 schedule-edit" type="button">변경</button>
+        </div>
+      </div>
 
-      <div class="extra">
+      <div class="option extra">
         <button class="extra-toggle" type="button" aria-expanded="false">
           <span class="extra-toggle-label">
-            <svg class="icon icon-lg"><use href="#setting-outlined"></use></svg>
-            <span class="text-16 font-bold">추가 설정</span>
+            <svg class="icon"><use href="#setting-outlined"></use></svg>
+            <span class="text-14 font-bold">추가 설정</span>
           </span>
           <svg class="icon chevron"><use href="#down-outlined"></use></svg>
         </button>
@@ -349,20 +432,86 @@ body {
 
     <div class="send-modal-footer">
       <button class="btn btn-xl btn-text" type="button">임시 저장</button>
-      <button class="btn btn-xl btn-primary font-bold" type="button">바로 보내기</button>
+      <button class="btn btn-xl btn-primary font-bold send-cta" type="button">바로 보내기</button>
     </div>
   </div>
 </template>
 
+<template id="reserve-modal-tpl">
+  <div class="send-modal" role="dialog" aria-modal="true" aria-label="보내기 예약">
+    <div class="send-modal-header">
+      <h2 class="text-16 font-bold">보내기 예약</h2>
+      <button class="icon-btn reserve-close" type="button" aria-label="닫기">
+        <svg class="icon icon-lg"><use href="#close-outlined"></use></svg>
+      </button>
+    </div>
+
+    <div class="reserve-body">
+      <div class="field">
+        <span class="label">발송일</span>
+        <div class="reserve-date">
+          <span class="input-affix has-end">
+            <span class="select-display"></span>
+            <select class="select select-lg reserve-day" aria-label="발송일"></select>
+            <span class="input-affix-end"><svg class="icon"><use href="#down-outlined"></use></svg></span>
+          </span>
+          <span class="input-affix has-end reserve-custom" hidden>
+            <input class="input input-lg input-trigger reserve-date-text" type="text" placeholder="날짜 선택" readonly aria-label="날짜 선택">
+            <input class="native-date" type="date" tabindex="-1" aria-hidden="true">
+            <span class="input-affix-end"><svg class="icon icon-lg"><use href="#calendar-outlined"></use></svg></span>
+          </span>
+        </div>
+      </div>
+
+      <label class="field">
+        <span class="label">발송 시간</span>
+        <span class="input-affix has-end">
+          <select class="select select-lg reserve-time"></select>
+          <span class="input-affix-end"><svg class="icon icon-lg"><use href="#clock-circle-outlined"></use></svg></span>
+        </span>
+      </label>
+
+      <p class="info-note text-12">
+        <svg class="icon icon-sm"><use href="#info-circle-outlined"></use></svg>
+        <span>예약된 발송 일시 전까지 대상자 정보를 신중히 수정해 주세요. 수정된 대상자 정보로 문서가 발송됩니다.</span>
+      </p>
+    </div>
+
+    <div class="send-modal-footer">
+      <button class="btn btn-xl btn-text reserve-close" type="button">닫기</button>
+      <button class="btn btn-xl btn-primary font-bold reserve-done" type="button">완료</button>
+    </div>
+  </div>
+</template>
+
+<!-- 시안별 설정: data-frame=send(발송 모달) | reserve(예약 모달만)
+     ① ③ 와 이메일은 토글·변경을 누르면 실제로 예약 모달이 떠서 흐름을 따라가 볼 수 있다 -->
 <main class="board">
-  <section data-variant="card" data-contact="010-0000-0000">
+  <section class="frame" data-frame="send" data-channel="card" data-contact="010-0000-0000">
     <div class="frame-caption">
-      <span class="text-12 text-secondary">휴대폰 발송 · 카카오 알림톡</span>
-      <span class="badge badge-sm badge-weak-neutral">채널 안내 노출</span>
+      <span class="text-12 text-secondary">① 휴대폰 발송 · 카카오 알림톡</span>
     </div>
   </section>
 
-  <section data-variant="none" data-contact="dys2407@kyobodts.co.kr">
+  <section class="frame" data-frame="reserve" data-mode="preset">
+    <div class="frame-caption">
+      <span class="text-12 text-secondary">② 예약 모달 · 오늘/내일/모레/3일 후</span>
+    </div>
+  </section>
+
+  <section class="frame" data-frame="reserve" data-mode="custom">
+    <div class="frame-caption">
+      <span class="text-12 text-secondary">② 예약 모달 · 사용자 정의</span>
+    </div>
+  </section>
+
+  <section class="frame" data-frame="send" data-channel="card" data-contact="010-0000-0000" data-reserved="1">
+    <div class="frame-caption">
+      <span class="text-12 text-secondary">③ 휴대폰 발송 · 예약 완료 후</span>
+    </div>
+  </section>
+
+  <section class="frame" data-frame="send" data-channel="none" data-contact="dys2407@kyobodts.co.kr">
     <div class="frame-caption">
       <span class="text-12 text-secondary">이메일 발송</span>
       <span class="badge badge-sm badge-weak-neutral">채널 안내 미노출</span>
@@ -431,12 +580,143 @@ function setupFolderPicker(modal) {
   });
 }
 
-document.querySelectorAll('[data-variant]').forEach((frame) => {
+// ── 보내기 예약 ──────────────────────────────
+const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
+const DAY_PRESETS = [['0', '오늘'], ['1', '내일'], ['2', '모레'], ['3', '3일 후']];
+const pad = (n) => String(n).padStart(2, '0');
+const isoDate = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const fullDate = (d) => `${isoDate(d)} (${WEEK[d.getDay()]})`;
+const shortDate = (d) => `${d.getMonth() + 1}월 ${d.getDate()}일(${WEEK[d.getDay()]})`;
+const addDays = (n) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + n); return d; };
+
+// 30분 단위 — 값은 분(0~1410), 표시는 "오전 9:00"
+const TIMES = Array.from({ length: 48 }, (_, i) => i * 30);
+const timeLabel = (min) => {
+  const h = Math.floor(min / 60), m = min % 60;
+  return `${h < 12 ? '오전' : '오후'} ${h % 12 || 12}:${pad(m)}`;
+};
+const DEFAULT_TIME = 9 * 60;
+
+// 고른 날이 오늘이면 지금 이후의 가장 가까운 30분 칸부터 고를 수 있다. 오늘이 아니면 0
+const minTimeFor = (date) => {
+  const now = new Date();
+  if (isoDate(date) !== isoDate(now)) return 0;
+  return Math.floor((now.getHours() * 60 + now.getMinutes()) / 30) * 30 + 30;
+};
+
+// state: { day: '0'~'3' | 'custom', date: 'YYYY-MM-DD' | '', time: 분 | null }
+function createReserveModal(state, { onClose, onDone } = {}) {
+  const modal = document.getElementById('reserve-modal-tpl').content.firstElementChild.cloneNode(true);
+  const daySel = modal.querySelector('.reserve-day');
+  const display = modal.querySelector('.select-display');
+  const custom = modal.querySelector('.reserve-custom');
+  const dateText = modal.querySelector('.reserve-date-text');
+  const nativeDate = modal.querySelector('.native-date');
+  const timeSel = modal.querySelector('.reserve-time');
+  const done = modal.querySelector('.reserve-done');
+
+  daySel.innerHTML = DAY_PRESETS.map(([v, label]) =>
+    `<option value="${v}">${label}  ${fullDate(addDays(+v))}</option>`).join('')
+    + '<option value="custom">사용자 정의</option>';
+  timeSel.innerHTML = '<option value="" disabled>시간 선택</option>'
+    + TIMES.map((t) => `<option value="${t}">${timeLabel(t)}</option>`).join('');
+  nativeDate.min = isoDate(addDays(0));
+
+  // 오늘 남은 칸이 없으면(23:30 이후) '오늘' 프리셋을 막는다
+  const todayFull = minTimeFor(addDays(0)) > TIMES.at(-1);
+  daySel.querySelector('option[value="0"]').disabled = todayFull;
+
+  const s = { ...state };
+  if (s.day === '0' && todayFull) s.day = '1';
+
+  const render = () => {
+    daySel.value = s.day;
+    const isCustom = s.day === 'custom';
+    const date = isCustom ? (s.date && new Date(`${s.date}T00:00`)) : addDays(+s.day);
+    const min = date ? minTimeFor(date) : 0;
+    timeSel.querySelectorAll('option[value]:not([value=""])').forEach((o) => { o.disabled = +o.value < min; });
+    // 지난 시간이 골라져 있으면 가장 가까운 다음 칸으로 옮긴다
+    if (s.time != null && s.time < min) s.time = TIMES.find((t) => t >= min) ?? null;
+
+    display.innerHTML = isCustom ? '사용자 정의'
+      : `${DAY_PRESETS.find(([v]) => v === s.day)[1]}<span class="select-display-sub">${fullDate(addDays(+s.day))}</span>`;
+    custom.hidden = !isCustom;
+    dateText.value = s.date ? fullDate(new Date(`${s.date}T00:00`)) : '';
+    nativeDate.value = s.date;
+    timeSel.value = s.time ?? '';
+    done.disabled = s.time == null || (isCustom && !s.date);
+  };
+
+  daySel.addEventListener('change', () => {
+    s.day = daySel.value;
+    // 사용자 정의는 날짜·시간을 직접 고르게 비워두고, 프리셋으로 돌아오면 기본 시간을 채운다
+    if (s.day === 'custom') { s.date = ''; s.time = null; }
+    else if (s.time == null) s.time = DEFAULT_TIME;
+    render();
+  });
+  dateText.addEventListener('click', () => nativeDate.showPicker?.());
+  nativeDate.addEventListener('change', () => { s.date = nativeDate.value; render(); });
+  timeSel.addEventListener('change', () => { s.time = +timeSel.value; render(); });
+  modal.querySelectorAll('.reserve-close').forEach((b) => b.addEventListener('click', () => onClose?.()));
+  done.addEventListener('click', () => onDone?.({ ...s }));
+
+  render();
+  return modal;
+}
+
+const reservedDate = (s) => (s.day === 'custom' ? new Date(`${s.date}T00:00`) : addDays(+s.day));
+
+function setupSchedule(modal, stage, initial) {
+  const toggle = modal.querySelector('.schedule-toggle');
+  const summary = modal.querySelector('.schedule-summary');
+  const when = modal.querySelector('.schedule-when');
+  const cta = modal.querySelector('.send-cta');
+  let reservation = initial;
+
+  const render = () => {
+    toggle.checked = !!reservation;
+    summary.hidden = !reservation;
+    if (reservation) when.textContent = `${shortDate(reservedDate(reservation))} ${timeLabel(reservation.time)}`;
+    cta.textContent = reservation ? '예약 보내기' : '바로 보내기';
+  };
+
+  const openReserve = () => {
+    const overlay = document.createElement('div');
+    overlay.className = 'frame-overlay';
+    const close = () => { overlay.remove(); render(); };
+    overlay.appendChild(createReserveModal(
+      reservation ?? { day: '0', date: '', time: DEFAULT_TIME },
+      { onClose: close, onDone: (s) => { reservation = s; close(); } },
+    ));
+    stage.appendChild(overlay);
+  };
+
+  // 켜는 순간에는 바로 켜지 않고 예약 모달을 띄운다. 끄면 예약을 지운다
+  toggle.addEventListener('change', () => {
+    if (toggle.checked) { toggle.checked = false; openReserve(); }
+    else { reservation = null; render(); }
+  });
+  modal.querySelector('.schedule-edit').addEventListener('click', openReserve);
+
+  render();
+}
+
+document.querySelectorAll('[data-frame="reserve"]').forEach((frame) => {
+  const state = frame.dataset.mode === 'custom'
+    ? { day: 'custom', date: '', time: null }
+    : { day: '0', date: '', time: DEFAULT_TIME };
+  frame.appendChild(createReserveModal(state));
+});
+
+document.querySelectorAll('[data-frame="send"]').forEach((frame) => {
   const modal = tpl.content.firstElementChild.cloneNode(true);
-  const variant = frame.dataset.variant;
 
   modal.querySelector('[data-slot="contact"]').textContent = frame.dataset.contact;
-  if (variant !== 'card') modal.querySelector('[data-slot="channel-card"]').remove();
+  if (frame.dataset.channel !== 'card') modal.querySelector('[data-slot="channel-card"]').remove();
+  const stage = document.createElement('div');
+  stage.className = 'frame-stage';
+  stage.appendChild(modal);
+  setupSchedule(modal, stage, frame.dataset.reserved ? { day: '1', date: '', time: DEFAULT_TIME } : null);
 
   const extra = modal.querySelector('.extra');
   const toggle = extra.querySelector('.extra-toggle');
@@ -449,7 +729,7 @@ document.querySelectorAll('[data-variant]').forEach((frame) => {
 
   setupFolderPicker(modal);
 
-  frame.appendChild(modal);
+  frame.appendChild(stage);
 });
 </script>
 </body>

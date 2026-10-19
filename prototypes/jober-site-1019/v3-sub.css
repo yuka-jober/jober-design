@@ -821,3 +821,19 @@ main:has(.ab-hero){overflow-x:clip}
 .hr .hr-quick nav a,.hr .hr-quick a{padding:4px 0!important;background:none!important;border-radius:0;font-size:15px;font-weight:500;color:var(--sub)}
 .hr .hr-quick a:hover{color:var(--ink);background:none!important;text-decoration:underline;text-underline-offset:4px}
 @media(max-width:850px){.hr .hr-quick .wrap{display:block}.hr .hr-quick strong{display:block;margin-bottom:10px}}
+/* 전자계약 하단 CTA: 초록 그라데이션 큰 판, 왼쪽 제목·설명, 오른쪽 버튼 둘 */
+.ct-cta{padding:0 0 112px}
+.ct-cta-box{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:32px;padding:64px;border-radius:40px;background:linear-gradient(135deg,#C9FFE0 0%,var(--green) 60%,#4FE38E 100%)}
+.ct-cta-blob{position:absolute;right:-60px;top:-70px;width:240px;height:240px;background:var(--lime);clip-path:url(#s-scallop);opacity:.9}
+.ct-cta-copy,.ct-cta-act{position:relative}
+.ct-cta h2{margin:0!important;font-size:40px!important}
+.ct-cta p{margin-top:16px;font-size:17px;color:var(--ink);opacity:.7}
+.ct-cta-act{display:flex;gap:10px;flex:none}
+.ct-cta-act .btn.secondary{background:#fff!important;border-color:#fff!important}
+.ct-cta-act .btn.secondary:hover{background:var(--ink)!important;color:#fff!important;border-color:var(--ink)!important}
+.ft-top .ft-brand:empty{display:none}
+@media(max-width:850px){.ct-cta-box{flex-direction:column;align-items:flex-start;padding:40px 28px}.ct-cta-act{flex-wrap:wrap}}
+@media(max-width:640px){.ct-cta{padding-bottom:72px}.ct-cta-box{border-radius:28px}.ct-cta h2{font-size:28px!important}.ct-cta-blob{width:150px;height:150px}}
+/* 알림톡 하단 CTA: 전자계약과 같은 판, 알림톡 색(연두) */
+.al-cta .ct-cta-box{background:linear-gradient(135deg,#F7FFC2 0%,var(--lime) 60%,#D4EE3A 100%)}
+.al-cta .ct-cta-blob{background:var(--green)}

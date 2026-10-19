@@ -1,0 +1,91 @@
+/* 알림톡 카드 애니메이션(.av) — 10초 루프
+   ① 알림톡이 채팅방에 뿅 도착 → ② '자세히 보기' 탭 → ③ 문서가 아래에서 올라옴 → ④ '버튼 확인' 배지
+   카카오 노랑은 알림톡 띠에만(제품 색), UI 강조는 자버 메인 파랑(--jb-primary) */
+.av{--av-blue:var(--jb-primary,#1890FF);--av-blue-dark:var(--jb-primary-dark,#096DD9);--av-blue-bg:var(--jb-primary-bg,#E6F7FF);--av-line:#e6e8ec;--av-muted:#8a8f99}
+.mock-stage.av{margin:20px -23px 0;padding:0;height:245px;background:transparent;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.av .stage{position:relative;width:330px;height:306px;flex:none;transform:scale(.74)}
+.av .stack{position:absolute;left:9px;top:26px;width:312px;height:256px;border-radius:16px;background:rgba(255,255,255,.55);transform:rotate(-5deg)}
+.av .stack.two{transform:rotate(4deg);background:rgba(255,255,255,.35)}
+.av .app{position:relative;width:330px;height:306px;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 12px 28px -14px rgba(17,17,17,.35)}
+
+/* ① 채팅방 */
+.av .chat{position:absolute;inset:0;display:flex;flex-direction:column;background:#EEF1F5;animation:av-chat 10s ease-in-out infinite}
+.av .chat-hd{display:flex;align-items:center;gap:8px;height:44px;padding:0 14px;background:#fff;border-bottom:1px solid var(--av-line);font-size:13px;font-weight:700;color:#111}
+.av .chat-hd i{width:8px;height:8px;border-left:2px solid #111;border-bottom:2px solid #111;transform:rotate(45deg);margin-right:4px}
+.av .chat-hd span{margin-left:auto;font-size:10px;font-weight:600;color:var(--av-muted)}
+.av .chat-bd{flex:1;display:flex;gap:8px;padding:14px 14px 0}
+.av .prof{width:28px;height:28px;flex:none;border-radius:10px;background:#111;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}
+.av .msg{flex:1;min-width:0}
+.av .who{font-size:10px;font-weight:700;color:#444;margin-bottom:5px}
+.av .bubble{width:210px;background:#fff;border-radius:4px 14px 14px 14px;overflow:hidden;box-shadow:0 4px 10px -6px rgba(17,17,17,.25);transform-origin:0 0;animation:av-pop 10s cubic-bezier(.34,1.56,.64,1) infinite}
+.av .band{background:#FEE500;color:#111;font-size:9px;font-weight:800;padding:6px 12px}
+.av .bbody{padding:12px 12px 12px}
+.av .btitle{font-size:14px;font-weight:800;color:#111;margin-bottom:8px}
+.av .bline{height:4px;border-radius:2px;background:#eceef2;margin-bottom:6px}
+.av .bline.s{width:62%;margin-bottom:12px}
+.av .bbtn{position:relative;display:block;text-align:center;font-size:11px;font-weight:700;color:#111;background:#F3F4F6;border-radius:6px;padding:9px 0;overflow:hidden;animation:av-press 10s ease-in-out infinite}
+.av .ripple{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:rgba(24,144,255,.35);opacity:0;animation:av-ripple 10s ease-out infinite}
+.av .time{font-size:9px;color:var(--av-muted);margin:4px 0 0 2px;opacity:0;animation:av-time 10s ease-in-out infinite}
+.av .tap{position:absolute;left:140px;top:156px;width:30px;height:30px;border-radius:50%;background:rgba(17,17,17,.18);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);opacity:0;animation:av-tap 10s ease-in-out infinite;z-index:3}
+
+/* ③ 문서 */
+.av .doc{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff;transform:translateY(100%);animation:av-doc 10s cubic-bezier(.22,.9,.3,1) infinite;z-index:2}
+.av .doc-hd{display:flex;align-items:center;justify-content:space-between;height:40px;padding:0 14px;border-bottom:1px solid var(--av-line);font-size:12px;font-weight:700}
+.av .doc-hd b{font-size:15px;font-weight:500;color:var(--av-muted)}
+.av .doc-bd{flex:1;padding:14px}
+.av .banner{position:relative;height:84px;border-radius:12px;background:var(--av-blue);display:flex;align-items:center;gap:12px;padding:0 16px;color:#fff;overflow:hidden}
+.av .ticket{width:58px;height:40px;flex:none;border-radius:6px;background:#ECFE75;color:#111;display:grid;place-items:center;font-size:18px;font-weight:800;position:relative}
+.av .ticket:before,.av .ticket:after{content:"";position:absolute;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--av-blue)}
+.av .ticket:before{left:-5px}.av .ticket:after{right:-5px}
+.av .banner b{display:block;font-size:13px;font-weight:800;line-height:1.3}
+.av .banner small{display:block;font-size:10px;opacity:.85;margin-top:2px}
+.av .dline{height:4px;border-radius:2px;background:#eceef2;margin-top:12px}
+.av .dline.s{width:55%}
+.av .dbtn{margin-top:16px;text-align:center;font-size:12px;font-weight:700;color:#fff;background:var(--av-blue);border-radius:8px;padding:10px 0}
+
+/* ④ 버튼 확인 배지 */
+.av .seen{position:absolute;left:50%;bottom:16px;z-index:4;display:flex;align-items:center;gap:7px;padding:7px 13px 7px 8px;border-radius:999px;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.14);white-space:nowrap;transform:translate(-50%,10px) scale(.86);opacity:0;animation:av-seen 10s ease-in-out infinite}
+.av .seen i{width:18px;height:18px;border-radius:50%;background:var(--av-blue);color:#fff;display:grid;place-items:center;font-size:10px;font-style:normal;font-weight:800;line-height:1}
+.av .seen span{font-size:11px;font-weight:700;color:#111}
+.av .seen em{font-style:normal;font-size:10px;color:var(--av-muted);font-variant-numeric:tabular-nums}
+
+@keyframes av-pop{0%,6%{opacity:0;transform:scale(.6)}12%{opacity:1;transform:scale(1)}40%,100%{opacity:1;transform:scale(1)}}
+@keyframes av-time{0%,12%{opacity:0}16%,100%{opacity:1}}
+@keyframes av-tap{0%,22%{opacity:0;transform:translate(30px,30px)}28%{opacity:1;transform:translate(0,0)}31%{opacity:1;transform:scale(.8)}34%{opacity:1;transform:scale(1)}38%,100%{opacity:0;transform:scale(1)}}
+@keyframes av-press{0%,29%{transform:scale(1)}31%{transform:scale(.95);background:#E8EAEE}34%,100%{transform:scale(1)}}
+@keyframes av-ripple{0%,30%{opacity:0;transform:scale(1)}31%{opacity:1;transform:scale(1)}40%{opacity:0;transform:scale(9)}100%{opacity:0;transform:scale(9)}}
+@keyframes av-doc{0%,36%{transform:translateY(100%)}44%,92%{transform:translateY(0);opacity:1}97%,100%{transform:translateY(0);opacity:0}}
+@keyframes av-chat{0%,92%{opacity:1}96%{opacity:0}100%{opacity:1}}
+@keyframes av-seen{0%,58%{opacity:0;transform:translate(-50%,10px) scale(.86)}62%{opacity:1;transform:translate(-50%,0) scale(1.04)}64%,88%{opacity:1;transform:translate(-50%,0) scale(1)}92%,100%{opacity:0;transform:translate(-50%,0) scale(.96)}}
+
+@media(max-width:1100px){.mock-stage.av{margin-left:-20px;margin-right:-20px;height:225px}.av .stage{transform:scale(.68)}}
+@media(max-width:850px){.mock-stage.av{margin-left:-16px;margin-right:-16px;height:213px}.av .stage{transform:scale(.64)}}
+@media(max-width:640px){.mock-stage.av{margin:24px -24px 0;height:233px}.av .stage{transform:scale(.7)}}
+@media(prefers-reduced-motion:reduce){
+  .av *{animation:none!important}
+  .av .doc{transform:none}.av .seen{opacity:1;transform:translate(-50%,0)}.av .tap{display:none}
+}
+.service-card{min-width:0}
+
+/* 알림톡 말풍선 제목 옆 쿠폰 아이콘 (원래 알림톡 이미지처럼) */
+.av .bhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.av .bhead .btitle{margin-bottom:0}
+.av .bticket{position:relative;width:46px;height:30px;flex:none;border-radius:6px;background:var(--jb-green,#75FBA2);color:#0b5d3a;display:grid;place-items:center;font-size:15px;font-weight:800;transform:rotate(-8deg);box-shadow:0 3px 6px -3px rgba(17,17,17,.3)}
+.av .bticket:before,.av .bticket:after{content:"";position:absolute;top:50%;width:9px;height:9px;margin-top:-4.5px;border-radius:50%;background:#fff}
+.av .bticket:before{left:-4.5px}.av .bticket:after{right:-4.5px}
+
+/* 목업 뒤 그림자 없음 */
+.av .app{box-shadow:none}
+.av .prof{background:none;overflow:hidden}
+.av .prof img{width:100%;height:100%;display:block}
+.av .prof{border-radius:50%}
+.av .prof{display:block}
+
+/* 카카오톡 채팅방 하늘색 배경 */
+.av .chat{background:#B2C7DA}
+.av .chat-hd{background:#B2C7DA;border-bottom:0}
+.av .chat-hd span{color:#4a5a6a}
+.av .time{color:#4a5a6a}
+.av .who{color:#1f2a35}
+.av .prof{background:#fff}
+.av .prof img{object-fit:contain;padding:3px}

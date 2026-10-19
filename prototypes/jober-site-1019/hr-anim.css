@@ -1,0 +1,83 @@
+/* 인사관리 카드 애니메이션(.hv) — 10초 루프. 자버 연차 관리 흐름(jober.io/tour/dayOff)
+   ① 직원이 연차 신청 → ② 관리자 결재 요청에서 승인 → ③ 휴가 캘린더·잔여 연차에 반영 → ④ 반영 배지
+   UI 강조는 자버 메인 파랑(--jb-primary) */
+.hv{--hv-blue:var(--jb-primary,#1890FF);--hv-blue-dark:var(--jb-primary-dark,#096DD9);--hv-blue-bg:var(--jb-primary-bg,#E6F7FF);--hv-line:#e6e8ec;--hv-muted:#8a8f99}
+.mock-stage.hv{margin:20px -23px 0;padding:0;height:245px;background:transparent;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.hv .stage{position:relative;width:330px;height:306px;flex:none;transform:scale(.74)}
+.hv .stack{position:absolute;left:9px;top:26px;width:312px;height:256px;border-radius:16px;background:rgba(255,255,255,.55);transform:rotate(-5deg)}
+.hv .stack.two{transform:rotate(4deg);background:rgba(255,255,255,.35)}
+.hv .app{position:relative;width:330px;height:306px;border-radius:16px;overflow:hidden;background:#fff}
+.hv .hd{display:flex;align-items:center;gap:8px;height:44px;padding:0 14px;background:var(--hv-blue);color:#fff;font-size:13px;font-weight:700}
+.hv .hd span{margin-left:auto;font-size:10px;font-weight:600;opacity:.85}
+.hv .scr{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff}
+
+/* ① 연차 신청 (직원) */
+.hv .s1{animation:hv-s1 10s ease-in-out infinite}
+.hv .form{padding:14px;display:grid;gap:10px}
+.hv .fld{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid var(--hv-line);border-radius:8px;font-size:11px;color:var(--hv-muted)}
+.hv .fld b{font-size:12px;color:#111}
+.hv .fld.memo{display:block}
+.hv .fld.memo i{display:block;height:4px;border-radius:2px;background:#eceef2;margin-top:6px}
+.hv .fld.memo i+i{width:60%}
+.hv .go{position:relative;overflow:hidden;text-align:center;font-size:12px;font-weight:700;color:#fff;background:var(--hv-blue);border-radius:8px;padding:11px 0;animation:hv-press1 10s ease-in-out infinite}
+.hv .go em{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;background:var(--hv-blue-dark);opacity:0;animation:hv-ok1 10s ease-in-out infinite}
+
+/* ② 결재 요청 (관리자) */
+.hv .s2{opacity:0;animation:hv-s2 10s ease-in-out infinite}
+.hv .tabs{display:flex;gap:14px;padding:0 14px;border-bottom:1px solid var(--hv-line)}
+.hv .tabs span{font-size:11px;font-weight:700;color:var(--hv-muted);padding:10px 0;position:relative}
+.hv .tabs span.on{color:#111}
+.hv .tabs span.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#111}
+.hv .rows{padding:6px 14px}
+.hv .row{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid #f2f3f5}
+.hv .av{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:10px;font-weight:800;color:#111}
+.hv .who{flex:1;min-width:0}
+.hv .who b{display:block;font-size:12px;color:#111}
+.hv .who small{display:block;font-size:10px;color:var(--hv-muted)}
+.hv .acts{display:flex;gap:5px}
+.hv .acts span{font-size:10px;font-weight:700;padding:6px 9px;border-radius:6px}
+.hv .acts .no{background:#f3f4f6;color:#666}
+.hv .acts .yes{position:relative;overflow:hidden;background:var(--hv-blue);color:#fff;animation:hv-press2 10s ease-in-out infinite}
+.hv .acts .yes em{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;background:var(--hv-blue-dark);opacity:0;animation:hv-ok2 10s ease-in-out infinite}
+.hv .row.dim{opacity:.55}
+.hv .chip{font-size:10px;font-weight:700;padding:4px 8px;border-radius:999px;background:#f3f4f6;color:#666}
+
+/* ③ 휴가 캘린더 */
+.hv .s3{opacity:0;animation:hv-s3 10s ease-in-out infinite}
+.hv .cal-top{display:flex;align-items:flex-end;justify-content:space-between;padding:12px 14px 6px}
+.hv .cal-top b{font-size:13px;color:#111}
+.hv .left{text-align:right;font-size:10px;color:var(--hv-muted)}
+.hv .left strong{position:relative;display:inline-block;width:28px;height:22px;overflow:hidden;vertical-align:bottom;font-size:18px;color:#111}
+.hv .left strong span{position:absolute;left:0;right:0;text-align:center;animation:hv-count 10s ease-in-out infinite}
+.hv .left strong span+span{top:100%}
+.hv .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:0 14px}
+.hv .grid i{font-style:normal;height:26px;display:grid;place-items:center;font-size:10px;color:#444;border-radius:7px}
+.hv .grid i.h{color:var(--hv-muted);font-size:9px;height:18px}
+.hv .grid i.x{color:transparent}
+.hv .grid i.sun{color:#e5484d}
+.hv .grid i.mark{position:relative;font-weight:800;color:#111;animation:hv-mark 10s ease-in-out infinite}
+
+/* ④ 반영 배지 */
+.hv .done{position:absolute;left:50%;bottom:14px;z-index:4;display:flex;align-items:center;gap:7px;padding:7px 13px 7px 8px;border-radius:999px;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.14);white-space:nowrap;opacity:0;transform:translate(-50%,10px) scale(.86);animation:hv-done 10s ease-in-out infinite}
+.hv .done i{width:18px;height:18px;border-radius:50%;background:var(--hv-blue);color:#fff;display:grid;place-items:center;font-size:10px;font-style:normal;font-weight:800;line-height:1}
+.hv .done span{font-size:11px;font-weight:700;color:#111}
+
+@keyframes hv-s1{0%,30%{opacity:1;transform:none}34%,96%{opacity:0;transform:translateX(-16px)}100%{opacity:1;transform:none}}
+@keyframes hv-press1{0%,20%{transform:scale(1)}22%{transform:scale(.95)}24%,100%{transform:scale(1)}}
+@keyframes hv-ok1{0%,22%{opacity:0}24%,34%{opacity:1}36%,100%{opacity:0}}
+@keyframes hv-s2{0%,30%{opacity:0;transform:translateX(16px)}35%,58%{opacity:1;transform:none}62%,100%{opacity:0;transform:translateX(-16px)}}
+@keyframes hv-press2{0%,46%{transform:scale(1)}48%{transform:scale(.92)}50%,100%{transform:scale(1)}}
+@keyframes hv-ok2{0%,48%{opacity:0}50%,100%{opacity:1}}
+@keyframes hv-s3{0%,58%{opacity:0;transform:translateX(16px)}63%,94%{opacity:1;transform:none}98%,100%{opacity:0}}
+@keyframes hv-mark{0%,66%{background:transparent;color:#444}70%,94%{background:var(--jb-lime,#ECFE75);color:#111}100%{background:transparent}}
+@keyframes hv-count{0%,68%{transform:translateY(0)}72%,94%{transform:translateY(-100%)}100%{transform:translateY(0)}}
+@keyframes hv-done{0%,72%{opacity:0;transform:translate(-50%,10px) scale(.86)}76%{opacity:1;transform:translate(-50%,0) scale(1.04)}78%,92%{opacity:1;transform:translate(-50%,0) scale(1)}96%,100%{opacity:0;transform:translate(-50%,0) scale(.96)}}
+
+@media(max-width:1100px){.mock-stage.hv{margin-left:-20px;margin-right:-20px;height:225px}.hv .stage{transform:scale(.68)}}
+@media(max-width:850px){.mock-stage.hv{margin-left:-16px;margin-right:-16px;height:213px}.hv .stage{transform:scale(.64)}}
+@media(max-width:640px){.mock-stage.hv{margin:24px -24px 0;height:233px}.hv .stage{transform:scale(.7)}}
+@media(prefers-reduced-motion:reduce){
+  .hv *{animation:none!important}
+  .hv .s1,.hv .s2{opacity:0}.hv .s3{opacity:1}.hv .grid i.mark{background:var(--jb-lime,#ECFE75)}.hv .done{opacity:1;transform:translate(-50%,0)}
+}
+.hv .av svg{width:15px;height:15px;color:#111}

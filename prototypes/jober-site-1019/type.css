@@ -1,0 +1,48 @@
+/* 텍스트 위계 — bizgo.io 홈 실측값 기준으로 사이트 전체를 한 단계표에 맞춤. 모든 페이지에서 마지막에 로드
+   데스크톱: H1 48 · H2 44 · 카드 제목 24 / 18 · FAQ 질문 20 · 리드 18 · 본문 16 · 작은 라벨 14
+   폰(≤640): H1 34 · H2 28 · 카드 제목 20 / 18 · 리드 16 · 본문 15
+   서체는 사이트 서체(Spoqa Han Sans Neo) 유지 — 600은 이 서체에 없어 700으로 보인다 */
+:root{--tx-ink:#111;--tx-lead:#747982;--tx-body:#4B5563}
+body{letter-spacing:-.02em}
+
+/* H1 — 페이지 첫 제목 */
+main h1{font-size:48px!important;line-height:1.28!important;letter-spacing:-.035em!important;font-weight:700!important}
+
+/* H2 — 섹션 제목 */
+main h2,.closing h2{font-size:44px!important;line-height:1.3!important;letter-spacing:-.02em!important;font-weight:700!important}
+.cx-smb h3{font-size:32px!important;line-height:1.35!important;letter-spacing:-.02em!important}
+
+/* H3 — 카드 제목: 기본 18, 큰 카드 24 */
+main h3{font-size:18px!important;line-height:1.6!important;letter-spacing:-.02em!important;font-weight:700!important}
+.service-card h3,.al-feat h3{font-size:24px!important;line-height:1.35!important}
+.al-feat h3 b{font-weight:700}
+.sub-grid .connectia-copy h3,.sub-grid .fellows-copy h3{font-size:20px!important;line-height:1.45!important}
+
+/* FAQ 질문 */
+.faq-section summary{font-size:20px!important;font-weight:700;letter-spacing:-.02em}
+
+/* 리드 — 제목 바로 아래 설명 */
+.hero-desc,.lead,.detail-grid .lead,.section-heading p:not(.eyebrow),.al-sub,.hr-head>p,.hr-hero-desc,.vision-bottom p{font-size:18px!important;line-height:1.65!important;font-weight:500;letter-spacing:-.02em}
+.section-heading p:not(.eyebrow),.al-sub,.hr-head>p,.lead,.detail-grid .lead,.vision-bottom p{color:var(--tx-lead)}
+.hr-flow-intro p{font-size:18px!important;line-height:1.65!important}
+
+/* 본문 — 카드·기능 설명 */
+.service-card>p,.scenario-item p,.ct .wcard p,.ct .twrow p,.ct .nxcols p,.hr-card>p,.al-copy>p,.al-steps p,.hr-step p,.faq-section details p,.connectia-copy p:not(.eyebrow),.fellows-desc,.al-review blockquote{font-size:16px!important;line-height:1.6!important;letter-spacing:-.02em}
+.ct .wcard p,.ct .twrow p,.ct .nxcols p,.hr-card>p,.al-copy>p,.al-steps p,.faq-section details p{color:var(--tx-body)}
+.al-review blockquote{font-size:17px!important;font-weight:500}
+
+/* 작은 라벨 · 링크 */
+.card-top,.scenario-num,.hr-num,.hr-tags,.al-pain,.ct .wsub,.twsee,.scenario-link,.card-bottom{font-size:14px!important;letter-spacing:-.02em}
+.btn{font-size:16px!important;letter-spacing:-.02em}
+
+/* 폰 */
+@media(max-width:640px){
+  main h1{font-size:34px!important;line-height:1.28!important}
+  main h2,.closing h2{font-size:28px!important;line-height:1.35!important}
+  .cx-smb h3{font-size:24px!important}
+  .service-card h3,.al-feat h3{font-size:20px!important}
+  .faq-section summary{font-size:17px!important}
+  .hero-desc,.lead,.detail-grid .lead,.section-heading p:not(.eyebrow),.al-sub,.hr-head>p,.hr-hero-desc,.vision-bottom p,.hr-flow-intro p{font-size:16px!important}
+  .service-card>p,.scenario-item p,.ct .wcard p,.ct .twrow p,.ct .nxcols p,.hr-card>p,.al-copy>p,.al-steps p,.hr-step p,.faq-section details p,.connectia-copy p:not(.eyebrow),.fellows-desc{font-size:15px!important}
+  .btn{font-size:15px!important}
+}

@@ -221,3 +221,7 @@ h1,h2,h3,p{margin:0}
 .hero-art>.blob{animation:hero-bob 7s ease-in-out -2s infinite}
 .hero>.blob{animation:hero-sway 8s ease-in-out -3s infinite}
 @media(prefers-reduced-motion:reduce){.hero-img,.hero-win,.hero .blob{animation:none}}
+/* 고객사 로고 줄: 화면 끝까지 늘어나지 않고 본문 폭(양옆 라인)에 맞춰 자른다 */
+.cx-rail{max-width:1200px;margin-left:auto;margin-right:auto}
+@media(max-width:1264px){.cx-rail{margin-left:32px;margin-right:32px}}
+@media(max-width:640px){.cx-rail{margin-left:20px;margin-right:20px}}

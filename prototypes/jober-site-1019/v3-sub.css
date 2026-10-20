@@ -836,4 +836,4 @@ main:has(.ab-hero){overflow-x:clip}
 /* 알림톡 하단 CTA: 전자계약과 같은 판, 알림톡 색(연두) */
 .al-cta .ct-cta-box{background:linear-gradient(135deg,#F7FFC2 0%,var(--lime) 60%,#D4EE3A 100%)}
 .al-cta .ct-cta-blob{background:var(--green)}
-@media(max-width:640px){.al .al-uses{overflow-y:hidden;align-items:flex-start}}
+@media(max-width:640px){.al .al-uses{overflow-y:hidden;align-items:stretch}}

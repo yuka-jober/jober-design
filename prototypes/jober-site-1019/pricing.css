@@ -331,3 +331,4 @@
   .pr-dock .dk dd s{margin-right:4px;font-size:13px;font-weight:500;color:rgba(255,255,255,.6)}
   .pr-dock .dk small{display:block;margin-top:8px;font-size:12px;color:rgba(255,255,255,.65)}
 }
+.pr-dock{transition:opacity .25s,transform .25s}.pr-dock.off{opacity:0;pointer-events:none!important;transform:translate(-50%,16px)}@media(max-width:900px){.pr-dock.off{transform:translateY(16px)}}

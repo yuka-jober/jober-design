@@ -837,3 +837,5 @@ main:has(.ab-hero){overflow-x:clip}
 .al-cta .ct-cta-box{background:linear-gradient(135deg,#F7FFC2 0%,var(--lime) 60%,#D4EE3A 100%)}
 .al-cta .ct-cta-blob{background:var(--green)}
 @media(max-width:640px){.al .al-uses{overflow-y:hidden;align-items:stretch}}
+/* 잘라낸 화면 이미지 모서리에 남은 검은 테두리 흔적을 안쪽 흰 선으로 덮는다 */
+.al .al-art .al-shot{border-radius:18px;outline:3px solid #fff;outline-offset:-3px}

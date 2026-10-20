@@ -14,18 +14,18 @@
 | `services/fellows/` | 펠로우즈 (모임·캠퍼스) |
 | `stories/` | 활용 사례 |
 | `about/` | 회사 소개 |
+| `pricing/` | 요금제 (전자계약·마케팅·HR 탭, `#contract` · `#marketing` · `#hr`) |
 
 ## 요금제 페이지
 
-이 폴더에는 요금제 페이지가 없다. **기존 요금제 페이지(`jober.io/tour/pricing`)를 그대로 활용하되, 상단바와 푸터만 이 사이트의 것(`v3-shell.css` · `v3-fall.js`의 헤더·푸터)으로 바꾼다.** 본문 내용과 구성은 손대지 않는다.
-
-지금 상단바의 "요금제"는 임시로 기존 페이지(`jober.io/tour/pricing`, 새 탭)로 연결돼 있다. 새 상단바·푸터를 입힌 요금제 페이지가 생기면 이 링크를 그 주소로 바꾼다.
+`pricing/`에 새 스타일로 옮겼다. 문구·구성은 최신 요금제 시안(2026-09-22 `jober-pricing-home`)을, HR 탭은 기존 페이지(`jober.io/tour/pricing?type=hr`) 내용을 따른다. HR 탭은 월 결제/약정 할인 요금 버튼으로 금액이 바뀐다. 충전 플랜에서 금액을 고르면 오른쪽 계산(발송 가능 건수·실제 단가, 알림톡/계약문서 기준 전환)이 바뀐다. 하단에 떠 있는 회원가입 버튼과 HR "선택하기"는 회원가입(`jober.io/sign-up`)으로 연결된다(HR "선택하기"는 임시).
 
 ## 파일
 
 - `v3-shell.css` · `v3-fall.js` — 모든 페이지 공통: 헤더(자버 패밀리 드롭다운, 모바일 햄버거 메뉴), 푸터(떨어지는 로고), 전화 문의 창, 스크롤 등장 애니메이션
 - `v3.css` — 홈 전용
 - `v3-sub.css` — 하위 페이지 전용 (마지막에 로드되어 `style.css` · `brand.css` · `type.css` · 페이지별 css를 덮는다)
+- `pricing.css` — 요금제 페이지
 - `contract.css` · `alim-anim.css` · `hr-anim.css` — 서비스 카드·히어로의 화면 애니메이션
 - `jober-icons.js` — 아이콘 스프라이트(jober-design 아이콘 중 쓰는 것만)
 - `assets/` — 이미지·로고·폰트
@@ -34,7 +34,6 @@
 
 - 도입 문의(알림톡·전자계약·인사관리·공통) → 알림톡 문의 폼 `jober.io/wall-write-document/7f720549-…` — 폼 통일 후 주소만 교체
 - 커넥티아 도입 문의 → 전화 안내 창 (02-6402-0508, 평일 10:00–18:00)
-- 요금제 → `jober.io/tour/pricing`
 - 자버 블로그(홈 하단 알약, 푸터) → `blog.naver.com/joberteam`
 - 서비스 소개서(하위 페이지 하단 "서비스 소개서 보기" 알약, 푸터 "서비스 소개서") → `jober-service-guides.neocsv.chatgpt.site`
 - 커넥티아 바로가기 → `connectia.bio` · 펠로우즈 → `fellows-moim.vercel.app`

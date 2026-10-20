@@ -35,6 +35,7 @@
 - 도입 문의(알림톡·전자계약·인사관리·공통) → 알림톡 문의 폼 `jober.io/wall-write-document/7f720549-…` — 폼 통일 후 주소만 교체
 - 커넥티아 도입 문의 → 전화 안내 창 (02-6402-0508, 평일 10:00–18:00)
 - 요금제 → `jober.io/tour/pricing`
+- 자버 블로그(홈 하단 알약, 푸터) → `blog.naver.com/joberteam`
 - 커넥티아 바로가기 → `connectia.bio` · 펠로우즈 → `fellows-moim.vercel.app`
 
 ## 미리보기

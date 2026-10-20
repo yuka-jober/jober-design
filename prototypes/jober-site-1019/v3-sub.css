@@ -811,7 +811,6 @@ main:has(.ab-hero){overflow-x:clip}
   .al .al-uses{display:flex!important;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:4px 20px 20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .al .al-uses::-webkit-scrollbar{display:none}
   .al .al-use{flex:0 0 78%;scroll-snap-align:center}
-  .al .al-use .al-use-shot{max-height:420px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
 }
 /* 인사관리 '필요한 업무 바로 찾기': 알약 대신 글자 링크, 위아래 옅은 구분선으로 한 줄 영역 */
 .hr .hr-quick{padding:0;background:none}
@@ -837,3 +836,4 @@ main:has(.ab-hero){overflow-x:clip}
 /* 알림톡 하단 CTA: 전자계약과 같은 판, 알림톡 색(연두) */
 .al-cta .ct-cta-box{background:linear-gradient(135deg,#F7FFC2 0%,var(--lime) 60%,#D4EE3A 100%)}
 .al-cta .ct-cta-blob{background:var(--green)}
+@media(max-width:640px){.al .al-uses{overflow-y:hidden;align-items:flex-start}}

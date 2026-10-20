@@ -903,3 +903,35 @@ main:has(.ab-hero){overflow-x:clip}
 .ct .ct-doclist .jb-chip-ico svg{width:20px;height:20px;color:var(--sub)}
 .ct .ct-doclist-more{margin-top:8px}
 @media(max-width:640px){.ct .ct-doclist ul{max-height:260px}.ct .ct-doclist .jb-chip:nth-child(n+9){display:flex}}
+/* 서식 목록: 연보라 판 안에 줄 목록 + 아래 페이드 (판 색으로 녹아든다) */
+.ct .ct-doclist{padding:28px 32px 28px!important;background:var(--lilac)!important;border-radius:var(--r-card)!important}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){border-bottom:1px solid rgba(17,17,17,.12)!important}
+.ct .ct-doclist .jb-chip-ico svg{color:var(--ink)}
+.ct .ct-doclist-more{margin-top:12px}
+.ct .ct-doclist:hover .ct-doclist-more{color:var(--ink)!important;opacity:.75}
+@media(max-width:640px){.ct .ct-doclist{padding:20px 20px 24px!important;border-radius:28px!important}}
+/* 보라 판 목록: 높이 줄이고 흰 글씨, '샘플 서식 둘러보기'만 흰 알약 버튼으로 강조 */
+.ct .ct-doclist ul{max-height:212px}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){padding:12px 2px;border-bottom:1px solid rgba(255,255,255,.4)!important}
+.ct .ct-doclist .jb-chip b{color:#fff}
+.ct .ct-doclist .jb-chip-ico svg{color:#fff}
+.ct .ct-doclist-more{display:inline-flex;margin-top:16px;padding:12px 20px;border-radius:999px;background:#fff;color:var(--ink)!important;font-size:15px;text-decoration:none}
+.ct .ct-doclist:hover .ct-doclist-more{background:var(--ink);color:#fff!important;opacity:1}
+@media(max-width:640px){.ct .ct-doclist ul{max-height:200px}}
+.ct .ct-doclist ul{max-height:290px;-webkit-mask-image:linear-gradient(#000 58%,transparent 100%);mask-image:linear-gradient(#000 58%,transparent 100%)}@media(max-width:640px){.ct .ct-doclist ul{max-height:250px}}
+.ct .ct-doclist ul{-webkit-mask-image:linear-gradient(210deg,#000 60%,transparent 100%);mask-image:linear-gradient(210deg,#000 60%,transparent 100%)}@media(max-width:640px){.ct .ct-doclist ul{-webkit-mask-image:linear-gradient(#000 58%,transparent 100%);mask-image:linear-gradient(#000 58%,transparent 100%)}}
+/* 서식 목록 판: 목록이 천천히 위로 흘러간다(같은 목록을 두 번 이어 붙여 끊김 없이). 위·아래 끝만 똑같이 흐리고, 버튼은 아래에 따로 */
+.ct .ct-doclist-view{height:212px;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.ct .ct-doclist-track{animation:ct-docflow 24s linear infinite}
+.ct .ct-doclist:hover .ct-doclist-track{animation-play-state:paused}
+.ct .ct-doclist ul{max-height:none;-webkit-mask:none;mask:none;overflow:visible}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){border-bottom:1px solid rgba(255,255,255,.4)!important}
+.ct .ct-doclist-more{margin-top:16px}
+@keyframes ct-docflow{to{transform:translateY(-50%)}}
+@media(max-width:640px){.ct .ct-doclist-view{height:230px}.ct .ct-doclist-track{animation-duration:36s}}
+@media(prefers-reduced-motion:reduce){.ct .ct-doclist-track{animation:none}}
+/* 샘플 서식 둘러보기: 카드 밖, 밑줄 텍스트 링크 */
+.ct .ct-doclist:hover{transform:none}
+.ct a.ct-doclist-more{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:0;border-radius:0;background:none;color:var(--ink)!important;font-size:16px;font-weight:600;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1.5px}
+.ct a.ct-doclist-more:hover{background:none;color:#7B4FD6!important}
+.ct a.ct-doclist-more{display:flex;width:fit-content;margin-left:auto}

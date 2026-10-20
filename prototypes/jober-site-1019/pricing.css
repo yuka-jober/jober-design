@@ -275,3 +275,59 @@
 .pr-sum .key dd b{font-size:34px}
 .pr-sum .sub dt,.pr-sum .sub dd,.pr-sum .sub s{font-size:14px;color:rgba(255,255,255,.6)}
 .pr-sum dl>.sub+div{margin-top:-6px}
+.pr-tabs a.on{color:var(--jb-primary,#1890FF)!important}
+.pr-zoom{background:rgba(17,17,17,.45);color:#fff;box-shadow:none}.pr-zoom:hover{background:rgba(17,17,17,.6);color:#fff}
+/* HR: '가장 많이 사용하는 요금제'를 카드 위 테두리에 걸쳐 두고, 네 카드의 내용 높이를 맞춘다 */
+.pr-hrs{align-items:stretch;padding-top:14px}
+.pr-hr{position:relative}
+.pr-hr .pop{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);margin:0;white-space:nowrap;box-shadow:0 6px 14px -6px rgba(63,91,196,.5)}
+@media(max-width:1100px){.pr-hrs{row-gap:30px}}
+.pr-hr .pop{left:28px;transform:translateY(-50%)}
+/* 최상단 요금제 종류: 밑줄 탭(아래 세그먼트 탭과 구분) */
+.pr-intro .pr-tabs{display:grid;grid-template-columns:repeat(3,200px);gap:0;padding:0;border-radius:0;background:none;box-shadow:inset 0 -1px 0 var(--pr-line)}
+.pr-intro .pr-tabs a,.pr-intro .pr-tabs a:hover{height:56px;padding:0 12px;border-radius:0;background:none;box-shadow:none;font-size:18px;font-weight:600;color:#9AA0AC!important}
+.pr-intro .pr-tabs a:hover{color:var(--ink)!important}
+.pr-intro .pr-tabs a.on{background:none;box-shadow:inset 0 -3px 0 var(--jb-primary,#1890FF);color:var(--ink)!important;font-weight:700}
+@media(max-width:900px){.pr-intro .pr-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}.pr-intro .pr-tabs a,.pr-intro .pr-tabs a:hover{height:48px;font-size:15px}}
+.pr-intro .pr-tabs{justify-content:center}
+.pr-intro .pr-tabs a,.pr-bill button{white-space:nowrap}
+@media(max-width:900px){.pr-intro .pr-tabs a,.pr-intro .pr-tabs a:hover{padding:0 4px;font-size:14px;letter-spacing:-.03em}.pr-bill button{padding:0 6px;font-size:13px;letter-spacing:-.03em}}
+.pr-intro .pr-tabs a.on{color:var(--jb-primary,#1890FF)!important}
+/* 글자 위계를 다른 서비스 페이지와 맞춤: 제목·라벨 600, 큰 제목 56/44px, 카드 본문 #4B5563 */
+.pr-intro h1{font-weight:600!important;line-height:1.18!important;letter-spacing:-.045em!important}
+.pr-sec>h2{font-size:44px!important;line-height:1.25!important;letter-spacing:-.035em!important;font-weight:600!important}
+.pr-hr h3,.pr-ent-box h3,.pr-steps h3,.pr-add h3,.pr-refund h3{font-weight:600!important}
+.pr-row .won,.pr-sum .ttl,.pr-banner b,.pr-tabs a.on,.pr-bill button.on,.pr-sum .svc button.on,.pr-price .amt span{font-weight:600}
+.pr-intro .pr-tabs a.on{font-weight:600}
+.pr-price>p,.pr-steps p,.pr-add p,.pr-add .fee,.pr-hr .per,.pr-refund ul{color:#4B5563}
+.pr-steps h3{line-height:1.6!important}
+.pr-add h3,.pr-hr h3{line-height:1.6!important}
+@media(max-width:900px){.pr-sec>h2{font-size:30px!important}}
+@media(max-width:900px){.pr-intro h1{font-size:36px!important}}
+/* 상단 문구: 광고 카피 대신 혜택을 풀어 쓴 두 줄, 작게 */
+.pr-intro h1{margin-top:56px;font-size:32px!important;line-height:1.45!important;letter-spacing:-.035em!important;font-weight:600!important}
+@media(max-width:900px){.pr-intro h1{margin-top:36px;font-size:22px!important}}
+.pr-intro{padding-bottom:40px}@media(max-width:900px){.pr-intro{padding-bottom:28px}}
+/* 하단 고정: 회원가입 버튼 묶음. 모바일에서 충전 플랜이 화면에 있을 땐 계산 요약 한 줄이 버튼 위에 붙는다 */
+.pr-dock{position:fixed;left:50%;bottom:24px;z-index:150;transform:translateX(-50%)}
+.pr-dock .pr-float{position:static;transform:none}
+.pr-dock .dk{display:none}
+@media(max-width:900px){
+  .pr-dock{left:0;right:0;bottom:0;transform:none;display:flex;flex-direction:column;align-items:center;padding:0 16px 16px;pointer-events:none}
+  .pr-dock .pr-float{pointer-events:auto}
+  .pr-dock.calc{padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:#4A86F7;border-radius:24px 24px 0 0;box-shadow:0 -12px 32px -16px rgba(31,90,200,.45);pointer-events:auto}
+  .pr-dock.calc .dk{display:flex;flex-direction:column;align-items:center;gap:2px;margin:0 0 12px;color:#fff;text-align:center}
+  .pr-dock.calc .dk b{font-size:13px;font-weight:600;color:rgba(255,255,255,.75)}
+  .pr-dock.calc .dk span{font-size:17px;font-weight:700;letter-spacing:-.02em}
+  .pr-dock.calc .pr-float{width:100%;justify-content:center;background:#fff;color:var(--ink)!important;box-shadow:none}
+}
+@media(max-width:900px){
+  .pr-dock.calc .dk{display:block;width:100%;margin:0 0 12px;text-align:left}
+  .pr-dock.calc .dk b{display:block;margin-bottom:8px;font-size:15px;font-weight:600;color:#fff}
+  .pr-dock .dk dl{display:grid;gap:4px;margin:0}
+  .pr-dock .dk dl>div{display:flex;justify-content:space-between;align-items:baseline}
+  .pr-dock .dk dt{font-size:14px;color:rgba(255,255,255,.75)}
+  .pr-dock .dk dd{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em}
+  .pr-dock .dk dd s{margin-right:4px;font-size:13px;font-weight:500;color:rgba(255,255,255,.6)}
+  .pr-dock .dk small{display:block;margin-top:8px;font-size:12px;color:rgba(255,255,255,.65)}
+}

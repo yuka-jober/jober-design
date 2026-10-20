@@ -36,6 +36,7 @@
 - 커넥티아 도입 문의 → 전화 안내 창 (02-6402-0508, 평일 10:00–18:00)
 - 요금제 → `jober.io/tour/pricing`
 - 자버 블로그(홈 하단 알약, 푸터) → `blog.naver.com/joberteam`
+- 서비스 소개서(하위 페이지 하단 "서비스 소개서 보기" 알약, 푸터 "서비스 소개서") → `jober-service-guides.neocsv.chatgpt.site`
 - 커넥티아 바로가기 → `connectia.bio` · 펠로우즈 → `fellows-moim.vercel.app`
 
 ## 미리보기

@@ -945,3 +945,6 @@ main:has(.ab-hero){overflow-x:clip}
 .ab-badge:has(.fellows-logo-img){padding:6px 14px!important}
 .ab-badge .fellows-logo-img{height:56px!important}
 .fwp .fwp-badge{padding:8px 16px}
+.ab-badge:has(.fellows-logo-img){padding:12px 18px!important}
+.ab-badge .fellows-logo-img{height:34px!important;width:auto!important}
+.ab-badge:has(.fellows-logo-img){padding:10px 16px!important}.ab-badge .fellows-logo-img{height:40px!important}

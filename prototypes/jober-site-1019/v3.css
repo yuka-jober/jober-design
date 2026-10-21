@@ -228,3 +228,5 @@ h1,h2,h3,p{margin:0}
 /* 펠로우즈 카드: 세로형 로고를 크게 */
 .card-logo img.fw-stack{width:auto!important;height:84px!important;max-width:none}
 @media(max-width:640px){.card-logo img.fw-stack{height:64px!important}}
+.card-logo img.fw-h{width:auto!important;height:38px!important;max-width:none}
+@media(max-width:640px){.card-logo img.fw-h{height:32px!important}}

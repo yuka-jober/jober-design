@@ -936,3 +936,12 @@ main:has(.ab-hero){overflow-x:clip}
 .ct a.ct-doclist-more:hover{background:none;color:#7B4FD6!important}
 .ct a.ct-doclist-more{display:flex;width:fit-content;margin-left:auto}
 .al-review blockquote{word-break:keep-all}
+/* 펠로우즈 로고 강조: 고양이가 보이는 세로형 로고를 크게 */
+.fwp .fwp-logo{width:240px!important;height:auto!important;margin-bottom:8px}
+.fwp .fwp-badge img{height:34px!important;width:auto!important}
+.ab-badge .fellows-logo-img{height:68px!important;width:auto!important}
+@media(max-width:640px){.fwp .fwp-logo{width:180px!important}}
+.fwp .fwp-logo{margin-bottom:28px!important}
+.ab-badge:has(.fellows-logo-img){padding:6px 14px!important}
+.ab-badge .fellows-logo-img{height:56px!important}
+.fwp .fwp-badge{padding:8px 16px}

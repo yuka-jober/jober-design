@@ -1,0 +1,950 @@
+/* 하위 페이지 본문을 v3 규칙으로 덮는다 — style.css · brand.css · 페이지 css · type.css 다음, 맨 마지막에 로드
+   규칙(홈 index.html와 같음): Pretendard · 제목 600 · 선·그림자 없음 · 알약 버튼 · 큰 둥근 면(32px) · 배경 띠는 화면 끝까지 깔지 않고 둥근 판으로 */
+body{font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;color:var(--ink);letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+.wrap{width:calc(100% - 64px);max-width:1200px}
+h1,h2,h3{color:var(--ink)}
+
+/* 글자 위계 — 홈과 같은 크기·굵기 */
+main h1{font-size:56px!important;line-height:1.2!important;letter-spacing:-.045em!important;font-weight:600!important}
+main h2{font-size:44px!important;line-height:1.25!important;letter-spacing:-.035em!important;font-weight:600!important}
+main h3{font-weight:600!important;letter-spacing:-.025em!important}
+.al-feat h3 b{font-weight:600}
+.faq-section summary{font-weight:600!important}
+.hero-desc,.lead,.detail-grid .lead,.al-sub,.hr-head>p,.hr-hero-desc,.page-intro p,.section-heading p:not(.eyebrow){color:var(--sub)!important;font-weight:400!important;font-size:19px!important}
+.service-name{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:16px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--sub)}
+.back:hover{color:var(--ink)}
+
+/* 버튼 → 알약. 첫 버튼은 검정, 나머지(secondary·white)는 검정 테두리 */
+.btn{min-height:0!important;height:46px!important;padding:0 22px!important;gap:8px!important;border-radius:999px!important;border:1px solid var(--ink)!important;background:var(--ink)!important;color:#fff!important;font-size:15px!important;font-weight:600;box-shadow:none!important;transform:none!important;justify-content:center;transition:background .15s,color .15s}
+.btn:hover{background:#333!important}
+.btn span{font-size:inherit}
+.btn.secondary,.btn.white{background:transparent!important;color:var(--ink)!important}
+.btn.secondary:hover,.btn.white:hover{background:var(--ink)!important;color:#fff!important}
+.hr-flow .btn.secondary{color:#fff!important;border-color:#fff!important}
+.text-link,.scenario-link{font-weight:600}
+
+/* 배경 띠 → 화면 양옆을 띄운 큰 둥근 판 */
+.al-band-gray,.al-band-cream,.al-band-mint,.ct-band-cream,.ct-band-mint,.steps-section,.hr-flow{margin-left:16px;margin-right:16px;border-radius:40px}
+.al-band-gray,.al-band-cream,.ct-band-cream{background:var(--soft)!important}
+.al-band-mint,.ct-band-mint,.steps-section{background:var(--mint)!important}
+.al-band-gray,.al-band-cream,.al-band-mint,.ct-band-cream,.ct-band-mint,.steps-section,.hr-flow{margin-top:24px;margin-bottom:24px}
+.hr-flow{background:var(--ink)!important}
+
+/* 페이지 머리 */
+.page-intro{padding-top:88px;padding-bottom:64px}
+.detail-hero{padding-top:40px;padding-bottom:88px}
+.hr-hero{margin:0 16px;border-radius:40px;background:var(--peach)!important}
+
+/* 카드·면 — 선 없이, 크게 둥글게 */
+.contact-card,.two-grid article,.story-side,.hr-card,.al-steps li,.ct .wcard,.ct .twrow,.detail-conversation,.al-visual,.al-callout{border:0!important;box-shadow:none!important;border-radius:var(--r-card)!important}
+.contact-card,.two-grid article{background:var(--soft)!important;padding:40px}
+.two-grid article.pale{background:var(--mint)!important}
+.contact-card:nth-child(1){background:var(--lime)!important}
+.contact-card:nth-child(2){background:var(--green)!important}
+.contact-card:nth-child(3){background:var(--peri)!important}
+.contact-card:nth-child(4){background:var(--lilac)!important}
+.contact-card.selected{outline:2px solid var(--ink);outline-offset:4px}
+.story-side{background:var(--soft)!important}
+.story-side.mint{background:var(--mint)!important}
+.hr-card{background:var(--soft)!important}
+.al-steps li{background:var(--soft)!important}
+.ct-band-cream .wcard,.al-band-gray .al-steps li{background:#fff!important}
+.detail-conversation{background:var(--lilac)!important}
+.al-review{border-radius:var(--r-card)!important;overflow:hidden}
+.ct .twrow{background:var(--soft)!important}
+.ct .twvis{border-radius:20px}
+.story-index,.steps article>span{color:var(--ink)!important}
+
+/* 구분선 걷어내기 — 기능 사이 가로줄, 이야기 목록 줄 */
+.al-feat+.al-feat{border-top:0!important}
+.story-row{border-top:0;border-radius:var(--r-card);padding:40px;margin-bottom:16px;background:#fff}
+.story-row:nth-child(odd){background:var(--soft)}
+
+/* 자주 묻는 질문 — 연한 구분선으로 나눈 목록 */
+.faq-section details{border:0!important;border-top:1px solid #ECEDF0!important;background:none;border-radius:0;margin:0;padding:0 4px}
+.faq-section details:last-of-type{border-bottom:1px solid #ECEDF0!important}
+.faq-section summary{padding:24px 0}
+.faq-section summary span{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:50%;background:var(--soft);color:var(--ink);font-size:16px;transition:transform .2s}
+.faq-section details p{padding-bottom:24px}
+
+@media(max-width:1100px){
+  main h1{font-size:48px!important}
+}
+@media(max-width:640px){
+  .wrap{width:calc(100% - 40px)}
+  main h1{font-size:36px!important}
+  main h2{font-size:30px!important}
+  .hero-desc,.lead,.detail-grid .lead,.al-sub,.hr-head>p,.hr-hero-desc,.page-intro p,.section-heading p:not(.eyebrow){font-size:16px!important}
+  .al-band-gray,.al-band-cream,.al-band-mint,.ct-band-cream,.ct-band-mint,.steps-section,.hr-flow,.hr-hero{margin-left:8px;margin-right:8px;border-radius:28px}
+  .contact-card,.two-grid article,.story-row{padding:28px 24px}
+  .page-intro{padding-top:56px;padding-bottom:40px}
+}
+
+/* 옛 헤더의 모바일 메뉴 규칙(style.css nav{position:absolute})이 본문 nav까지 띄우지 않게 */
+main nav{position:static!important;padding:0!important;box-shadow:none!important;border-bottom:0!important;max-height:none!important;overflow:visible!important;background:none!important}
+.hr-quick a{background:var(--soft);border-radius:999px}
+
+/* 히어로 버튼 줄 — 홈(.hero-act)과 같은 간격: 10px, 위 36px, 폰에서도 가로로 나란히 */
+main .hero-actions{gap:10px!important;margin-top:36px!important;flex-direction:row!important;flex-wrap:wrap;align-items:center!important}
+
+/* 알림톡 — 제목·설명 간격과 섹션 여백을 홈(index.html) 실측값에 맞춤, 회색 배경 판은 뺀다 */
+.al .al-hero h1{line-height:1.18!important}
+.al .al-hero .lead{margin-top:24px}
+.al .al-sec{padding-top:112px;padding-bottom:112px}
+.al .al-head{margin-bottom:48px}
+.al .al-sub{margin-top:16px}
+.al .faq-section h2{margin-bottom:48px}
+.al .al-band-gray,.al .al-band-cream{background:transparent!important;margin:0;border-radius:0}
+@media(max-width:640px){
+  .al .al-sec{padding-top:72px;padding-bottom:72px}
+  .al .al-head{margin-bottom:32px}
+  .al .al-sub{margin-top:14px}
+  .al .faq-section h2{margin-bottom:32px}
+}
+
+/* 알림톡 — 섹션 제목 옆 '수신율 5배' 인포그래픽: 세로 막대 둘 + 두꺼운 화살표, 배경 판 없이.
+   보이면 막대가 아래에서 자라고 → 화살표가 그려지고 → 화살촉·숫자가 나온다 (v3-fall.js의 .is-in) */
+.al .al-head-stat{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:48px;align-items:center}
+.al-stat{margin:0}
+.al-chart{display:block;width:100%;height:auto;overflow:visible}
+.al-chart-cap{font-size:15px;font-weight:600;fill:var(--ink)}
+.al-chart-num{font-size:64px;font-weight:600;letter-spacing:-.05em;fill:var(--ink)}
+.al-chart-num tspan{font-size:30px;letter-spacing:-.03em}
+.al-col{fill:#E4E6EA;transform-box:fill-box;transform-origin:bottom}
+.al-col.is-kakao{fill:var(--color-kakao,#FEE500)}
+.al-arrow,.al-arrow-head{fill:none;stroke:var(--jb-primary,#1890FF);stroke-width:12;stroke-linecap:round;stroke-linejoin:round}
+.al-col-label{font-size:15px;font-weight:600;fill:var(--ink)}
+.al-col-ic{fill:var(--ink);overflow:visible}
+.al-stat.will-fall .al-col{transform:scaleY(0)}
+.al-stat.will-fall .al-arrow{stroke-dasharray:100;stroke-dashoffset:100}
+.al-stat.will-fall .al-arrow-head,.al-stat.will-fall .al-chart-num,.al-stat.will-fall .al-chart-cap{opacity:0}
+.al-stat.will-fall.is-in .al-col{transform:none;transition:transform .35s cubic-bezier(.34,1.3,.55,1) .05s}
+.al-stat.will-fall.is-in .al-col.is-kakao{transition-delay:.15s;transition-duration:.45s}
+.al-stat.will-fall.is-in .al-arrow{stroke-dashoffset:0;transition:stroke-dashoffset .35s cubic-bezier(.5,0,.3,1) .45s}
+.al-stat.will-fall.is-in .al-arrow-head{opacity:1;transition:opacity .1s ease .78s}
+.al-stat.will-fall.is-in .al-chart-num,.al-stat.will-fall.is-in .al-chart-cap{opacity:1;transition:opacity .25s ease .8s}
+@media(max-width:1100px){.al .al-head-stat{grid-template-columns:minmax(0,1fr) 360px;gap:32px}}
+@media(max-width:850px){.al .al-head-stat{grid-template-columns:1fr}.al-stat{max-width:420px}}
+
+/* 알림톡 — 기능마다 '이게 불편했어요'를 고객 얼굴 + 말풍선으로. 아래 h3가 그 불편을 푼 답 */
+.al .al-pain{display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;padding-left:0}
+.al .al-pain-face{width:56px;height:56px;flex:none;object-fit:contain}
+.al .al-pain p{position:relative;padding:12px 16px;border-radius:20px;background:var(--soft);color:var(--ink);font-size:15px;line-height:1.55}
+/* 꼬리: 말풍선 왼쪽 아래에서 얼굴 쪽으로 휘어 나온 모양 (바깥 곡선은 흰 바탕으로 깎는다) */
+.al .al-pain p::before{content:"";position:absolute;left:-10px;bottom:0;width:26px;height:22px;background:var(--soft);border-bottom-right-radius:20px 18px}
+.al .al-pain p::after{content:"";position:absolute;left:-14px;bottom:0;width:14px;height:24px;background:#fff;border-bottom-right-radius:14px}
+@media(max-width:640px){.al .al-pain-face{width:48px;height:48px}.al .al-pain p{font-size:14px;padding:10px 14px}}
+
+/* 알림톡 — 기능 설명 제목을 홈의 소제목(.cx-smb-hd h3)과 같은 32px로 키운다 (폰 24px) */
+.al .al-feat h3{font-size:32px!important;line-height:1.3!important;letter-spacing:-.03em!important}
+@media(max-width:640px){.al .al-feat h3{font-size:24px!important}}
+
+/* 알림톡 — 기능 이미지 뒤 박스 대신 홈의 도형(clipPath #s-*)을 작게, 이미지 모서리에 걸쳐 둔다.
+   도형 정의는 페이지 안 숨긴 svg. 이미지(화면 창)에는 연한 그림자 */
+.al{overflow-x:clip}
+.al .al-compose{padding:0}
+.al .al-compose:before{top:-56px;right:-56px;bottom:auto;width:220px;height:220px;border-radius:0;background:var(--green);clip-path:url(#s-scallop)}
+.al .al-demo-stage{position:relative;background:transparent!important;padding:0}
+.al .al-demo-stage:before{content:"";position:absolute;left:-64px;bottom:-56px;width:220px;height:220px;background:var(--lilac);clip-path:url(#s-wave)}
+.al .al-demo-stage>*{position:relative}
+.al .al-art{position:relative}
+.al .al-blob{position:absolute;width:220px;height:220px}
+.al .al-art.is-right .al-blob{right:-56px;bottom:-56px}
+.al .al-art.is-left .al-blob{right:-56px;top:-56px}
+.al .al-art .al-shot{position:relative;border-radius:12px}
+.al .al-rc{overflow:visible}
+.al .al-frame,.al .al-talk,.al .al-phone{box-shadow:0 18px 36px rgba(17,17,17,.10),0 4px 10px rgba(17,17,17,.06)!important}
+.al .al-art .al-shot{filter:drop-shadow(0 18px 18px rgba(17,17,17,.10)) drop-shadow(0 4px 5px rgba(17,17,17,.06))}
+@media(max-width:640px){
+  .al .al-compose:before,.al .al-demo-stage:before,.al .al-blob{width:140px;height:140px}
+  .al .al-compose:before{top:-36px;right:-28px}
+  .al .al-demo-stage:before{left:-28px;bottom:-36px}
+  .al .al-art.is-right .al-blob{right:-28px;bottom:-36px}
+  .al .al-art.is-left .al-blob{right:-28px;top:-36px}
+}
+
+/* 알림톡 — '자세히 보기' 버튼에서 문서로 퍼지는 부채꼴 (좌표는 페이지 스크립트가 그린다). 대화 위, 폰 아래에 깔린다 */
+.al .al-beam{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1}
+.al .al-demo-stage .al-phone{z-index:2}
+.al .al-beam-btn{fill:rgba(24,144,255,.10);stroke:#1890FF;stroke-width:2}
+
+/* 알림톡 — 단계 칩: 숫자 원을 글자 크기에 맞춰 줄이고, 단계 전체 뒤에 연회색 판 하나 */
+.al .al-chips{display:inline-flex;flex-wrap:wrap;gap:8px 20px;margin-top:24px;padding:12px 20px;border-radius:20px;background:var(--soft)}
+.al .al-chips span{gap:8px;padding:0;background:none;border-radius:0;font-size:15px;font-weight:600}
+.al .al-chips i{width:18px;height:18px;font-size:11px;font-weight:700;line-height:1}
+
+/* 알림톡 — 고객 후기 카드: 사진을 카드 색 안의 둥근 타일로 넣어 한 장으로 잇고, 카드 뒤에 크고 은은한 그림자 */
+.al .al-review{padding:12px 12px 0;background:var(--rv);border-radius:var(--r-card)!important;box-shadow:0 28px 56px rgba(17,17,17,.10),0 6px 16px rgba(17,17,17,.05)}
+.al .al-rv-pic,.al .al-rv-photo.is-logo{border-radius:22px;overflow:hidden}
+.al .al-rv-pic .al-rv-photo{display:block}
+.al .al-rv-body{padding:24px 12px 20px}
+.al .al-review .tags{color:#fff}
+
+/* 알림톡 — '무엇을 발송할까요?' 예시 카드: 카톡 채팅방 하늘색 위에 흰 말풍선(히어로 애니메이션과 같은 색), 파란 제목 띠 대신 카드 안 제목 */
+.al .al-use{background:#B2C7DA;border-radius:var(--r-card);padding:24px 20px 28px}
+.al .al-use h3{padding:0 4px 16px;background:none;color:var(--ink);text-align:left;font-size:20px!important}
+.al .al-use-body{padding:0;background:none}
+.al .al-use-shot{border-radius:16px;box-shadow:0 10px 24px rgba(31,42,53,.12)}
+.al .al-use h3{display:flex;align-items:center;gap:8px}
+.al .al-use-ic{width:22px;height:22px}
+
+/* 알림톡 — 시작 단계 카드: 색 동그라미 대신 큰 01·02·03 숫자 (색 없이 크기로) */
+.al .al-steps li:before,.al .al-steps li:nth-child(n):before{content:counter(st,decimal-leading-zero);display:block;width:auto;height:auto;margin-bottom:20px;background:none;border-radius:0;font-size:48px;line-height:1;font-weight:600;letter-spacing:-.04em;color:var(--peri)}
+@media(max-width:640px){.al .al-steps li:before,.al .al-steps li:nth-child(n):before{font-size:40px;margin-bottom:16px}}
+
+/* 알림톡 히어로 — 큰 색 카드 위에 발송 결과 대시보드(오른쪽으로 잘려 나감) + 앞에 겹친 카톡방 + 떠 있는 칩.
+   560×460 기준으로 그리고 폭에 맞춰 --s로 줄인다(페이지 스크립트). 단계 클래스 s1~s4가 붙으며 장면이 진행된다 */
+.al-hv{position:relative;width:100%;max-width:560px;height:calc(460px*var(--s,1));justify-self:end}
+.al-hv-stage{position:absolute;left:0;top:0;width:560px;height:460px;transform:scale(var(--s,1));transform-origin:0 0;font-size:13px;color:var(--ink)}
+.al-hv-card{position:absolute;inset:0;border-radius:var(--r-card);background:linear-gradient(135deg,#7E9BF5 0%,var(--peri) 45%,#C7D5FF 100%)}
+.al-hv-dash{position:absolute;left:232px;top:56px;right:0;bottom:0;padding:22px 0 0 22px;background:#fff;border-radius:18px 0 var(--r-card) 0;box-shadow:-12px 20px 44px rgba(31,42,90,.16);overflow:hidden}
+.al-hv-dhd b{display:block;font-size:16px;font-weight:700}
+.al-hv-dhd span{display:block;margin-top:2px;font-size:12px;color:var(--sub)}
+.al-hv-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:290px;margin:14px 0 8px}
+.al-hv-nums div{padding:10px 8px;border-radius:12px;background:var(--soft);text-align:center}
+.al-hv-nums b{display:block;font-size:24px;line-height:1.1;font-weight:700;font-variant-numeric:tabular-nums}
+.al-hv-nums span{display:block;margin-top:2px;font-size:12px;color:var(--sub)}
+.al-hv-nums .ok{background:#E6F4FF}.al-hv-nums .ok b{color:#1890FF}
+.al-hv-nums .hot{background:var(--lime)}
+.al-hv-rows{list-style:none;margin:0;padding:0;width:300px}
+.al-hv-rows li{display:grid;grid-template-columns:70px 1fr;align-items:center;height:33px;padding:0 4px;border-top:1px solid #F0F1F3;font-size:12px}
+.al-hv-rows li.hd{height:30px;border-top:0;color:var(--sub);font-size:11px}
+.al-hv-rows .tp{color:var(--sub)}
+.al-hv-rows .st{color:#9AA0A8}
+.al-hv-rows .st.on{justify-self:start;padding:3px 8px;border-radius:999px;background:var(--mint);color:var(--ink);font-weight:700;animation:alhv-pop .35s cubic-bezier(.34,1.56,.64,1)}
+.al-hv-resend{position:absolute;right:20px;bottom:18px;display:flex;align-items:center;gap:8px;padding:11px 18px 11px 14px;border-radius:999px;background:#1890FF;color:#fff;font-size:13px;font-weight:700;box-shadow:0 10px 22px rgba(24,144,255,.35);opacity:0;transform:translateY(10px) scale(.9);transition:opacity .3s,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.al-hv-resend svg{width:16px;height:16px}
+.al-hv-chat{position:absolute;left:28px;top:18px;width:196px;padding:12px 12px 12px;border-radius:24px;background:#B2C7DA;box-shadow:0 22px 44px rgba(31,42,90,.22);opacity:0;transform:translateY(24px) scale(.96);transition:opacity .45s,transform .55s cubic-bezier(.34,1.4,.64,1)}
+.al-hv-room{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.al-hv-room .av{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#fff;overflow:hidden}
+.al-hv-room .av img{width:22px;height:22px}
+.al-hv-room b{font-size:13px;color:#1f2a35}
+.al-hv-bubble{position:relative;border-radius:14px;overflow:hidden;background:#fff;transform-origin:0 0;transform:scale(.6);opacity:0;transition:opacity .3s .15s,transform .5s cubic-bezier(.34,1.56,.64,1) .15s}
+.al-hv-bubble img{display:block;width:100%;height:auto}
+.al-hv-sent,.al-hv-toast{position:absolute;display:flex;align-items:center;gap:8px;padding:9px 14px 9px 10px;border-radius:999px;background:#fff;box-shadow:0 12px 28px rgba(31,42,90,.18);font-size:13px;font-weight:700;white-space:nowrap;opacity:0;transform:translateY(10px) scale(.9);transition:opacity .3s,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.al-hv-sent{left:250px;top:22px}
+.al-hv-sent svg{width:16px;height:16px;color:#1890FF}
+.al-hv-toast{left:252px;top:390px}
+.al-hv-toast i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#1890FF;color:#fff}
+.al-hv-toast i svg{width:12px;height:12px}
+.al-hv-stage.s1 .al-hv-chat{opacity:1;transform:none}
+.al-hv-stage.s1 .al-hv-bubble{opacity:1;transform:none}
+.al-hv-stage.s2 .al-hv-sent{opacity:1;transform:none}
+.al-hv-stage.s3 .al-hv-sent{opacity:0;transform:translateY(-6px)}
+.al-hv-stage.s3 .al-hv-toast{opacity:1;transform:none}
+.al-hv-stage.s4 .al-hv-toast{opacity:0}
+.al-hv-stage.s4 .al-hv-resend{opacity:1;transform:none;animation:alhv-pulse 1.4s ease-in-out .5s infinite}
+.al-hv-stage.out .al-hv-chat,.al-hv-stage.out .al-hv-resend{opacity:0;transition-duration:.4s}
+@keyframes alhv-pop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+@keyframes alhv-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@media(max-width:850px){.al-hv{justify-self:center}}
+/* 말풍선 '자세히 보기' 버튼을 누르는 손가락 자국 */
+.al-hv-tap{position:absolute;left:50%;top:95.2%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:rgba(17,17,17,.2);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);opacity:0;transform:translate(26px,30px);transition:opacity .25s,transform .45s cubic-bezier(.2,.8,.2,1)}
+.al-hv-tap:after{content:"";position:absolute;inset:-2px;border-radius:50%;background:rgba(24,144,255,.45);opacity:0}
+.al-hv-stage.tap .al-hv-tap{opacity:1;transform:none}
+.al-hv-stage.press .al-hv-tap{transform:scale(.82)}
+.al-hv-stage.press .al-hv-tap:after{animation:alhv-ripple .6s ease-out forwards}
+.al-hv-stage.s3 .al-hv-tap{opacity:0;transition-delay:.25s}
+.al-hv-stage.done .al-hv-tap{display:none}
+@keyframes alhv-ripple{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(3.2)}}
+
+/* 스크롤 등장 — 페이지 스크립트가 .rv를 붙이고 보이면 .in. transform을 쓰는 요소와 겹치지 않게 translate 속성만 쓴다 */
+
+/* ── 전자계약 — 알림톡과 같은 규칙: 홈 간격, 큰 배경 판 없음, 히어로는 큰 색 카드, 이미지 뒤 도형·그림자, 제목 크기 ── */
+.ct .ct-hero h1{line-height:1.18!important}
+.ct .ct-hero .lead{margin-top:24px}
+.ct .ct-sec{padding-top:112px;padding-bottom:112px}
+.ct .ct-sec h2{margin-bottom:48px}
+.ct .faq-section h2{margin-bottom:48px}
+.ct .ct-band-cream,.ct .ct-band-mint{background:transparent!important;margin:0;border-radius:0}
+@media(max-width:640px){.ct .ct-sec{padding-top:72px;padding-bottom:72px}.ct .ct-sec h2,.ct .faq-section h2{margin-bottom:32px}}
+.ct{overflow-x:clip}
+/* 히어로: 초록 그라데이션 카드 위에 계약 흐름 화면, 모서리에 도형 */
+.ct .ct-hv{position:relative;display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;align-items:center;padding:48px 32px;border-radius:var(--r-card);background:linear-gradient(135deg,#4FE38E 0%,var(--green) 45%,#C9FFE0 100%)}
+.ct .ct-hv-blob{position:absolute;width:180px;height:180px}
+.ct .ct-hv .device{position:relative;border-color:#fff;box-shadow:0 24px 48px rgba(16,80,48,.22)}
+@media(max-width:640px){.ct .ct-hv{padding:32px 16px}.ct .ct-hv-blob{width:120px;height:120px}}
+/* 보내는 방식 카드: 흰 바탕 위라 연회색 면 */
+.ct .wcard{background:var(--soft)!important;border-radius:28px!important;padding:28px 24px 22px}
+.ct .wcard h3{font-size:20px!important}
+/* 직접 받기 카드: 아래에 카드가 있고, 페이지 목업이 카드 뒤에서 쏙 올라와 있는 모양 (목업은 다 보이고 아래 끝만 카드에 살짝 걸린다) */
+.ct .twrow{background:none!important;padding:0!important;overflow:visible;border-radius:0!important}
+.ct .twvis{position:relative;z-index:0;height:236px;margin:0 0 -28px;padding:0;background:none!important;border-radius:0;overflow:visible;align-items:flex-end;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.ct .twrow:hover .twvis{transform:translateY(-10px)}
+.ct .twvis>*{box-shadow:0 18px 40px rgba(17,17,17,.14)}
+.ct .twvis .spg{width:320px;padding-bottom:32px;border:0;border-radius:16px}
+.ct .twvis .slk{width:320px;padding:16px 16px 48px;background:#fff;border-radius:16px}
+.ct .twbody{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;padding:36px 28px 28px;border-radius:var(--r-card);background:var(--soft)}
+.ct .twrow h3{font-size:24px!important;margin:0 0 10px}
+.ct .twrow p{margin:0}
+.ct .twsee{align-self:flex-start;margin:20px 0 0;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+@media(max-width:640px){.ct .twvis .spg,.ct .twvis .slk{width:280px}.ct .twbody{padding:28px 20px 24px}}
+/* 연결 계속: 연락처 화면 뒤 꽃 도형 + 그림자 */
+.ct .ct-art{position:relative;width:100%;max-width:480px}
+.ct .ct-art-blob{position:absolute;width:200px;height:200px;right:-64px;top:-56px}
+.ct .cui{position:relative;border-radius:18px;box-shadow:0 20px 44px rgba(17,17,17,.12)}
+.ct .ic2{background:var(--soft)!important}
+.ct .nxcols h3{font-size:22px!important}
+@media(max-width:640px){.ct .ct-art-blob{width:130px;height:130px;right:-24px;top:-36px}}
+/* 문서 서식 묶음 */
+.ct .ct-doclist{border-radius:var(--r-card);padding:28px}
+/* 히어로 계약 흐름: 카톡 장면의 테두리 걷어내고, 말풍선이 아래 단계 표시와 겹치지 않게 장면 높이를 늘린다 */
+.ct .ct-hv .kbub{border:0;box-shadow:0 4px 14px rgba(17,17,17,.07)}
+.ct .ct-hv .kbt{border:0;background:#F2F3F5}
+.ct .ct-hv .chans span{border:0}
+.ct .ct-hv .chans span:not(.k){background:#EEF0F3}
+.ct .ct-hv .scene{height:256px}
+/* 카톡 장면은 카톡 채팅방 하늘색 위에서 (장면 자리만, 아래 단계 표시는 그대로) */
+.ct .ct-hv .sendui{inset:-16px -16px -6px;padding:16px 16px 6px;background:#B2C7DA}
+.ct .ct-hv .snd b{color:#1f2a35}
+.ct .ct-hv .chans span:not(.k){background:#fff}
+/* 보내는 방식 카드: 아이콘 칸 색을 카드 전체로 옮기고, 아이콘은 색 칸 없이 검정 선만 */
+.ct .wcard:nth-child(1){background:var(--peach)!important}
+.ct .wcard:nth-child(2){background:var(--mint)!important}
+.ct .wcard:nth-child(3){background:var(--peri)!important}
+.ct .wcard:nth-child(4){background:var(--lilac)!important}
+.ct .wcard .wic{width:auto;height:auto;margin-bottom:24px;background:none!important;justify-content:start}
+.ct .wcard .wic svg{width:32px;height:32px;color:#fff!important;fill:currentColor!important;stroke:none!important}
+.ct .wcard p{color:var(--ink)!important;opacity:.75}
+.ct .snote i{background:#1890FF}
+
+/* ── 인사관리 — 알림톡·전자계약과 같은 규칙: 흰 히어로 + 오른쪽 큰 색 카드, 홈 간격, 제목 크기, 밑줄 링크 ── */
+.hr{overflow-x:clip}
+.hr .hr-hero{margin:0;border-radius:0;background:none!important}
+.hr .hr-hero .back{margin-top:40px;color:var(--sub)}
+.hr .hr-hero-layout{gap:48px;padding:40px 0 88px}
+.hr .hr-hero h1{line-height:1.18!important;margin-bottom:0}
+.hr .hr-hero-desc{margin-top:24px;color:var(--sub)!important}
+.hr .hr-hero .hero-actions{margin-top:36px!important}
+/* 히어로 그림: 전자계약(네모 카드)과 달리 홈 히어로 같은 큰 꽃 도형 위에 노트북이 도형 밖으로 비어져 나오고, 처리 완료 카드 둘이 떠 있다 */
+.hr .hr-hv{position:relative;aspect-ratio:1/.86;max-width:600px;width:100%;justify-self:end}
+.hr .hr-hv-shape{position:absolute;right:0;top:0;width:90%;aspect-ratio:1;background:linear-gradient(135deg,#7E9BF5 0%,var(--peri) 50%,#C7D5FF 100%);clip-path:url(#s-flower)}
+.hr .hr-hv-dot{position:absolute;left:4%;top:6%;width:22%;aspect-ratio:1;background:var(--peach);clip-path:url(#s-scallop)}
+.hr .hr-hv img{position:absolute;left:-4%;bottom:5%;width:84%;height:auto;filter:drop-shadow(0 26px 34px rgba(31,42,90,.28))}
+.hr .hr-hv-chip{position:absolute;display:flex;align-items:center;gap:10px;padding:10px 16px 10px 10px;border-radius:18px;background:#fff;box-shadow:0 14px 32px rgba(31,42,90,.18);white-space:nowrap;animation:hrhv-float 5s ease-in-out infinite}
+.hr .hr-hv-chip i{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:12px;color:#fff}
+.hr .hr-hv-chip i svg{width:18px;height:18px}
+.hr .hr-hv-chip b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.hr .hr-hv-chip small{display:block;font-size:12px;color:var(--sub)}
+.hr .hr-hv-chip.c1{right:-2%;top:16%}
+.hr .hr-hv-chip.c1 i{background:#1890FF}
+.hr .hr-hv-chip.c2{right:6%;bottom:0;animation-delay:-2.5s}
+.hr .hr-hv-chip.c2 i{background:var(--peach)}
+@keyframes hrhv-float{0%,100%{translate:0 0}50%{translate:0 -8px}}
+@media(prefers-reduced-motion:reduce){.hr .hr-hv-chip{animation:none}}
+@media(max-width:850px){.hr .hr-hv{justify-self:center;margin-top:16px}}
+@media(max-width:640px){.hr .hr-hv-chip{padding:8px 12px 8px 8px;border-radius:14px}.hr .hr-hv-chip i{width:28px;height:28px;border-radius:10px}.hr .hr-hv-chip b{font-size:12px}.hr .hr-hv-chip small{font-size:11px}.hr .hr-hv-chip.c1{right:0}.hr .hr-hv img{left:0;width:88%}}
+.hr .hr-sec{padding-top:112px;padding-bottom:112px}
+.hr .hr-head{margin-bottom:48px}
+.hr .hr-head>p{color:var(--sub)}
+.hr .hr-group{margin:48px 0 20px;font-size:20px;font-weight:600}
+.hr .hr-card{border-radius:28px!important;padding:28px 28px 26px}
+.hr .hr-card h3{font-size:24px!important}
+.hr .hr-detail{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+.hr .hr-flow{margin-top:24px;margin-bottom:24px}
+.hr .hr-flow+.faq-section{padding-top:112px}
+.hr .faq-section h2{margin-bottom:48px}
+@media(max-width:640px){.hr .hr-sec{padding-top:72px;padding-bottom:72px}.hr .hr-head,.hr .faq-section h2{margin-bottom:32px}.hr .hr-group{margin-top:36px;font-size:18px}.hr .hr-flow+.faq-section{padding-top:72px}}
+.hr .hr-hero .hero-actions{justify-content:flex-start!important}
+/* 인사관리 카드 아이콘: 7장이라 색을 하나로 — 인사관리 색(파랑) 칸에 흰 아이콘 */
+.hr .hr-icon,.hr .hr-cards>.hr-card:nth-child(n) .hr-icon{background:var(--peri)}
+.hr .hr-icon svg{width:24px!important;height:24px!important;color:#fff;fill:currentColor;stroke:none}
+/* 인사관리 서비스 카드: 흰 카드 + 크고 은은한 그림자, 파랑 그라데이션 아이콘 칸, 번호 대신 오른쪽 아래 알약 '자세히 보기' */
+.hr .hr-card{background:#fff!important;border-radius:var(--r-card)!important;padding:32px 32px 28px;box-shadow:0 24px 56px rgba(31,42,90,.09),0 4px 14px rgba(31,42,90,.05)!important}
+.hr .hr-card:hover{transform:translateY(-4px)}
+.hr .hr-icon,.hr .hr-cards>.hr-card:nth-child(n) .hr-icon{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#6F8EF3 0%,var(--peri) 60%,#BCCDFF 100%)}
+.hr .hr-num{display:none}
+.hr .hr-card-top{margin-bottom:28px}
+.hr .hr-detail{align-self:flex-end;display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;background:var(--soft);font-size:14px;font-weight:600;text-decoration:none!important;transition:background .15s}
+.hr .hr-detail:hover{background:#E6E8EC;color:var(--ink)}
+/* 인사관리 카드 키워드: 설명 글과 섞이지 않게 파랑 글씨로, 사이는 | 구분 */
+.hr .hr-tags{display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;margin-bottom:24px}
+.hr .hr-tags span{color:#3F5BC4;font-size:14px!important;font-weight:600;line-height:1.4}
+.hr .hr-tags span+span:before{content:"|";padding:0 10px;color:#C3CDEB;font-weight:400}
+/* 인사관리 흐름(검정 판): 주황 라벨 + 연두 링크로 강조색이 둘이던 것을 인사관리 파랑 하나로. 링크는 흰 글씨 + 파랑 밑줄 */
+.hr .hr-step b{color:var(--peri)}
+.hr .hr-step a{color:#fff;text-decoration-color:var(--peri);text-decoration-thickness:1.5px}
+.hr .hr-step a:hover{color:var(--peri)}
+.hr .hr-step p,.hr .hr-flow-intro p{color:#9C9CA3!important}
+
+/* ── 활용 사례 — 시나리오마다 '글 + 그 서비스 색 판 위의 화면'을 좌우 번갈아. 회색 줄무늬 판 대신 여백으로 나눈다 ── */
+.story-list{padding-bottom:72px}
+.story-list .story-row,.story-list .story-row:nth-child(odd){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"idx side" "txt side";column-gap:64px;row-gap:16px;align-items:center;padding:56px 0;margin:0;border:0;border-radius:0;background:none}
+.story-list .story-row:nth-child(even){grid-template-areas:"side idx" "side txt"}
+.story-list .story-index{grid-area:idx;align-self:end;font-size:48px;line-height:1;font-weight:600;letter-spacing:-.04em}
+.story-list .story-row>div:nth-child(2){grid-area:txt;align-self:start}
+.story-list .story-side{grid-area:side;display:grid!important;place-items:center;min-height:320px;padding:40px!important;border-radius:var(--r-card)!important}
+.story-list .story-row:nth-child(1) .story-side{background:var(--lime)!important}
+.story-list .story-row:nth-child(2) .story-side{background:var(--green)!important}
+.story-list .story-row:nth-child(3) .story-side{background:var(--peri)!important}
+.story-list .story-row:nth-child(4) .story-side{background:var(--lilac)!important}
+.story-list .story-row:nth-child(1) .story-index{color:#B9C832!important}
+.story-list .story-row:nth-child(2) .story-index{color:#3FCF7A!important}
+.story-list .story-row:nth-child(3) .story-index{color:var(--peri)!important}
+.story-list .story-row:nth-child(4) .story-index{color:#B48BEF!important}
+.story-list .story-row h2{font-size:32px!important;line-height:1.3!important}
+.story-list .story-row p:not(.eyebrow){margin-top:16px;color:var(--sub)}
+.story-list .story-tags{gap:4px 0;margin:20px 0 24px}
+.story-list .story-tags span{padding:0;background:none;border-radius:0;font-size:14px;font-weight:600;color:var(--ink)}
+.story-list .story-tags span+span:before{content:"|";padding:0 10px;color:#C9CCD3;font-weight:400}
+.story-list .text-link{gap:6px;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+/* 판 위 화면: 테두리 없이 흰 카드 + 그림자 */
+.story-list .story-side .mock{width:100%;max-width:340px;border:0;border-radius:18px;padding:20px;box-shadow:0 18px 40px rgba(17,17,17,.12)}
+.story-list .mock .mini-logo{background:var(--ink);color:#fff;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;padding:0;font-size:13px}
+.story-list .mock-button{border-radius:8px;background:#F2F3F5}
+.story-list .ai-tag{background:#1890FF;color:#fff}
+.story-list .signature{border:0;background:#F6F7F9}
+.story-list .person>i{display:grid;place-items:center;background:var(--soft)!important;color:var(--sub)}
+.story-list .person>i svg{width:16px;height:16px}
+.story-list .story-row:nth-child(4) .story-side{color:var(--ink)}
+.story-list .story-row:nth-child(4) .story-side .connectia-logo{font-size:40px}
+.story-list .story-row:nth-child(4) .story-side p{margin-top:12px;font-size:18px;color:var(--ink)}
+@media(max-width:850px){
+  .story-list .story-row,.story-list .story-row:nth-child(odd),.story-list .story-row:nth-child(even){grid-template-columns:1fr;grid-template-areas:"idx" "txt" "side";padding:40px 0}
+  .story-list .story-side{min-height:240px;padding:28px 20px!important;margin-top:16px}
+  .story-list .story-index{font-size:40px}
+  .story-list .story-row h2{font-size:26px!important}
+}
+/* 커넥티아 공식 로고 (Connectia. 워드마크) — 글자 'connectia' 대신 */
+.connectia-logo-img{display:block;height:28px;width:auto}
+.story-list .story-side .connectia-logo-img{height:44px}
+.story-list .story-row:nth-child(4) .story-side{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center}.story-list .story-row:nth-child(4) .story-side p{margin:0!important}
+/* 활용 사례 04: 로고 아래 두 문장을 양쪽에서 주고받는 말풍선으로 (꼬리는 한 모서리만 뾰족하게) */
+.story-list .cn-chat{display:flex;flex-direction:column;gap:10px;width:100%;max-width:240px;margin-top:12px}
+.story-list .story-row:nth-child(4) .story-side .cn-b{margin:0!important;padding:12px 18px;font-size:17px!important;font-weight:600;line-height:1.4;box-shadow:0 10px 24px rgba(60,30,110,.12)}
+.story-list .cn-b.l{align-self:flex-start;border-radius:20px 20px 20px 4px;background:#fff;color:var(--ink)}
+.story-list .story-row:nth-child(4) .story-side .cn-b.r{align-self:flex-end;border-radius:20px 20px 4px 20px;background:var(--ink);color:#fff}
+.story-list .story-row:nth-child(4) .cn-chat{order:-1;margin:0 0 12px}
+/* 활용 사례 04: 커넥티아 명함 카드형 프로필 화면을 가운데 두고, 양쪽 말풍선이 화면 가장자리에 걸쳐 떠 있게 */
+.story-list .story-row:nth-child(4) .story-side .cn-chat{position:relative;display:block;width:230px;max-width:none;margin:0 0 20px}
+.story-list .cn-phone{display:block;width:100%;height:auto;border:6px solid #fff;border-radius:28px;background:#fff;box-shadow:0 22px 48px rgba(60,30,110,.22)}
+.story-list .story-row:nth-child(4) .story-side .cn-b{position:absolute;white-space:nowrap}
+.story-list .cn-b.l{left:-84px;top:-8px}
+.story-list .story-row:nth-child(4) .story-side .cn-b.r{right:-84px;bottom:40px}
+.story-list .story-row:nth-child(4) .story-side .connectia-logo-img{height:32px}
+@media(max-width:640px){
+  .story-list .story-row:nth-child(4) .story-side .cn-chat{width:180px}
+  .story-list .story-row:nth-child(4) .story-side .cn-b{font-size:14px!important;padding:9px 14px}
+  .story-list .cn-b.l{left:-56px;top:-8px}
+  .story-list .story-row:nth-child(4) .story-side .cn-b.r{right:-56px;bottom:28px}
+}
+/* 네 판 높이 통일: 320px(폰 300px). 커넥티아 판은 로고를 왼쪽 위 모서리로 빼고 화면을 가운데에 */
+.story-list .story-side{height:320px;min-height:0!important}
+.story-list .story-row:nth-child(4) .story-side{position:relative;padding:24px!important}
+.story-list .story-row:nth-child(4) .story-side .connectia-logo-img{position:absolute;left:28px;bottom:24px;top:auto;height:22px}
+.story-list .story-row:nth-child(4) .story-side .cn-chat{width:224px;margin:0}
+@media(max-width:850px){
+  .story-list .story-side{height:300px}
+  .story-list .story-row:nth-child(4) .story-side{padding:48px 20px 20px!important}
+  .story-list .story-row:nth-child(4) .story-side .connectia-logo-img{left:20px;top:18px;bottom:auto;height:18px}
+  .story-list .story-row:nth-child(4) .story-side .cn-chat{width:184px}
+}
+
+/* 활용 사례 01·02 화면: 카톡방에 도착한 알림톡 / 서명까지 끝난 계약서, 옆에 처리 완료 칩 */
+.story-list .story-row:nth-child(1) .story-side,.story-list .story-row:nth-child(2) .story-side{position:relative}
+.story-list .sm-chip{position:absolute;display:flex;align-items:center;gap:8px;padding:9px 14px 9px 9px;border-radius:999px;background:#fff;box-shadow:0 12px 28px rgba(17,17,17,.14);font-size:13px;font-weight:700;white-space:nowrap}
+.story-list .sm-chip i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#1890FF;color:#fff}
+.story-list .sm-chip i svg{width:12px;height:12px}
+.story-list .story-row:nth-child(1) .sm-chip{right:9%;bottom:16%}
+.story-list .story-row:nth-child(2) .sm-chip{right:7%;bottom:18%}
+/* 카톡방 */
+.story-list .sm-kakao{width:260px;padding:14px 14px 16px;border-radius:24px;background:#B2C7DA;box-shadow:0 18px 40px rgba(17,17,17,.14)}
+.story-list .sm-room{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.story-list .sm-av{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#fff;overflow:hidden}
+.story-list .sm-av img{width:20px;height:20px}
+.story-list .sm-room b{font-size:13px;color:#1f2a35}
+.story-list .sm-bub{width:calc(100% - 36px);margin-left:36px;border-radius:4px 14px 14px 14px;overflow:hidden;background:#fff}
+.story-list .sm-band{padding:6px 12px;background:#FEE500;font-size:10px;font-weight:800;color:#111}
+.story-list .sm-bd{padding:12px}
+.story-list .sm-bd b{display:block;font-size:14px;color:#111}
+.story-list .sm-bd p{margin:6px 0 10px!important;font-size:12px!important;line-height:1.5;color:#555!important}
+.story-list .sm-btn{display:block;padding:8px 0;border-radius:6px;background:#F2F3F5;text-align:center;font-size:11px;font-weight:700;color:#111}
+.story-list .sm-time{display:block;margin:4px 0 0 36px;font-size:10px;color:#4a5a6a}
+/* 계약서 */
+.story-list .sm-doc{width:270px;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 18px 40px rgba(17,17,17,.14)}
+.story-list .sm-dhd{padding:14px 16px;background:#1890FF;color:#fff}
+.story-list .sm-dhd b{display:block;font-size:14px}
+.story-list .sm-dhd span{display:block;margin-top:2px;font-size:11px;opacity:.85}
+.story-list .sm-dbd{padding:16px}
+.story-list .sm-dbd>i{display:block;height:5px;margin-bottom:9px;border-radius:3px;background:#ECEEF2}
+.story-list .sm-dbd>i.s{width:60%;margin-bottom:16px}
+.story-list .sm-sign{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:#F4F7FF}
+.story-list .sm-sign span{font-size:11px;color:var(--sub)}
+.story-list .sm-sign svg{flex:1;height:34px}
+.story-list .sm-sign path{fill:none;stroke:#111;stroke-width:2.2;stroke-linecap:round}
+@media(max-width:640px){.story-list .sm-kakao{width:236px}.story-list .sm-doc{width:240px}.story-list .story-row:nth-child(1) .sm-chip{right:4%;bottom:8%}.story-list .story-row:nth-child(2) .sm-chip{right:4%;bottom:10%}}
+/* 01 판 자체를 카톡방 하늘색으로 — 판 > 카톡방 > 말풍선으로 겹치던 상자 하나를 걷어낸다 */
+.story-list .story-row:nth-child(1) .story-side{background:#B2C7DA!important}
+.story-list .story-row:nth-child(1) .story-index{color:#8EA9C3!important}
+.story-list .sm-kakao{padding:0;border-radius:0;background:none;box-shadow:none}
+.story-list .sm-bub{box-shadow:0 10px 24px rgba(31,42,53,.12)}
+@media(min-width:641px){.story-list .sm-kakao{width:300px}.story-list .sm-bd b{font-size:16px}.story-list .sm-bd p{font-size:13px!important}}
+.story-list .sm-bub{border-radius:14px}
+.story-list .sm-kakao{margin-right:56px}@media(max-width:640px){.story-list .sm-kakao{margin-right:32px}}
+.story-list .sm-doc{margin-right:56px}@media(max-width:640px){.story-list .sm-doc{margin-right:32px}}
+.story-list .story-row:nth-child(2) .sm-chip{right:12%}@media(max-width:640px){.story-list .story-row:nth-child(2) .sm-chip{right:8%}}
+@media(min-width:641px){.story-list .story-row:nth-child(2) .sm-chip{right:17%}}
+.story-list .sm-sign svg{overflow:visible}
+
+/* ── 회사 소개 — 히어로 오른쪽: 서비스 색 도형 넷이 자버 심볼 둘레로 와르르 모인다(v3-fall.js) ── */
+.ab-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;padding-top:72px!important;padding-bottom:96px!important}
+.ab-hero h1{line-height:1.18!important}
+.ab-hero .lead{margin-top:24px}
+.ab-orbit{position:relative;aspect-ratio:1/.86;width:100%;max-width:540px;justify-self:end}
+.ab-blob{position:absolute;aspect-ratio:1;display:grid;place-items:center;font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+.ab-hub{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:0 16px 36px rgba(17,17,17,.16)}
+.ab-hub img{width:56px;height:56px}
+.ab-orbit [data-fall]{--fy:-260px}
+@media(max-width:850px){.ab-hero{grid-template-columns:1fr;gap:32px}.ab-orbit{justify-self:center;max-width:420px}}
+@media(max-width:640px){.ab-hero{padding-top:48px!important;padding-bottom:56px!important}.ab-blob{font-size:14px}.ab-hub{width:64px;height:64px;margin:-32px 0 0 -32px}.ab-hub img{width:42px;height:42px}}
+/* 모든 소통에는 사람이: 테두리 뺀 화면 + 모서리 도형 + 그림자 */
+.about-image{padding-top:24px;padding-bottom:112px;gap:64px!important}
+.ab-art{position:relative}
+.ab-art-blob{position:absolute;width:220px;height:220px;right:-48px;bottom:-48px;background:var(--green);clip-path:url(#s-flower)}
+.ab-art img{position:relative;display:block;width:100%;height:auto;border-radius:12px;filter:drop-shadow(0 18px 18px rgba(17,17,17,.10)) drop-shadow(0 4px 5px rgba(17,17,17,.06))}
+.about-image h2{font-size:44px!important}
+.about-image p:not(.eyebrow){color:var(--sub)!important;font-size:17px!important}
+main:has(.ab-hero){overflow-x:clip}
+@media(max-width:640px){.about-image{padding-bottom:72px;gap:40px!important}.about-image h2{font-size:30px!important}.ab-art-blob{width:140px;height:140px;right:-20px;bottom:-28px}}
+/* 두 가지 연결 방식: 자버 카드는 연회색, 커넥티아 카드는 커넥티아 색(연보라). 제목 키우고 밑줄 링크 */
+.about-brands{padding-top:112px!important;padding-bottom:112px!important}
+.about-brands .section-heading{margin-bottom:48px}
+.about-brands .section-heading p{color:var(--sub)!important}
+.about-brands .two-grid article{padding:40px!important}
+.about-brands .two-grid article.pale{background:var(--lilac)!important}
+.about-brands .two-grid h3{margin-top:32px;font-size:24px!important}
+.about-brands .two-grid p{color:var(--ink)!important;opacity:.7}
+.about-brands .text-link{gap:6px;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+@media(max-width:640px){.about-brands{padding-top:72px!important;padding-bottom:72px!important}.about-brands .section-heading{margin-bottom:32px}.about-brands .two-grid article{padding:28px 24px!important}}
+/* 마지막 다짐: 가운데 큰 문장 */
+.vision{padding-top:112px!important;padding-bottom:144px!important;text-align:center}
+.vision h2{font-size:56px!important;line-height:1.22!important}
+.vision h2 em{background:none!important;padding:0}
+.vision .lead{margin:24px auto 0;max-width:none}
+@media(max-width:640px){.vision{padding-top:72px!important;padding-bottom:96px!important}.vision h2{font-size:32px!important}}
+/* 모든 소통에는 사람이: 문구 속 네 사람(고객·계약 상대·구성원·궁금한 누군가)을 사진 2×2로, 오른쪽 열은 살짝 내려 엇갈리게 */
+.ab-photos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ab-photos img{position:relative;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:24px!important;filter:none!important;box-shadow:0 18px 40px rgba(17,17,17,.10)}
+.ab-photos img:nth-of-type(even){translate:0 40px}
+.ab-photos .ab-art-blob{right:-40px;bottom:-72px}
+@media(max-width:640px){.ab-photos{gap:10px}.ab-photos img{border-radius:18px!important}.ab-photos img:nth-of-type(even){translate:0 24px}.ab-photos .ab-art-blob{right:-20px;bottom:-48px}}
+/* 자버 심볼에서 다섯 서비스로 이어지는 점선 — 도형이 다 떨어진 뒤 나타나고 점이 천천히 흐른다 */
+.ab-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ab-lines line{stroke:#111;stroke-opacity:.38;stroke-width:2.5;stroke-dasharray:2 8;stroke-linecap:round;vector-effect:non-scaling-stroke;animation:ab-flow 1.6s linear infinite}
+@keyframes ab-flow{to{stroke-dashoffset:-18}}
+.ab-orbit.will-fall .ab-lines{opacity:0}
+.ab-orbit.will-fall.is-in .ab-lines{opacity:1;transition:opacity .6s ease 1.1s}
+@media(prefers-reduced-motion:reduce){.ab-lines line{animation:none}}
+/* 세 가지 연결 방식: 자버 · 커넥티아 · 펠로우즈 세 장 (펠로우즈는 사이트 펠로우즈 색 주황) */
+.about-brands .two-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.about-brands .two-grid article.fellows{background:var(--peach)!important}
+.fellows-logo-img{display:block;height:32px;width:auto}
+@media(max-width:1100px){.about-brands .two-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.about-brands .two-grid{grid-template-columns:1fr}}
+/* 세 카드 로고 자리 높이를 36px로 맞춰 제목 줄을 가지런히 */
+.about-brands .two-grid .logo{display:flex;align-items:center;height:36px;line-height:0}
+.about-brands .two-grid .logo img{height:32px;width:auto}
+.about-brands .two-grid .connectia-logo-img{height:26px;margin:5px 0}
+.about-brands .two-grid .fellows-logo-img{height:36px}
+.about-brands .two-grid h3{margin-top:28px!important}
+.about-brands .two-grid .connectia-logo-img{box-sizing:border-box;height:36px;margin:0;padding:5px 0}
+/* 회사 소개 히어로 뒤 자연스러운 그라데이션 — 서비스 색(연보라·연두·주황·파랑)이 옅게 번지고 아래로 흰색에 녹아든다 */
+.ab-hero{position:relative;isolation:isolate}
+.ab-hero:before{content:"";position:absolute;z-index:-1;left:50%;top:-72px;bottom:0;width:100vw;transform:translateX(-50%);background:radial-gradient(42% 60% at 78% 30%,rgba(206,173,249,.45),transparent 70%),radial-gradient(36% 50% at 92% 72%,rgba(150,175,249,.38),transparent 70%),radial-gradient(34% 46% at 58% 78%,rgba(236,254,117,.35),transparent 70%),radial-gradient(30% 40% at 12% 18%,rgba(243,172,107,.22),transparent 70%);-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+/* 그라데이션은 왼쪽(글 뒤)에만 — 오른쪽 도형 뒤는 거의 흰 바탕 */
+.ab-hero:before{background:linear-gradient(90deg,rgba(255,255,255,0) 30%,#fff 58%),radial-gradient(34% 55% at 8% 22%,rgba(243,172,107,.30),transparent 70%),radial-gradient(38% 60% at 28% 52%,rgba(206,173,249,.42),transparent 70%),radial-gradient(32% 50% at 14% 86%,rgba(161,252,207,.40),transparent 70%),radial-gradient(28% 44% at 40% 26%,rgba(150,175,249,.30),transparent 70%)}
+@media(max-width:850px){.ab-hero:before{background:linear-gradient(180deg,rgba(255,255,255,0) 30%,#fff 55%),radial-gradient(60% 30% at 10% 10%,rgba(243,172,107,.30),transparent 70%),radial-gradient(70% 34% at 60% 20%,rgba(206,173,249,.42),transparent 70%),radial-gradient(60% 30% at 20% 36%,rgba(161,252,207,.40),transparent 70%)}}
+.about-brands .two-grid article{display:flex;flex-direction:column}.about-brands .two-grid .text-link{margin-top:auto;padding-top:24px}.about-brands .two-grid p{margin-bottom:0!important}
+.about-brands .two-grid article{align-items:flex-start}
+/* 세 카드 로고: 흰 둥근 판에 담아 카드 왼쪽 위 모서리에 겹쳐 띄운다. 자버 카드는 하늘색 */
+.about-brands .two-grid{padding-top:28px;row-gap:52px}
+.about-brands .two-grid article{position:relative;overflow:visible;padding-top:56px!important}
+.about-brands .two-grid article:first-child{background:#B2C7DA!important}
+.ab-badge{position:absolute;left:24px;top:-26px;display:flex;align-items:center;height:56px;padding:0 20px;border-radius:18px;background:#fff;box-shadow:0 12px 28px rgba(17,17,17,.12);transform:rotate(-3deg)}
+.about-brands .two-grid article:nth-child(2) .ab-badge{transform:rotate(2deg)}
+.about-brands .two-grid article:nth-child(3) .ab-badge{transform:rotate(-2deg)}
+.ab-badge img{display:block;height:28px!important;width:auto;margin:0!important;padding:0!important}
+.ab-badge .connectia-logo-img{height:22px!important}
+.about-brands .two-grid h3{margin-top:8px!important}
+.ab-badge{top:-14px}.about-brands .two-grid article{padding-top:64px!important}.about-brands .two-grid{padding-top:16px;row-gap:40px}
+/* 히어로 도형 이름: 커넥티아·펠로우즈는 흰 로고, 나머지는 펠로우즈 워드마크처럼 동글동글한 Jua 서체 */
+.ab-blob{font-family:"Jua","Pretendard Variable",sans-serif;font-weight:400;font-size:21px;letter-spacing:0}
+.ab-blob img{display:block;width:56%;height:auto}
+@media(max-width:640px){.ab-blob{font-size:16px}}
+.ab-blob img[src*="connectia"]{width:74%}
+/* Jua 대신: 알림톡·전자계약·인사관리는 흰 아이콘 + 작은 이름(로고 두 개와 같은 흰색으로 통일) */
+.ab-blob{font-family:"Pretendard Variable",Pretendard,sans-serif;font-weight:700;font-size:15px;letter-spacing:-.02em}
+.ab-ic{display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff}
+.ab-ic svg{width:44px;height:44px;fill:currentColor}
+.ab-ic b{font-weight:700;font-size:15px}
+.ab-blob:has(.ab-ic svg use[href="#message-filled"]) .ab-ic{color:#5E6A10}
+@media(max-width:640px){.ab-ic svg{width:32px;height:32px}.ab-ic b{font-size:12px}}
+/* 마지막 다짐: 서비스 색이 번지는 큰 둥근 판 위에, 모서리에 도형 둘이 걸친다 */
+.vision{position:relative;overflow:hidden;width:calc(100% - 32px)!important;max-width:1264px!important;margin:24px auto 96px!important;padding:120px 32px 128px!important;border-radius:40px;background:radial-gradient(60% 80% at 15% 20%,rgba(206,173,249,.85),transparent 70%),radial-gradient(55% 75% at 85% 30%,rgba(150,175,249,.8),transparent 70%),radial-gradient(60% 80% at 60% 100%,rgba(161,252,207,.75),transparent 70%),#EEF0FF}
+.vi-blob{position:absolute;width:180px;height:180px;pointer-events:none}
+.vision h2,.vision .lead{position:relative}
+.vision .lead{color:var(--ink)!important;opacity:.7}
+@media(max-width:640px){.vision{width:calc(100% - 16px)!important;margin:16px auto 64px!important;padding:80px 20px 88px!important;border-radius:28px}.vi-blob{width:110px!important;height:110px!important}}
+/* 마지막 다짐 판: 사진(함께 웃는 사람들) 위에 서비스 색 그라데이션을 반투명으로 덮어 글이 읽히게 */
+.vision{background:radial-gradient(60% 80% at 15% 20%,rgba(206,173,249,.78),transparent 70%),radial-gradient(55% 75% at 85% 30%,rgba(150,175,249,.72),transparent 70%),radial-gradient(60% 80% at 60% 100%,rgba(161,252,207,.65),transparent 70%),linear-gradient(rgba(240,242,255,.72),rgba(240,242,255,.72)),url(assets/about/team.webp) center 40%/cover no-repeat}
+/* 마지막 다짐 판: 사진 위 검정 오버레이 + 흰 글씨 */
+.vision{background:linear-gradient(rgba(17,17,17,.62),rgba(17,17,17,.62)),url(assets/about/team.webp) center 40%/cover no-repeat!important}
+.vision h2{color:#fff!important}
+.vision .lead{color:#fff!important;opacity:.8}
+.vision{background:linear-gradient(rgba(17,17,17,.55),rgba(17,17,17,.55)),url(assets/about/together.webp) center 30%/cover no-repeat!important}
+
+/* ── 커넥티아 랜딩(.cnp) — 커넥티아 색 연보라. 히어로: 큰 꽃 도형 위 명함형 프로필 화면 + 주고받는 대화 말풍선 ── */
+.cnp{overflow-x:clip}
+.cnp-hero{padding-top:40px;padding-bottom:96px}
+.cnp-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;padding-top:40px}
+.cnp-logo{display:block;height:30px;width:auto;margin-bottom:24px}
+.cnp-hero h1{line-height:1.18!important}
+.cnp-hero .lead{margin-top:24px}
+.cnp-hv{position:relative;aspect-ratio:1/.92;width:100%;max-width:560px;justify-self:end}
+.cnp-hv-shape{position:absolute;right:0;top:0;width:90%;aspect-ratio:1;background:linear-gradient(135deg,#B48BEF 0%,var(--lilac) 50%,#EBDDFF 100%);clip-path:url(#s-flower)}
+.cnp-hv-dot{position:absolute;left:2%;bottom:6%;width:20%;aspect-ratio:1;background:var(--lime);clip-path:url(#s-scallop)}
+.cnp-phone{position:absolute;left:50%;top:50%;width:46%;translate:-45% -50%;border:6px solid #fff;border-radius:30px;overflow:hidden;background:#fff;box-shadow:0 26px 56px rgba(60,30,110,.25)}
+.cnp-phone img{display:block;width:100%;height:auto}
+.cnp-b{position:absolute;margin:0!important;max-width:240px;padding:12px 16px;font-size:15px!important;font-weight:600;line-height:1.45;box-shadow:0 12px 28px rgba(60,30,110,.16)}
+.cnp-b.q{left:0;top:18%;border-radius:20px 20px 20px 4px;background:#fff;color:var(--ink)}
+.cnp-b.a{right:0;bottom:16%;border-radius:20px 20px 4px 20px;background:var(--ink);color:#fff}
+@media(max-width:850px){.cnp-hero-grid{grid-template-columns:1fr;gap:32px}.cnp-hv{justify-self:center;max-width:440px}}
+@media(max-width:640px){.cnp-hero{padding-bottom:56px}.cnp-b{font-size:13px!important;max-width:180px;padding:10px 13px}}
+/* 섹션 */
+.cnp-sec{padding:112px 0 0}
+.cnp-sec h2{margin-bottom:48px}
+.cnp-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none;counter-reset:cs}
+.cnp-steps li{counter-increment:cs;padding:32px 28px;border-radius:28px;background:var(--soft)}
+.cnp-steps li:before{content:counter(cs,decimal-leading-zero);display:block;margin-bottom:20px;font-size:48px;line-height:1;font-weight:600;letter-spacing:-.04em;color:#B48BEF}
+.cnp-steps h3{font-size:22px!important;margin:0 0 10px}
+.cnp-steps p{color:var(--sub);font-size:16px}
+.cnp-uses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.cnp-uses article{padding:32px 28px 36px;border-radius:var(--r-card);background:#fff;box-shadow:0 24px 56px rgba(60,30,110,.09),0 4px 14px rgba(60,30,110,.05)}
+.cnp-ic{display:grid;place-items:center;width:52px;height:52px;margin-bottom:28px;border-radius:16px;background:linear-gradient(135deg,#B48BEF,var(--lilac));color:#fff}
+.cnp-ic svg{width:26px;height:26px;fill:currentColor}
+.cnp-uses h3{font-size:22px!important;line-height:1.35!important;margin:0}
+.cnp+*,.cnp .faq-section{margin-top:0}
+.cnp .faq-section{padding-top:112px}
+.cnp .faq-section h2{margin-bottom:48px}
+@media(max-width:850px){.cnp-steps,.cnp-uses{grid-template-columns:1fr}}
+@media(max-width:640px){.cnp-sec{padding-top:72px}.cnp-sec h2,.cnp .faq-section h2{margin-bottom:32px}.cnp .faq-section{padding-top:72px}}
+.cnp .hero-actions{justify-content:flex-start!important}
+
+/* ── 펠로우즈 랜딩(.fwp) — 모임은 주황(peach), 캠퍼스는 펠로우즈 로고의 올리브 그린 ── */
+.fwp{overflow-x:clip;--fw-olive:#5A7344;--fw-olive-d:#3F5530}
+.fwp-hero{padding-top:40px;padding-bottom:96px}
+.fwp-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;padding-top:40px}
+.fwp-logo{display:block;height:40px;width:auto;margin-bottom:24px}
+.fwp-hero h1{line-height:1.18!important}
+.fwp-hero .lead{margin-top:24px}
+.fwp .hero-actions{justify-content:flex-start!important}
+.fwp-hv{position:relative;aspect-ratio:1/.9;width:100%;max-width:560px;justify-self:end}
+.fwp-hv-shape{position:absolute;right:0;top:0;width:78%;aspect-ratio:1;background:linear-gradient(135deg,#EE9450 0%,var(--peach) 50%,#FBD6B2 100%);clip-path:url(#s-scallop)}
+.fwp-photo{position:absolute;left:0;bottom:6%;width:78%;aspect-ratio:4/3;object-fit:cover;border-radius:28px;box-shadow:0 26px 56px rgba(90,60,20,.22)}
+.fwp-chip{position:absolute;margin:0!important;padding:11px 16px;border-radius:999px;background:#fff;font-size:14px!important;font-weight:700;color:var(--ink);white-space:nowrap;box-shadow:0 12px 28px rgba(90,60,20,.16);animation:hrhv-float 5s ease-in-out infinite}
+.fwp-chip.c1{right:2%;top:24%}
+.fwp-chip.c2{right:8%;bottom:0;animation-delay:-2.5s;background:var(--fw-olive);color:#fff}
+@media(prefers-reduced-motion:reduce){.fwp-chip{animation:none}}
+@media(max-width:850px){.fwp-hero-grid{grid-template-columns:1fr;gap:32px}.fwp-hv{justify-self:center;max-width:440px}}
+@media(max-width:640px){.fwp-hero{padding-bottom:56px}.fwp-logo{height:32px}.fwp-chip{font-size:12px!important;padding:8px 12px}}
+/* 섹션 */
+.fwp-sec{padding:112px 0 0}
+.fwp-sec h2{margin-bottom:0}
+.fwp-sub{margin:16px 0 0!important;font-size:18px;line-height:1.7;color:var(--sub)}
+.fwp-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:48px 0 0;padding:0;list-style:none;counter-reset:fp}
+.fwp-points li{counter-increment:fp;padding:32px 28px;border-radius:28px;background:var(--soft)}
+.fwp-points li:before{content:counter(fp,decimal-leading-zero);display:block;margin-bottom:20px;font-size:48px;line-height:1;font-weight:600;letter-spacing:-.04em;color:var(--peach)}
+.fwp-points h3{font-size:22px!important;margin:0 0 10px}
+.fwp-points p{color:var(--sub);font-size:16px}
+/* 펠로우 소개: 사진 + 글 */
+.fwp-fellow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.fwp-fellow-art{position:relative}
+.fwp-fellow-blob{position:absolute;width:200px;height:200px;left:-48px;bottom:-48px;background:var(--fw-olive);clip-path:url(#s-flower);opacity:.9}
+.fwp-fellow-art img{position:relative;display:block;width:100%;height:auto;border-radius:28px;box-shadow:0 22px 48px rgba(17,17,17,.12)}
+.fwp-fellow .text-link{display:inline-flex;margin-top:24px;gap:6px;font-weight:600;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+/* 모임 두 가지 */
+.fwp-ways{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.fwp-ways article{display:flex;flex-direction:column;padding:12px;border-radius:var(--r-card)}
+.fwp-ways .moim{background:var(--peach)}
+.fwp-ways .campus{background:var(--fw-olive);color:#fff}
+.fwp-way-pic{border-radius:22px;overflow:hidden}
+.fwp-way-pic img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.fwp-way-body{display:flex;flex-direction:column;flex:1;padding:24px 16px 16px}
+.fwp-tag{align-self:flex-start;padding:6px 12px;border-radius:999px;background:#fff;color:var(--ink);font-size:13px;font-weight:700}
+.fwp-ways .campus .fwp-tag{color:var(--fw-olive-d)}
+.fwp-way-body h3{margin:16px 0 10px!important;font-size:26px!important;line-height:1.3!important;color:inherit!important}
+.fwp-way-body p{font-size:16px;line-height:1.65;opacity:.8}
+.fwp-way-body .text-link{margin-top:auto;padding-top:24px;display:inline-flex;gap:6px;align-self:flex-start;font-weight:600;color:inherit;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+/* 캠퍼스 자세히: 짙은 올리브 판 */
+.fwp-campus{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;align-items:center;padding:64px;border-radius:40px;background:var(--fw-olive-d);color:#fff}
+.fwp-campus h2{margin:16px 0 0!important;color:#fff!important;font-size:40px!important}
+.fwp-campus-copy p{margin-top:16px!important;font-size:17px;line-height:1.7;opacity:.75}
+.fwp-tag.on-dark{background:rgba(255,255,255,.14);color:#fff}
+.fwp-campus-steps{display:grid;gap:12px;margin:0;padding:0;list-style:none;counter-reset:cps}
+.fwp-campus-steps li{counter-increment:cps;display:grid;grid-template-columns:40px 1fr;column-gap:16px;padding:20px 22px;border-radius:22px;background:rgba(255,255,255,.08)}
+.fwp-campus-steps li:before{content:counter(cps);grid-row:1/3;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--fw-olive-d);font-weight:700}
+.fwp-campus-steps b{font-size:18px}
+.fwp-campus-steps span{font-size:15px;opacity:.72;line-height:1.55}
+.fwp .faq-section{padding-top:112px}
+.fwp .faq-section h2{margin-bottom:48px}
+@media(max-width:1100px){.fwp-campus{grid-template-columns:1fr;padding:48px}}
+@media(max-width:850px){.fwp-points,.fwp-ways,.fwp-fellow{grid-template-columns:1fr}.fwp-fellow{gap:40px}}
+@media(max-width:640px){.fwp-sec{padding-top:72px}.fwp-sub{font-size:16px}.fwp-points,.fwp-ways{margin-top:32px}.fwp-campus{padding:32px 24px;border-radius:28px}.fwp-campus h2{font-size:28px!important}.fwp-way-body h3{font-size:22px!important}.fwp-fellow-blob{width:130px;height:130px;left:-20px;bottom:-28px}.fwp .faq-section{padding-top:72px}.fwp .faq-section h2{margin-bottom:32px}}
+/* 모임·캠퍼스 이름 자리: 흰 판 위 가로 펠로우즈 로고 (캠퍼스는 초록 로고 + CAMPUS, 캠퍼스 페이지와 같은 모양) */
+.fwp-badge{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:14px;background:#fff}
+.fwp-badge img{display:block;height:22px;width:auto}
+.fwp-badge b{font-size:13px;font-weight:800;letter-spacing:.06em;color:#2E7D32;line-height:1}
+/* 커넥티아: 행사·커뮤니티·멤버 기능 — 실제 화면 캡처를 폰 모양으로, 도형 위에 좌우 번갈아 */
+.cnp-run-sub{margin:16px 0 0!important;font-size:18px;line-height:1.7;color:var(--sub)}
+.cnp-feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center;margin-top:72px}
+.cnp-feat.rev .cnp-feat-art{order:2}
+.cnp-feat-art{position:relative;display:grid;place-items:center;height:520px}
+.cnp-feat-blob{position:absolute;inset:4% 8%;}
+.cnp-feat-phone{position:relative;width:260px;height:480px;overflow:hidden;border:7px solid #fff;border-radius:36px;background:#fff;box-shadow:0 26px 56px rgba(40,30,90,.22)}
+.cnp-feat-phone img{display:block;width:100%;height:auto}
+.cnp-feat-copy h3{margin:0!important;font-size:32px!important;line-height:1.3!important}
+.cnp-feat-copy p{margin-top:16px;font-size:17px;line-height:1.7;color:var(--sub)}
+.cnp-keys{display:flex;flex-wrap:wrap;margin-top:20px}
+.cnp-keys span{font-size:14px;font-weight:600;color:#7B4FD6}
+.cnp-keys span+span:before{content:"|";padding:0 10px;color:#D6C6F5;font-weight:400}
+@media(max-width:850px){.cnp-feat{grid-template-columns:1fr;gap:28px;margin-top:56px}.cnp-feat.rev .cnp-feat-art{order:0}.cnp-feat-art{height:440px}.cnp-feat-phone{width:220px;height:400px;border-radius:30px}}
+@media(max-width:640px){.cnp-run-sub{font-size:16px}.cnp-feat-copy h3{font-size:24px!important}.cnp-feat-copy p{font-size:16px}}
+.cnp-feat-phone{height:auto!important}.cnp-feat-art{height:auto;padding:24px 0}
+/* 커넥티아: 행사 당일 흐름 — 신청 현황 → QR 알림톡 → QR 체크인, 연보라 판 위 세 칸 */
+.cnp-flow{margin-top:56px;padding:56px 48px 56px;border-radius:40px;background:linear-gradient(180deg,#F4EEFF,#FBF9FF)}
+.cnp-flow-t{margin:0 0 40px!important;text-align:center;font-size:30px!important;line-height:1.3!important}
+.cnp-flow-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin:0;padding:0;list-style:none;align-items:start}
+.cnp-flow-steps li{display:flex;flex-direction:column;align-items:center;text-align:center}
+.cnp-flow-phone{width:220px;overflow:hidden;border:6px solid #fff;border-radius:30px;background:#fff;box-shadow:0 22px 44px rgba(60,30,110,.16)}
+.cnp-flow-phone img{display:block;width:100%;height:auto;max-height:420px;object-fit:cover;object-position:top}
+.cnp-flow-steps b{display:flex;align-items:center;gap:8px;margin-top:24px;font-size:20px;font-weight:700}
+.cnp-flow-n{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#7B4FD6;color:#fff;font-size:13px}
+.cnp-flow-steps p{margin-top:8px;font-size:15px;line-height:1.6;color:var(--sub)}
+/* 가운데: 카톡방 + QR 알림톡 */
+.cnp-kakao{width:240px;height:420px;padding:16px 14px;border-radius:30px;background:#B2C7DA;box-shadow:0 22px 44px rgba(31,42,53,.16);text-align:left}
+.cnp-kakao-room{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.cnp-kakao-room .av{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#fff;overflow:hidden}
+.cnp-kakao-room .av img{width:20px;height:20px}
+.cnp-kakao-room b{font-size:12px!important;margin:0!important;color:#1f2a35;font-weight:700}
+.cnp-kakao-bub{border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 8px 18px rgba(31,42,53,.12)}
+.cnp-kakao-bub .band{padding:6px 12px;background:#FEE500;font-size:10px;font-weight:800;color:#111}
+.cnp-kakao-bub .bd{padding:12px}
+.cnp-kakao-bub strong{display:block;font-size:14px;color:#111}
+.cnp-kakao-bub p{margin:6px 0 10px!important;font-size:12px!important;line-height:1.5;color:#555!important}
+.cnp-kakao-bub .qr{display:grid;place-items:center;padding:12px;border-radius:10px;background:#F6F7F9}
+.cnp-kakao-bub .qr svg{width:112px;height:112px;fill:#111}
+.cnp-kakao-bub .kbtn{display:block;margin-top:10px;padding:8px 0;border-radius:6px;background:#F2F3F5;text-align:center;font-size:11px;font-weight:700;color:#111}
+@media(max-width:850px){.cnp-flow{padding:40px 20px;border-radius:28px}.cnp-flow-steps{grid-template-columns:1fr;gap:48px}.cnp-flow-t{font-size:24px!important;margin-bottom:32px!important}}
+.cnp-kakao-room .av svg{width:16px;height:16px;color:#5A6B7C}
+.cnp-kakao{height:auto;min-height:420px}
+/* 커넥티아 히어로(행사 중심): 꽃 도형 위 행사 화면 + 떠 있는 처리 칩 */
+.cnp-phone.ev{width:40%;translate:-50% -50%;border-radius:28px}
+.cnp-phone.ev img{aspect-ratio:600/1080;object-fit:cover;object-position:top}
+.cnp-chip{position:absolute;display:flex;align-items:center;gap:8px;margin:0!important;padding:10px 16px 10px 10px;border-radius:999px;background:#fff;font-size:14px!important;font-weight:700;white-space:nowrap;box-shadow:0 12px 28px rgba(60,30,110,.16);animation:hrhv-float 5s ease-in-out infinite}
+.cnp-chip i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#7B4FD6;color:#fff}
+.cnp-chip i svg{width:14px;height:14px}
+.cnp-chip.c1{left:0;top:22%}
+.cnp-chip.c2{right:0;bottom:18%;animation-delay:-2.5s}
+.cnp-chip.c2 i{background:#1890FF}
+@media(prefers-reduced-motion:reduce){.cnp-chip{animation:none}}
+@media(max-width:640px){.cnp-chip{font-size:12px!important;padding:8px 12px 8px 8px}.cnp-chip i{width:22px;height:22px}}
+/* 프로필로 쓰기: 연보라 판 — 글·단계 + 명함 화면과 주고받는 말풍선 */
+.cnp-prof{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;padding:64px;border-radius:40px;background:linear-gradient(135deg,#F4EEFF,#FBF9FF)}
+.cnp-prof-tag{display:inline-block;padding:6px 12px;border-radius:999px;background:#fff;font-size:13px;font-weight:700;color:#7B4FD6}
+.cnp-prof h2{margin:16px 0 0!important}
+.cnp-prof-copy>p{margin-top:16px!important;font-size:17px;line-height:1.7;color:var(--sub)}
+.cnp-prof-steps{display:grid;gap:10px;margin:28px 0 0;padding:0;list-style:none;counter-reset:pp}
+.cnp-prof-steps li{counter-increment:pp;display:grid;grid-template-columns:36px 1fr;column-gap:14px;padding:16px 18px;border-radius:20px;background:#fff}
+.cnp-prof-steps li:before{content:counter(pp,decimal-leading-zero);grid-row:1/3;font-size:20px;font-weight:700;color:#B48BEF;line-height:1.3}
+.cnp-prof-steps b{font-size:17px}
+.cnp-prof-steps span{font-size:14px;color:var(--sub);line-height:1.55}
+.cnp-prof-art{position:relative;aspect-ratio:1/1;width:100%;max-width:460px;justify-self:center}
+.cnp-prof-blob{position:absolute;inset:6%;background:linear-gradient(135deg,#B48BEF,var(--lilac));clip-path:url(#s-flower)}
+.cnp-phone.nc{width:52%}
+@media(max-width:1100px){.cnp-prof{grid-template-columns:1fr;padding:48px}}
+@media(max-width:640px){.cnp-prof{padding:32px 20px;border-radius:28px}}
+.cnp-prof h2{margin-top:0!important}
+/* 프로필 3단계: 카드 대신 세로 선으로 이은 단계 */
+.cnp-prof-steps{gap:0;margin-top:32px}
+.cnp-prof-steps li{position:relative;padding:0 0 24px;background:none;border-radius:0;grid-template-columns:32px 1fr;column-gap:16px}
+.cnp-prof-steps li:last-child{padding-bottom:0}
+.cnp-prof-steps li:before{content:counter(pp);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#7B4FD6;color:#fff;font-size:14px;line-height:1;position:relative;z-index:1}
+.cnp-prof-steps li:not(:last-child):after{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:#D9C9F7}
+.cnp-prof-steps b{padding-top:4px}
+/* 행사 당일 흐름·프로필: 둥근 보라 카드 대신, 화면 끝까지 깔리고 위아래로 흰색에 녹아드는 연보라 그라데이션 */
+.cnp-flow,.cnp-prof{position:relative;isolation:isolate;background:none!important;border-radius:0!important;padding-left:0!important;padding-right:0!important}
+.cnp-flow:before,.cnp-prof:before{content:"";position:absolute;z-index:-1;top:-48px;bottom:-48px;left:50%;width:100vw;transform:translateX(-50%);background:linear-gradient(180deg,rgba(244,238,255,0) 0%,#F3ECFF 28%,#F3ECFF 72%,rgba(244,238,255,0) 100%)}
+.cnp{overflow-x:clip}
+/* 히어로: 행사 화면 + 신청 칩 + 모임 페이지의 AI 대화 말풍선 — 행사와 대화를 한 장면에 */
+.cnp-chip.c1{left:2%;top:14%}
+.cnp-b.hq{left:0;top:auto;bottom:30%}
+.cnp-b.ha{right:0;bottom:10%}
+.cnp-phone.ev img{aspect-ratio:auto!important;object-fit:fill}.cnp-hv{aspect-ratio:1/1}
+.cnp-hv{aspect-ratio:1/1.14}.cnp-phone.ev{top:44%}.cnp-b.ha{bottom:2%}.cnp-b.hq{bottom:36%}
+.cnp-b.ha{bottom:9%}
+/* 전자계약 '계약은 끝나도': 목업을 왼쪽, 제목을 오른쪽 한 줄에 — 빈 자리 없이 */
+.ct .ct-band-mint>.wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:64px;align-items:center}
+.ct .ct-band-mint .nxui{grid-column:1;grid-row:1;margin:0;justify-content:flex-start}
+.ct .ct-band-mint h2{grid-column:2;grid-row:1;margin:0!important}
+.ct .ct-band-mint .nxcols{grid-column:1/-1;grid-row:2;margin-top:72px}
+@media(max-width:850px){.ct .ct-band-mint>.wrap{grid-template-columns:1fr}.ct .ct-band-mint h2{grid-column:1;grid-row:1;margin-bottom:40px!important}.ct .ct-band-mint .nxui{grid-row:2}.ct .ct-band-mint .nxcols{grid-row:3;margin-top:56px}}
+/* 펠로우즈 캠퍼스 판: 짙은 카드 대신 화면 끝까지 깔리고 위아래로 흰색에 녹는 연한 올리브 그라데이션 */
+.fwp-campus{position:relative;isolation:isolate;background:none!important;border-radius:0!important;padding:64px 0!important;color:var(--ink)}
+.fwp-campus:before{content:"";position:absolute;z-index:-1;top:-24px;bottom:-24px;left:50%;width:100vw;transform:translateX(-50%);background:linear-gradient(180deg,rgba(236,243,228,0) 0%,#EBF2E3 28%,#EBF2E3 72%,rgba(236,243,228,0) 100%)}
+.fwp-campus h2{color:var(--ink)!important}
+.fwp-campus-copy p{color:var(--sub);opacity:1}
+.fwp-campus-steps li{background:#fff}
+.fwp-campus-steps li:before{background:var(--fw-olive);color:#fff}
+.fwp-campus-steps span{color:var(--sub);opacity:1}
+@media(max-width:850px){.story-list .story-row,.story-list .story-row:nth-child(odd),.story-list .story-row:nth-child(even){grid-template-columns:minmax(0,1fr)!important}}
+/* 모바일 점검 손질 */
+@media(max-width:640px){
+  .ct .snote{line-height:1.6}
+  .hr .hr-hero .hero-actions .btn{flex:1 1 auto}
+  .cnp-hero,.fwp-hero{padding-top:24px}
+  .cnp-hero-grid,.fwp-hero-grid{padding-top:16px}
+}
+.ab-blob img[src*="connectia"]{margin-left:-6%}
+/* 알림톡 '무엇을 발송할까요?' — 모바일에선 카드를 가로로 넘겨 본다 (옆 카드가 살짝 보여 넘길 수 있다는 걸 알린다) */
+@media(max-width:640px){
+  .al .al-uses{display:flex!important;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:4px 20px 20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .al .al-uses::-webkit-scrollbar{display:none}
+  .al .al-use{flex:0 0 78%;scroll-snap-align:center}
+}
+/* 인사관리 '필요한 업무 바로 찾기': 알약 대신 글자 링크, 위아래 옅은 구분선으로 한 줄 영역 */
+.hr .hr-quick{padding:0;background:none}
+.hr .hr-quick .wrap{display:flex;align-items:center;gap:8px 32px;flex-wrap:wrap;padding:20px 0;border-top:1px solid #ECEDF0;border-bottom:1px solid #ECEDF0}
+.hr .hr-quick strong{margin:0;font-size:15px}
+.hr .hr-quick nav{gap:4px 24px}
+.hr .hr-quick nav a,.hr .hr-quick a{padding:4px 0!important;background:none!important;border-radius:0;font-size:15px;font-weight:500;color:var(--sub)}
+.hr .hr-quick a:hover{color:var(--ink);background:none!important;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:850px){.hr .hr-quick .wrap{display:block}.hr .hr-quick strong{display:block;margin-bottom:10px}}
+/* 전자계약 하단 CTA: 초록 그라데이션 큰 판, 왼쪽 제목·설명, 오른쪽 버튼 둘 */
+.ct-cta{padding:0 0 112px}
+.ct-cta-box{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:32px;padding:64px;border-radius:40px;background:linear-gradient(135deg,#C9FFE0 0%,var(--green) 60%,#4FE38E 100%)}
+.ct-cta-blob{position:absolute;right:-60px;top:-70px;width:240px;height:240px;background:var(--lime);clip-path:url(#s-scallop);opacity:.9}
+.ct-cta-copy,.ct-cta-act{position:relative}
+.ct-cta h2{margin:0!important;font-size:40px!important}
+.ct-cta p{margin-top:16px;font-size:17px;color:var(--ink);opacity:.7}
+.ct-cta-act{display:flex;gap:10px;flex:none}
+.ct-cta-act .btn.secondary{background:#fff!important;border-color:#fff!important}
+.ct-cta-act .btn.secondary:hover{background:var(--ink)!important;color:#fff!important;border-color:var(--ink)!important}
+.ft-top .ft-brand:empty{display:none}
+@media(max-width:850px){.ct-cta-box{flex-direction:column;align-items:flex-start;padding:40px 28px}.ct-cta-act{flex-wrap:wrap}}
+@media(max-width:640px){.ct-cta{padding-bottom:72px}.ct-cta-box{border-radius:28px}.ct-cta h2{font-size:28px!important}.ct-cta-blob{width:150px;height:150px}}
+/* 알림톡 하단 CTA: 전자계약과 같은 판, 알림톡 색(연두) */
+.al-cta .ct-cta-box{background:linear-gradient(135deg,#F7FFC2 0%,var(--lime) 60%,#D4EE3A 100%)}
+.al-cta .ct-cta-blob{background:var(--green)}
+@media(max-width:640px){.al .al-uses{overflow-y:hidden;align-items:stretch}}
+/* 잘라낸 화면 이미지 모서리에 남은 검은 테두리 흔적을 안쪽 흰 선으로 덮는다 */
+.al .al-art .al-shot{border-radius:18px;outline:3px solid #fff;outline-offset:-3px}
+/* 공유페이지 목업 상단 주소창: 뒤 그림자와 구분되게 한 톤 진한 회색 */
+.ct .twvis .spg-bar{background:#E4E6EA;border-bottom:0}
+.ct .twvis .spg-bar i{background:#B9BDC5}
+.ct .twvis .spg-bar span{color:#5B6170}
+/* 전자계약 서식 묶음: 연보라 판·흰 카드 대신 흰 바탕 2열 목록 + 옅은 구분선, 아래 밑줄 링크 */
+.ct .ct-doclist{display:block;padding:0!important;background:none!important;border-radius:0!important}
+.ct .ct-doclist:hover{transform:none}
+.ct .ct-doclist ul{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px;row-gap:0;border-top:1px solid #ECEDF0}
+.ct .ct-doclist .jb-chip{width:auto;padding:18px 4px;background:none;border-radius:0;border-bottom:1px solid #ECEDF0;gap:14px}
+.ct .ct-doclist .jb-chip-ico{width:40px;height:40px;border-radius:12px}
+.ct .ct-doclist .jb-chip b{font-size:16px}
+.ct .ct-doclist .jb-chip small{font-size:13px;color:var(--sub)}
+.ct .ct-doclist-more{justify-content:flex-start;gap:6px;margin-top:20px;padding-top:0;border-top:0;font-size:15px;font-weight:600;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+.ct .ct-doclist:hover .ct-doclist-more{color:#3FCF7A}
+@media(max-width:640px){.ct .ct-doclist ul{grid-template-columns:1fr}.ct .ct-doclist .jb-chip{padding:14px 4px}}
+/* 서식 묶음 다시: 연보라 판은 살리고, 안쪽 흰 카드 없이 흰 글씨 목록 + 흰 반투명 구분선 */
+.ct .ct-doclist{padding:36px 40px 32px!important;background:var(--lilac)!important;border-radius:var(--r-card)!important}
+.ct .ct-doclist ul{border-top:1px solid rgba(255,255,255,.45)}
+.ct .ct-doclist .jb-chip{border-bottom:1px solid rgba(255,255,255,.45)}
+.ct .ct-doclist .jb-chip b{color:#fff}
+.ct .ct-doclist .jb-chip small{color:rgba(255,255,255,.85)}
+.ct .ct-doclist .jb-chip-ico{box-shadow:0 0 0 2px rgba(255,255,255,.6)}
+.ct .ct-doclist-more{color:#fff}
+.ct .ct-doclist:hover .ct-doclist-more{color:#fff;opacity:.85}
+@media(max-width:640px){.ct .ct-doclist{padding:24px 20px 24px!important;border-radius:28px!important}}
+.ct .ct-doclist ul{border-top:0}.ct .ct-doclist .jb-chip:nth-last-child(-n+2){border-bottom:0}@media(max-width:640px){.ct .ct-doclist .jb-chip:nth-last-child(2){border-bottom:1px solid rgba(255,255,255,.45)}}
+/* 서식 묶음 최종: 보라 판 없이, 흰 서식 카드들이 화면 끝까지 깔린 연보라 그라데이션 위에 떠 있다 */
+.ct .ct-moments{position:relative;isolation:isolate}
+.ct .ct-moments:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,rgba(243,236,255,0) 0%,#F1E8FF 30%,#F1E8FF 70%,rgba(243,236,255,0) 100%)}
+.ct .ct-doclist{padding:0!important;background:none!important;border-radius:0!important}
+.ct .ct-doclist ul{column-gap:12px;row-gap:12px;border:0}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){padding:16px 18px 16px 16px;border:0!important;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(90,50,160,.08)}
+.ct .ct-doclist .jb-chip b{color:var(--ink)}
+.ct .ct-doclist .jb-chip small{color:var(--sub)}
+.ct .ct-doclist .jb-chip-ico{box-shadow:none}
+.ct .ct-doclist-more{color:var(--ink);margin-top:24px}
+.ct .ct-doclist:hover .ct-doclist-more{color:#7B4FD6;opacity:1}
+/* 섹션 전체 그라데이션은 빼고, 오른쪽 서식 카드 뒤에만 연한 연보라 빛 */
+.ct .ct-moments:before{content:none}
+.ct .ct-doclist{position:relative;isolation:isolate}
+.ct .ct-doclist:before{content:"";position:absolute;z-index:-1;inset:-48px -40px -40px;border-radius:50%;background:radial-gradient(closest-side,rgba(206,173,249,.55),rgba(206,173,249,0));filter:blur(8px)}
+/* 서식 카드: 아이콘 색 칸과 분류(계약서·동의서) 글씨는 빼고 검정 아이콘 + 이름만 */
+.ct .ct-doclist .jb-chip-ico{width:auto;height:auto;background:none!important;border-radius:0}
+.ct .ct-doclist .jb-chip-ico svg{width:22px;height:22px}
+.ct .ct-doclist .jb-chip small{display:none}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){padding:20px 22px;gap:12px}
+/* '계약문서 샘플 서식 둘러보기'를 서식 카드 아래 한 줄짜리 진한 카드로 강조 */
+.ct .ct-doclist-more{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:20px 22px;border:0;border-radius:20px;background:var(--ink);color:#fff!important;font-size:16px;font-weight:700;text-decoration:none;box-shadow:0 12px 28px rgba(17,17,17,.14);transition:background .15s}
+.ct .ct-doclist-more svg{width:18px;height:18px}
+.ct .ct-doclist:hover .ct-doclist-more{background:#7B4FD6;color:#fff!important;opacity:1}
+/* 서식 목록: 더 많은 서식이 아래로 이어지다 흐려지는 느낌 — "이것 말고도 다 된다" */
+.ct .ct-doclist ul{-webkit-mask-image:linear-gradient(#000 45%,transparent 96%);mask-image:linear-gradient(#000 45%,transparent 96%)}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){box-shadow:0 6px 18px rgba(90,50,160,.06)}
+.ct .ct-doclist-more{display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:0;border-radius:0;background:none;box-shadow:none;color:var(--ink)!important;font-size:16px;font-weight:700;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1.5px}
+.ct .ct-doclist:hover .ct-doclist-more{background:none;color:#7B4FD6!important}
+@media(max-width:640px){.ct .ct-doclist .jb-chip:nth-child(n+9){display:none}}
+/* 서식 목록 최종: 카드 없이 아이콘+이름 줄 목록, 옅은 구분선, 촘촘하게 — 아래로 흐려지며 더 있다는 느낌 */
+.ct .ct-doclist:before{content:none}
+.ct .ct-doclist ul{column-gap:32px;row-gap:0;max-height:300px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 40%,transparent 100%);mask-image:linear-gradient(#000 40%,transparent 100%)}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){padding:14px 2px;background:none;border-radius:0;box-shadow:none;border:0!important;border-bottom:1px solid #ECEDF0!important}
+.ct .ct-doclist .jb-chip b{font-size:16px;font-weight:600}
+.ct .ct-doclist .jb-chip-ico svg{width:20px;height:20px;color:var(--sub)}
+.ct .ct-doclist-more{margin-top:8px}
+@media(max-width:640px){.ct .ct-doclist ul{max-height:260px}.ct .ct-doclist .jb-chip:nth-child(n+9){display:flex}}
+/* 서식 목록: 연보라 판 안에 줄 목록 + 아래 페이드 (판 색으로 녹아든다) */
+.ct .ct-doclist{padding:28px 32px 28px!important;background:var(--lilac)!important;border-radius:var(--r-card)!important}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){border-bottom:1px solid rgba(17,17,17,.12)!important}
+.ct .ct-doclist .jb-chip-ico svg{color:var(--ink)}
+.ct .ct-doclist-more{margin-top:12px}
+.ct .ct-doclist:hover .ct-doclist-more{color:var(--ink)!important;opacity:.75}
+@media(max-width:640px){.ct .ct-doclist{padding:20px 20px 24px!important;border-radius:28px!important}}
+/* 보라 판 목록: 높이 줄이고 흰 글씨, '샘플 서식 둘러보기'만 흰 알약 버튼으로 강조 */
+.ct .ct-doclist ul{max-height:212px}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){padding:12px 2px;border-bottom:1px solid rgba(255,255,255,.4)!important}
+.ct .ct-doclist .jb-chip b{color:#fff}
+.ct .ct-doclist .jb-chip-ico svg{color:#fff}
+.ct .ct-doclist-more{display:inline-flex;margin-top:16px;padding:12px 20px;border-radius:999px;background:#fff;color:var(--ink)!important;font-size:15px;text-decoration:none}
+.ct .ct-doclist:hover .ct-doclist-more{background:var(--ink);color:#fff!important;opacity:1}
+@media(max-width:640px){.ct .ct-doclist ul{max-height:200px}}
+.ct .ct-doclist ul{max-height:290px;-webkit-mask-image:linear-gradient(#000 58%,transparent 100%);mask-image:linear-gradient(#000 58%,transparent 100%)}@media(max-width:640px){.ct .ct-doclist ul{max-height:250px}}
+.ct .ct-doclist ul{-webkit-mask-image:linear-gradient(210deg,#000 60%,transparent 100%);mask-image:linear-gradient(210deg,#000 60%,transparent 100%)}@media(max-width:640px){.ct .ct-doclist ul{-webkit-mask-image:linear-gradient(#000 58%,transparent 100%);mask-image:linear-gradient(#000 58%,transparent 100%)}}
+/* 서식 목록 판: 목록이 천천히 위로 흘러간다(같은 목록을 두 번 이어 붙여 끊김 없이). 위·아래 끝만 똑같이 흐리고, 버튼은 아래에 따로 */
+.ct .ct-doclist-view{height:212px;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.ct .ct-doclist-track{animation:ct-docflow 24s linear infinite}
+.ct .ct-doclist:hover .ct-doclist-track{animation-play-state:paused}
+.ct .ct-doclist ul{max-height:none;-webkit-mask:none;mask:none;overflow:visible}
+.ct .ct-doclist .jb-chip,.ct .ct-doclist .jb-chip:nth-last-child(-n+2){border-bottom:1px solid rgba(255,255,255,.4)!important}
+.ct .ct-doclist-more{margin-top:16px}
+@keyframes ct-docflow{to{transform:translateY(-50%)}}
+@media(max-width:640px){.ct .ct-doclist-view{height:230px}.ct .ct-doclist-track{animation-duration:36s}}
+@media(prefers-reduced-motion:reduce){.ct .ct-doclist-track{animation:none}}
+/* 샘플 서식 둘러보기: 카드 밖, 밑줄 텍스트 링크 */
+.ct .ct-doclist:hover{transform:none}
+.ct a.ct-doclist-more{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:0;border-radius:0;background:none;color:var(--ink)!important;font-size:16px;font-weight:600;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1.5px}
+.ct a.ct-doclist-more:hover{background:none;color:#7B4FD6!important}
+.ct a.ct-doclist-more{display:flex;width:fit-content;margin-left:auto}
+.al-review blockquote{word-break:keep-all}
+/* 펠로우즈 로고 강조: 고양이가 보이는 세로형 로고를 크게 */
+.fwp .fwp-logo{width:240px!important;height:auto!important;margin-bottom:8px}
+.fwp .fwp-badge img{height:34px!important;width:auto!important}
+.ab-badge .fellows-logo-img{height:68px!important;width:auto!important}
+@media(max-width:640px){.fwp .fwp-logo{width:180px!important}}
+.fwp .fwp-logo{margin-bottom:28px!important}
+.ab-badge:has(.fellows-logo-img){padding:6px 14px!important}
+.ab-badge .fellows-logo-img{height:56px!important}
+.fwp .fwp-badge{padding:8px 16px}
+.ab-badge:has(.fellows-logo-img){padding:12px 18px!important}
+.ab-badge .fellows-logo-img{height:34px!important;width:auto!important}
+.ab-badge:has(.fellows-logo-img){padding:10px 16px!important}.ab-badge .fellows-logo-img{height:40px!important}

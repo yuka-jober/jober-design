@@ -43,7 +43,7 @@
 - 자버 블로그(홈 하단 알약, 푸터) → `blog.naver.com/joberteam`
 - 서비스 소개서(하위 페이지 하단 "서비스 소개서 보기" 알약, 푸터 "서비스 소개서") → `jober-service-guides.neocsv.chatgpt.site`
 - 커넥티아 바로가기 → `connectia.bio` · 펠로우즈 → `fellows-moim.vercel.app`
-- AI CRM(상단 메뉴, 푸터, 홈 하단 카드) → `jober-crm-flex.laadt.chatgpt.site` (새 탭)
+- 고객관리(CRM)(상단 메뉴, 푸터, 홈 서비스 카드) → `jober-crm-flex.laadt.chatgpt.site` (새 탭) — 정식 주소가 정해지면 교체
 - 요금제 페이지: 엔터프라이즈·HR 도입 문의 → `jober.io/wall-write-document/27863066-…`, 전용 템플릿 신청 → `jober.io/wall-write-document/97eb3e97-…`, 채널 연동 가이드 → `docs.channel.io/jober_guide`, 공용 템플릿 → `jober.io/tour/preview-alimtalk`, 서식 샘플 → `jober.io/tour/documentForm`
 
 ## 푸터 회사 정보

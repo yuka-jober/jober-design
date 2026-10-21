@@ -230,23 +230,49 @@ h1,h2,h3,p{margin:0}
 @media(max-width:640px){.card-logo img.fw-stack{height:64px!important}}
 .card-logo img.fw-h{width:auto!important;height:38px!important;max-width:none}
 @media(max-width:640px){.card-logo img.fw-h{height:32px!important}}
-/* 하단 카드 3개(커넥티아·펠로우즈·CRM): 위 카드처럼 그림 위, 글 아래로 키운다 */
-@media(min-width:641px){.sub{grid-template-columns:repeat(3,minmax(0,1fr))}.sub>.card.wide{flex-direction:column;align-items:stretch;gap:0;padding:20px 20px 32px}.sub>.card.wide .card-img{width:100%;height:220px}.sub>.card.wide .card-body{padding:28px 12px 0}.sub>.card.wide h3{font-size:26px}}
-.card-logo img.fw-h{height:40px!important}
-.card-crm{font-size:30px!important;letter-spacing:-.04em;font-weight:700!important}
-/* CRM 카드 그림: AI 질문·답변 창 */
-.card-img.is-crm{padding:0}
-.crm-win{width:100%;height:100%;padding:18px 20px;border-radius:20px;background:#fff;display:flex;flex-direction:column;gap:10px;text-align:left;box-shadow:0 12px 28px -18px rgba(17,17,17,.35)}
-.crm-hd{display:flex;align-items:center;gap:8px;font-size:13px}
-.crm-hd b{font-weight:700}
-.crm-dot{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#111;color:var(--lime);font-size:12px}
-.crm-q{align-self:flex-end;max-width:86%;padding:8px 12px;border-radius:14px 14px 4px 14px;background:#F1F2F4;font-size:12.5px;font-weight:600}
-.crm-a{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;background:#F7FFC2;font-size:12px;color:#444}
-.crm-a b{font-size:13px;color:#111;font-weight:700}
-.crm-src{display:flex;gap:6px;margin-top:auto}
-.crm-src span{padding:3px 9px;border-radius:999px;background:#F1F2F4;font-size:11px;font-weight:600;color:#555}
-@media(min-width:641px) and (max-width:900px){.sub{grid-template-columns:1fr}.sub>.card.wide{flex-direction:row;align-items:center;gap:28px;padding:20px 32px 20px 20px}.sub>.card.wide .card-img{width:220px;height:170px}.sub>.card.wide .card-body{padding:0}}
-@media(max-width:640px){.sub{grid-template-columns:1fr}.card-img.is-crm .crm-win{align-items:center;justify-content:center;padding:0;border-radius:18px}.crm-win>*:not(.crm-hd){display:none}.crm-hd b{display:none}.crm-dot{width:52px;height:52px;border-radius:16px;font-size:26px}.card-crm{font-size:20px!important;margin-top:0}}
-.crm-win{overflow:hidden;gap:12px;padding:18px 20px 16px}
-.card-crm{font-size:28px!important}
-@media(min-width:641px){.sub>.card.wide .card-body{padding-top:28px}}
+/* 위 서비스 카드 4개(알림톡·전자계약·인사관리·고객관리) */
+.svc{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.svc>.card{padding:20px 16px 28px}
+.svc>.card .card-body{padding-left:8px;padding-right:8px}
+@media(max-width:1100px){.svc{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.svc{grid-template-columns:1fr}}
+/* 고객관리 카드 화면 (.cmv) — 인사관리 카드(.hv)와 같은 틀 */
+.cmv{--cm-or:#FF7A1A;--cm-line:#e6e8ec;--cm-muted:#8a8f99}
+.mock-stage.cmv{margin:20px -23px 0;padding:0;height:245px;background:transparent;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.cmv .stage{position:relative;width:330px;height:306px;flex:none;transform:scale(.74)}
+.cmv .stack{position:absolute;left:9px;top:26px;width:312px;height:256px;border-radius:16px;background:rgba(255,255,255,.55);transform:rotate(-5deg)}
+.cmv .stack.two{transform:rotate(4deg);background:rgba(255,255,255,.35)}
+.cmv .app{position:relative;width:330px;height:306px;border-radius:16px;overflow:hidden;background:#fff}
+.cmv .hd{display:flex;align-items:center;height:44px;padding:0 10px 0 14px;background:var(--cm-or);color:#fff;font-size:13px;font-weight:700}
+.cmv .hd .ai{margin-left:auto;padding:5px 10px;border-radius:999px;background:#fff;color:var(--cm-or);font-size:10px;font-weight:700}
+.cmv .tabs{display:flex;gap:14px;padding:0 14px;border-bottom:1px solid var(--cm-line)}
+.cmv .tabs span{position:relative;padding:10px 0;font-size:11px;font-weight:700;color:var(--cm-muted)}
+.cmv .tabs span.on{color:#111}
+.cmv .tabs span.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#111}
+.cmv .rows{padding:4px 14px}
+.cmv .row{display:flex;align-items:center;gap:9px;padding:11px 0;border-bottom:1px solid #f2f3f5}
+.cmv .av{width:26px;height:26px;flex:none;border-radius:50%;display:grid;place-items:center}
+.cmv .av svg{width:15px;height:15px;color:#111}
+.cmv .who{flex:1;min-width:0}
+.cmv .who b{display:block;font-size:12px;color:#111}
+.cmv .who small{display:block;font-size:10px;color:var(--cm-muted)}
+.cmv .st{padding:5px 9px;border-radius:999px;font-size:10px;font-weight:700}
+.cmv .st.g{background:#E3F8EA;color:#1F8A4C}.cmv .st.b{background:#E6F0FF;color:#2F6BE0}.cmv .st.n{background:#F3F4F6;color:#666}
+.cmv .row:first-child{animation:cm-pick 8s ease-in-out infinite}
+.cmv .done{position:absolute;left:50%;bottom:14px;display:flex;align-items:center;gap:7px;padding:7px 13px 7px 8px;border-radius:999px;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.14);white-space:nowrap;opacity:0;transform:translate(-50%,10px) scale(.86);animation:cm-done 8s ease-in-out infinite}
+.cmv .done i{width:18px;height:18px;border-radius:50%;background:var(--cm-or);color:#fff;display:grid;place-items:center;font-size:10px;font-style:normal;line-height:1}
+.cmv .done span{font-size:11px;font-weight:700;color:#111}
+@keyframes cm-pick{0%,30%{background:transparent}38%,88%{background:#FFF3E8}96%,100%{background:transparent}}
+@keyframes cm-done{0%,40%{opacity:0;transform:translate(-50%,10px) scale(.86)}46%{opacity:1;transform:translate(-50%,0) scale(1.04)}50%,86%{opacity:1;transform:translate(-50%,0) scale(1)}92%,100%{opacity:0;transform:translate(-50%,0) scale(.96)}}
+@media(max-width:1100px){.mock-stage.cmv{margin-left:-20px;margin-right:-20px;height:225px}.cmv .stage{transform:scale(.68)}}
+@media(max-width:640px){.mock-stage.cmv{margin:24px -24px 0;height:233px}.cmv .stage{transform:scale(.7)}}
+@media(prefers-reduced-motion:reduce){.cmv *{animation:none!important}.cmv .done{opacity:1;transform:translate(-50%,0)}.cmv .row:first-child{background:#FFF3E8}}
+/* 4열일 때 카드 폭에 맞춰 화면 그림을 같은 크기·위치로 */
+@media(min-width:1101px){
+  .svc .mock-stage{margin:16px -16px 0!important;height:226px!important;padding:0!important;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .svc .mock-stage .stage{transform:scale(.66)!important}
+}
+@media(min-width:641px) and (max-width:1100px){
+  .svc .mock-stage{margin:20px -20px 0!important;height:240px!important;padding:0!important;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .svc .mock-stage .stage{transform:scale(.74)!important}
+}

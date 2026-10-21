@@ -55,7 +55,7 @@
 <div class="pr-add"><img src="../assets/pricing/hr-channel.webp" alt="카카오 채널 커스텀" loading="lazy"><h3>카카오 채널 연동하기</h3></div>
 <div class="pr-add"><img src="../assets/pricing/hr-setting.webp" alt="문서 세팅" loading="lazy"><h3>추가 문서 세팅 지원</h3><p>요금제별 지원 개수를 초과하면,<br>추가 비용을 지불하여 문서 세팅을 요청할 수 있습니다</p><ul class="fee"><li>전자계약 문서 한 건당 <b>2만원</b></li><li>추가 기능(계산식, 검증식 등) 포함 시 한 건당 <b>4만원</b></li></ul></div>
 </div></section></div>
-<div class="pr-dock"><div class="dk"><b data-dk="ttl"></b><dl><div><dt data-dk="lbl"></dt><dd data-dk="cnt"></dd></div><div><dt>실제 단가</dt><dd><s data-dk="list"></s> <span data-dk="unit"></span></dd></div></dl><small>VAT 10% 별도 · 발송 완료 건에 대해서만 포인트 차감</small></div><a class="pr-float" href="https://jober.io/sign-up" target="_blank" rel="noopener noreferrer"><span data-o="float">회원가입하고 계약문서 3건 무료로 보내기</span> <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div>
+<div class="pr-dock"><div class="dk"><div class="dk-hd"><b data-dk="ttl"></b><div class="dk-svc"><button type="button" data-svc="msg">알림톡 기준</button><button type="button" data-svc="doc">계약문서 기준</button></div></div><dl><div><dt data-dk="lbl"></dt><dd data-dk="cnt"></dd></div><div><dt>실제 단가</dt><dd><s data-dk="list"></s> <span data-dk="unit"></span></dd></div></dl><small>VAT 10% 별도 · 발송 완료 건에 대해서만 포인트 차감</small></div><a class="pr-float" href="https://jober.io/sign-up" target="_blank" rel="noopener noreferrer"><span data-o="float">회원가입하고 계약문서 3건 무료로 보내기</span> <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div>
 <div class="pr-lb" hidden><img alt=""><button type="button" aria-label="닫기">✕</button></div>
 </main>
 <footer class="ft"><div class="w">
@@ -84,7 +84,8 @@
   document.querySelectorAll('[data-bill]').forEach(function(b){b.addEventListener('click',function(){var k=b.dataset.bill;document.querySelectorAll('[data-bill]').forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on);});
     document.querySelectorAll('.pr-hr .pay').forEach(function(p){p.classList.toggle('mo',k==='mo');p.querySelector('p b').textContent=k==='mo'?p.dataset.mo:p.dataset.di;});});});
   var dock=document.querySelector('.pr-dock'),seen=new Map();
-  window.prDockSync=function(){var vis=[...seen].find(function(e){return e[1]&&!e[0].closest('.pr-panel').hidden;}),pl=vis&&vis[0];dock.classList.toggle('calc',!!pl);if(pl&&pl._dk){for(var k in pl._dk){dock.querySelector('[data-dk='+k+']').textContent=pl._dk[k];}}};
+  window.prDockSync=function(){var vis=[...seen].find(function(e){return e[1]&&!e[0].closest('.pr-panel').hidden;}),pl=vis&&vis[0];dock.classList.toggle('calc',!!pl);if(pl&&pl._dk){for(var k in pl._dk){dock.querySelector('[data-dk='+k+']').textContent=pl._dk[k];}}if(pl){var cs=pl.querySelector('.svc .on').dataset.svc;dock.querySelectorAll('.dk-svc button').forEach(function(x){x.classList.toggle('on',x.dataset.svc===cs);});dock._pl=pl;}};
+  dock.querySelectorAll('.dk-svc button').forEach(function(x){x.addEventListener('click',function(){if(dock._pl)dock._pl.querySelector('.svc [data-svc='+x.dataset.svc+']').click();});});
   if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){seen.set(e.target,e.isIntersecting);});prDockSync();});document.querySelectorAll('.pr-plan').forEach(function(pl){seen.set(pl,false);io.observe(pl);});}
   var ft=document.querySelector('footer.ft');if(ft&&'IntersectionObserver' in window){new IntersectionObserver(function(es){dock.classList.toggle('off',es[0].isIntersecting);}).observe(ft);}
   var lb=document.querySelector('.pr-lb'),li=lb.querySelector('img');

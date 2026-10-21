@@ -935,3 +935,4 @@ main:has(.ab-hero){overflow-x:clip}
 .ct a.ct-doclist-more{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:0;border-radius:0;background:none;color:var(--ink)!important;font-size:16px;font-weight:600;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1.5px}
 .ct a.ct-doclist-more:hover{background:none;color:#7B4FD6!important}
 .ct a.ct-doclist-more{display:flex;width:fit-content;margin-left:auto}
+.al-review blockquote{word-break:keep-all}

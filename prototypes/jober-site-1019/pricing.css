@@ -332,3 +332,13 @@
   .pr-dock .dk small{display:block;margin-top:8px;font-size:12px;color:rgba(255,255,255,.65)}
 }
 .pr-dock{transition:opacity .25s,transform .25s}.pr-dock.off{opacity:0;pointer-events:none!important;transform:translate(-50%,16px)}@media(max-width:900px){.pr-dock.off{transform:translateY(16px)}}
+/* 모바일: 본문 계산 상자는 숨기고 하단 바가 계산기 역할 (기준 전환 포함) */
+.pr-dock .dk-svc{display:none}
+@media(max-width:900px){
+  .pr-plan .pr-sum{display:none}
+  .pr-dock .dk-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+  .pr-dock.calc .dk-hd b{margin:0}
+  .pr-dock.calc .dk-svc{display:flex;gap:2px;padding:3px;border-radius:10px;background:rgba(255,255,255,.2)}
+  .pr-dock .dk-svc button{height:28px;padding:0 10px;border:0;border-radius:8px;background:none;color:rgba(255,255,255,.85);font:inherit;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer}
+  .pr-dock .dk-svc button.on{background:#fff;color:var(--pr-key)}
+}

@@ -230,3 +230,23 @@ h1,h2,h3,p{margin:0}
 @media(max-width:640px){.card-logo img.fw-stack{height:64px!important}}
 .card-logo img.fw-h{width:auto!important;height:38px!important;max-width:none}
 @media(max-width:640px){.card-logo img.fw-h{height:32px!important}}
+/* 하단 카드 3개(커넥티아·펠로우즈·CRM): 위 카드처럼 그림 위, 글 아래로 키운다 */
+@media(min-width:641px){.sub{grid-template-columns:repeat(3,minmax(0,1fr))}.sub>.card.wide{flex-direction:column;align-items:stretch;gap:0;padding:20px 20px 32px}.sub>.card.wide .card-img{width:100%;height:220px}.sub>.card.wide .card-body{padding:28px 12px 0}.sub>.card.wide h3{font-size:26px}}
+.card-logo img.fw-h{height:40px!important}
+.card-crm{font-size:30px!important;letter-spacing:-.04em;font-weight:700!important}
+/* CRM 카드 그림: AI 질문·답변 창 */
+.card-img.is-crm{padding:0}
+.crm-win{width:100%;height:100%;padding:18px 20px;border-radius:20px;background:#fff;display:flex;flex-direction:column;gap:10px;text-align:left;box-shadow:0 12px 28px -18px rgba(17,17,17,.35)}
+.crm-hd{display:flex;align-items:center;gap:8px;font-size:13px}
+.crm-hd b{font-weight:700}
+.crm-dot{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:#111;color:var(--lime);font-size:12px}
+.crm-q{align-self:flex-end;max-width:86%;padding:8px 12px;border-radius:14px 14px 4px 14px;background:#F1F2F4;font-size:12.5px;font-weight:600}
+.crm-a{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;background:#F7FFC2;font-size:12px;color:#444}
+.crm-a b{font-size:13px;color:#111;font-weight:700}
+.crm-src{display:flex;gap:6px;margin-top:auto}
+.crm-src span{padding:3px 9px;border-radius:999px;background:#F1F2F4;font-size:11px;font-weight:600;color:#555}
+@media(min-width:641px) and (max-width:900px){.sub{grid-template-columns:1fr}.sub>.card.wide{flex-direction:row;align-items:center;gap:28px;padding:20px 32px 20px 20px}.sub>.card.wide .card-img{width:220px;height:170px}.sub>.card.wide .card-body{padding:0}}
+@media(max-width:640px){.sub{grid-template-columns:1fr}.card-img.is-crm .crm-win{align-items:center;justify-content:center;padding:0;border-radius:18px}.crm-win>*:not(.crm-hd){display:none}.crm-hd b{display:none}.crm-dot{width:52px;height:52px;border-radius:16px;font-size:26px}.card-crm{font-size:20px!important;margin-top:0}}
+.crm-win{overflow:hidden;gap:12px;padding:18px 20px 16px}
+.card-crm{font-size:28px!important}
+@media(min-width:641px){.sub>.card.wide .card-body{padding-top:28px}}

@@ -160,7 +160,7 @@ body {
   display: none;
   flex-direction: column;
   gap: 20px;
-  padding: 20px 16px; /* 좌우는 위 행과 같은 16px — 하위 라벨이 아이콘 선에 맞는다 */
+  padding: 20px; /* 하위 라벨·입력칸은 받는사람 카드 글자선(본문 20 + 20)에 맞춘다 */
   margin-bottom: 16px;
   background: var(--color-bg-light);
   border-radius: var(--r-lg);
@@ -302,7 +302,6 @@ body {
 /* A안 — 옵션 행·펼친 영역을 받는사람 카드 글자선(본문 20 + 카드 20)에 딱 맞춘 버전 */
 .align-text .option-head,
 .align-text .extra-toggle { padding-left: 20px; padding-right: 20px; }
-.align-text .extra-panel { padding: 20px; }
 .align-text .schedule-summary { padding-left: calc(20px + var(--icon-md) + 4px); }
 
 /* 비교용 가이드 — 받는사람 카드 글자선 위치에 점선 */
@@ -314,6 +313,14 @@ body {
   left: 40px;
   border-left: 1px dashed var(--color-error);
   pointer-events: none;
+}
+.guides-off .show-guide .frame-stage::after { display: none; }
+.guide-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -553,6 +560,10 @@ body {
   <div class="board-heading" id="compare">
     <h2 class="text-20 font-bold">정렬 비교</h2>
     <p class="text-14 text-secondary">빨간 점선은 받는사람 카드의 글자선이에요. A는 아이콘을 점선에 딱 맞췄고, B(현재 적용)는 4px 바깥으로 뺐어요.</p>
+    <label class="guide-switch">
+      <input type="checkbox" class="toggle toggle-sm guide-toggle" checked>
+      <span class="text-14">정렬선 보기</span>
+    </label>
   </div>
 
   <section class="frame align-text show-guide" data-frame="send" data-channel="card" data-contact="010-0000-0000" data-reserved="1" data-open="1">
@@ -750,6 +761,11 @@ function setupSchedule(modal, stage, initial) {
 
   render();
 }
+
+// 정렬 비교의 빨간 점선 켜기/끄기
+document.querySelector('.guide-toggle').addEventListener('change', (e) => {
+  document.querySelector('.board').classList.toggle('guides-off', !e.target.checked);
+});
 
 document.querySelectorAll('[data-frame="reserve"]').forEach((frame) => {
   const state = frame.dataset.mode === 'custom'

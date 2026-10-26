@@ -84,7 +84,7 @@ body {
   background: var(--color-border-split);
 }
 .channel-row  { margin-top: 12px; }
-.summary-hint { margin-top: 8px; }
+.summary-hint { margin-top: 4px; }
 
 /* 발송 채널 표시 — 자버문서 알림톡 채널 */
 .channel {
@@ -97,9 +97,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--icon-xl);
-  height: var(--icon-xl);
-  border-radius: var(--r-lg); /* 카톡 프로필처럼 모서리를 크게 둥근 스쿼클 */
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  border-radius: var(--r-md); /* 카톡 프로필처럼 모서리를 크게 둥근 스쿼클 (한 변의 약 1/3) */
   background: var(--color-jober);
   color: var(--color-on-jober);
 }
@@ -124,6 +124,7 @@ body {
 }
 .check-field-inline {
   display: inline-flex;
+  padding: 8px 12px; /* 바로 위 입력칸(40px)과 같은 높이로 */
   background: var(--color-surface);
 }
 
@@ -136,7 +137,7 @@ body {
   justify-content: space-between;
   width: 100%;
   min-height: 56px;
-  padding: 16px 12px; /* 모달 가장자리와 카드 글자선(20px) 사이 — 너무 들어가 보이지 않게 살짝만 들여씀 */
+  padding: 16px; /* 카드 글자선(20px)보다 살짝 바깥 — 면 밖 행은 카드 안 글자에 딱 맞추면 들어가 보인다 */
   border: 0;
   background: none;
   font-family: var(--font-base);
@@ -147,7 +148,7 @@ body {
 .extra-toggle-label {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 .extra-toggle .chevron {
   color: var(--color-text-secondary);
@@ -159,7 +160,7 @@ body {
   display: none;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
+  padding: 20px 16px; /* 좌우는 위 행과 같은 16px — 하위 라벨이 아이콘 선에 맞는다 */
   margin-bottom: 16px;
   background: var(--color-bg-light);
   border-radius: var(--r-lg);
@@ -171,7 +172,7 @@ body {
   align-items: center;
   gap: 8px;
   margin: -8px 0 16px;
-  padding-left: calc(12px + var(--icon-md) + 8px);
+  padding-left: calc(16px + var(--icon-md) + 4px);
 }
 .schedule-summary[hidden] { display: none; }
 .schedule-summary .btn-link { height: auto; padding: 0; }

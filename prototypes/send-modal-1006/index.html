@@ -99,7 +99,7 @@ body {
   justify-content: center;
   width: var(--icon-xl);
   height: var(--icon-xl);
-  border-radius: var(--r-sm);
+  border-radius: var(--r-lg); /* 카톡 프로필처럼 모서리를 크게 둥근 스쿼클 */
   background: var(--color-jober);
   color: var(--color-on-jober);
 }
@@ -124,7 +124,7 @@ body {
 }
 .check-field-inline {
   display: inline-flex;
-  background: var(--color-surface-sub);
+  background: var(--color-surface);
 }
 
 /* 옵션 행 — 보내기 예약(토글)과 추가 설정(아코디언)이 같은 머리 모양을 쓴다 */
@@ -136,7 +136,7 @@ body {
   justify-content: space-between;
   width: 100%;
   min-height: 56px;
-  padding: 16px 0;
+  padding: 16px 12px; /* 모달 가장자리와 카드 글자선(20px) 사이 — 너무 들어가 보이지 않게 살짝만 들여씀 */
   border: 0;
   background: none;
   font-family: var(--font-base);
@@ -154,20 +154,24 @@ body {
   transition: transform var(--motion-standard) var(--ease-standard);
 }
 .extra.is-open .chevron { transform: rotate(180deg); }
+/* 펼친 하위 설정은 옅은 면으로 묶어 상위 행과 구분한다. 안쪽 여백이 20px 이라 글자선이 위와 이어진다 */
 .extra-panel {
   display: none;
   flex-direction: column;
   gap: 20px;
-  padding: 4px 0 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  background: var(--color-bg-light);
+  border-radius: var(--r-lg);
 }
 
-/* 예약 완료 후 — 토글 아래 보조 문구로 예약 일시를 보여준다 (아이콘 폭만큼 들여씀) */
+/* 예약 완료 후 — 토글 아래 보조 문구로 예약 일시를 보여준다 (행 여백 + 아이콘 폭만큼 들여씀) */
 .schedule-summary {
   display: flex;
   align-items: center;
   gap: 8px;
   margin: -8px 0 16px;
-  padding-left: calc(var(--icon-md) + 8px);
+  padding-left: calc(12px + var(--icon-md) + 8px);
 }
 .schedule-summary[hidden] { display: none; }
 .schedule-summary .btn-link { height: auto; padding: 0; }

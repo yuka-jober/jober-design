@@ -287,6 +287,34 @@ body {
   border-radius: var(--r-lg);
 }
 .frame-overlay .send-modal { width: 100%; }
+/* ── 4. 정렬 비교 ──────────────────────────── */
+.board-heading {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 48px;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+/* A안 — 옵션 행·펼친 영역을 받는사람 카드 글자선(본문 20 + 카드 20)에 딱 맞춘 버전 */
+.align-text .option-head,
+.align-text .extra-toggle { padding-left: 20px; padding-right: 20px; }
+.align-text .extra-panel { padding: 20px; }
+.align-text .schedule-summary { padding-left: calc(20px + var(--icon-md) + 4px); }
+
+/* 비교용 가이드 — 받는사람 카드 글자선 위치에 점선 */
+.show-guide .frame-stage::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 40px;
+  border-left: 1px dashed var(--color-error);
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
@@ -522,6 +550,23 @@ body {
       <span class="badge badge-sm badge-weak-neutral">채널 안내 미노출</span>
     </div>
   </section>
+  <div class="board-heading" id="compare">
+    <h2 class="text-20 font-bold">정렬 비교</h2>
+    <p class="text-14 text-secondary">빨간 점선은 받는사람 카드의 글자선이에요. A는 아이콘을 점선에 딱 맞췄고, B(현재 적용)는 4px 바깥으로 뺐어요.</p>
+  </div>
+
+  <section class="frame align-text show-guide" data-frame="send" data-channel="card" data-contact="010-0000-0000" data-reserved="1" data-open="1">
+    <div class="frame-caption">
+      <span class="text-12 text-secondary">A · 받는사람 글자선에 딱 맞춤</span>
+    </div>
+  </section>
+
+  <section class="frame show-guide" data-frame="send" data-channel="card" data-contact="010-0000-0000" data-reserved="1" data-open="1">
+    <div class="frame-caption">
+      <span class="text-12 text-secondary">B · 글자선보다 4px 바깥</span>
+      <span class="badge badge-sm badge-weak-primary">현재 적용</span>
+    </div>
+  </section>
 </main>
 
 <script>
@@ -733,6 +778,7 @@ document.querySelectorAll('[data-frame="send"]').forEach((frame) => {
   });
 
   setupFolderPicker(modal);
+  if (frame.dataset.open) toggle.click();
 
   frame.appendChild(stage);
 });

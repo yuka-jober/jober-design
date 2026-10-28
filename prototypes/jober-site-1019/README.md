@@ -10,6 +10,7 @@
 | `services/alimtalk/` | 카카오 알림톡 |
 | `services/contract/` | 전자계약 |
 | `services/hr/` | 인사관리 |
+| `services/attendance/` | 근태 관리 상세 (인사관리 근태 관리 카드의 자세히 보기 → 실제 사이트 `jober.io/tour/attendance` 자리) |
 | `services/connectia/` | 커넥티아 (행사·커뮤니티) |
 | `services/fellows/` | 펠로우즈 (모임·캠퍼스) |
 | `stories/` | 활용 사례 |
@@ -32,6 +33,7 @@
 - `v3.css` — 홈 전용
 - `v3-sub.css` — 하위 페이지 전용 (마지막에 로드되어 `style.css` · `brand.css` · `type.css` · 페이지별 css를 덮는다)
 - `pricing.css` — 요금제 페이지
+- `attendance.css` — 근태 관리 상세 (출퇴근 기록·폴더·엑셀 화면 목업 포함)
 - `contract.css` · `alim-anim.css` · `hr-anim.css` — 서비스 카드·히어로의 화면 애니메이션
 - `jober-icons.js` — 아이콘 스프라이트(jober-design 아이콘 중 쓰는 것만)
 - `assets/` — 이미지·로고·폰트

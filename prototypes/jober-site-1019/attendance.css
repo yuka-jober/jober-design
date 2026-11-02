@@ -307,3 +307,63 @@
 .at .made-logo,.hr .hr-hv img.made-logo{position:static;display:block;height:9px;width:auto;filter:none}
 /* 엑셀 목업: 가로로 넓게 펼쳐 내 위치가 한두 줄로 읽히게 */
 @media(min-width:641px){.at .at-stage:has(>.sheetx){padding-left:20px;padding-right:20px}.at .at-stage>.sheetx{zoom:1.08;width:calc(100% / 1.08)}}
+
+/* ===== v2 (2차 수정, index-v2.html 전용 — .at2 범위) ===== */
+/* 히어로: 문서를 더 크게, 위아래 여백은 줄여 알림톡 히어로 높이에 가깝게 */
+.at2.hr .hr-hero-layout{padding:24px 0 64px}
+.at2 .at-hero-doc{transform:none;zoom:1.06}
+@media(max-width:640px){.at2 .at-hero-doc{transform:none;zoom:1}}
+/* 좌표와 주소 시작점 맞춤 — 입력칸 안쪽 글자 시작선 기준 */
+.at2 .doc .addr{margin-left:27px}
+.at2 .phn .paddr{padding-left:8px}
+.at2 .pcwin .pc-addr{padding-left:10px}
+/* 내 위치 조회 데모: 스피너 1초 → 좌표 → 주소 → 유지, 6초 반복. 칸 크기는 그대로 */
+.at2 .doc .locrow .v{position:relative}
+.at2 .at-spin{position:absolute;left:10px;top:50%;width:11px;height:11px;margin-top:-6px;border:2px solid #dbe4fb;border-top-color:#2f6ee8;border-radius:50%;opacity:0;animation:at-spin .7s linear infinite,at-spin-show 6s infinite}
+.at2 .at-coord{opacity:0;animation:at-coord 6s infinite}
+.at2 .at-addr{opacity:0;animation:at-addr 6s infinite}
+@keyframes at-spin{to{transform:rotate(360deg)}}
+@keyframes at-spin-show{0%,15%{opacity:1}18%,100%{opacity:0}}
+@keyframes at-coord{0%,17%{opacity:0}23%,92%{opacity:1}97%,100%{opacity:0}}
+@keyframes at-addr{0%,25%{opacity:0}31%,92%{opacity:1}97%,100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.at2 .at-spin{display:none}.at2 .at-coord,.at2 .at-addr{animation:none;opacity:1}}
+/* 섹션 간격: 알림톡 상세처럼 묶음 사이 112px 한 번만 */
+.at2 .at-sec{padding-top:112px;padding-bottom:0}
+.at2 .at-sec:last-of-type{padding-bottom:0}
+.at2 .at-note{padding-top:112px;padding-bottom:112px}
+@media(max-width:640px){.at2 .at-sec{padding-top:72px}.at2 .at-note{padding-top:72px;padding-bottom:72px}}
+/* 이용 전 확인: 테두리 대신 연한 회색 면, 문장 간격 좁게 */
+.at2.at .at-note .at-note-box{border:0;background:var(--soft);padding:32px 40px}
+.at2 .at-note h2{font-size:18px!important;margin:0 0 12px!important}
+.at2 .at-note p{margin:0;font-size:16px;line-height:1.7}
+.at2 .at-note p+p{margin-top:8px}
+@media(max-width:640px){.at2.at .at-note .at-note-box{padding:24px 20px}.at2 .at-note p{font-size:15px}}
+/* 좌우 예시 이미지 크기 통일: 모든 목업이 회색 판 안쪽 폭을 똑같이 채우고, 같은 줄 두 판은 높이가 같다 */
+@media(min-width:901px){
+  .at2 .at-stage,.at2.at .at-stage:has(>.sheetx){padding:40px 32px;min-height:0}
+  .at2.at .at-stage>*{width:100%;max-width:none}
+  .at2.at .at-stage>.duowrap{zoom:1.2}
+  .at2.at .at-stage>.pcwin{zoom:1}
+  .at2.at .at-stage>.fold,.at2.at .at-stage>.indiv{zoom:1.22}
+  .at2.at .at-stage>.appwin{zoom:1.12}
+  .at2.at .at-stage>.sheetx{zoom:1.06}
+  .at2 .sxg>span{padding-top:10px;padding-bottom:10px}
+  .at2.at .at-stage>.fold{min-height:207px}
+  .at2 .fold .fth,.at2 .fold .ftr{grid-template-columns:1fr 60px 52px 40px}
+}
+/* 휴대폰 두 대 높이 맞춤, 기록 선택과 엑셀 목업 세로 크기 맞춤 */
+@media(min-width:901px){
+  .at2 .phn{flex:1;display:flex;flex-direction:column}
+  .at2 .phn .pbody{flex:1;display:flex;flex-direction:column}
+  .at2 .phn .pwr{margin-top:auto}
+  .at2.at .at-stage:has(>.appwin),.at2.at .at-stage:has(>.sheetx){align-items:stretch}
+  .at2.at .at-stage>.sheetx{display:flex;flex-direction:column}
+  .at2 .sheetx .sxg{flex:1;grid-auto-rows:auto;align-content:stretch}
+}
+.at2 .phn .pwr{display:flex;align-items:center;justify-content:center;gap:3px}
+/* 로고의 j 아랫부분 때문에 위로 떠 보이는 것 보정 — 옆 글자와 가운데가 맞게 살짝 내린다 */
+.at2 img.made-logo{position:relative!important;top:1.5px}
+.at2 .phn .pwr img.made-logo{top:1px}
+.at2 .phn .paddr{padding-left:0;text-align:center}
+/* 엑셀 F열(내 위치)도 다른 칸과 같은 줄 높이 — 글자 시작선이 위로 뜨지 않게 */
+.at .sxg > span:nth-child(7n){line-height:inherit}

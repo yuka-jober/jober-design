@@ -365,3 +365,5 @@
 .at2 img.made-logo{position:relative!important;top:1.5px}
 .at2 .phn .pwr img.made-logo{top:1px}
 .at2 .phn .paddr{padding-left:0;text-align:center}
+/* 엑셀 F열(내 위치)도 다른 칸과 같은 줄 높이 — 글자 시작선이 위로 뜨지 않게 */
+.at .sxg > span:nth-child(7n){line-height:inherit}

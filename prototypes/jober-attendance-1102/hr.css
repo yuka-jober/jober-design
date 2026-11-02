@@ -1,0 +1,99 @@
+/* 인사관리 상세 페이지(.hr)
+   원본: https://jober-hr-overview.neocsv.chatgpt.site/ — 사이트 헤더·푸터·버튼 톤으로 감싸고 색은 --jb-* 팔레트로 맞춤 */
+.hr .nw{display:inline-block}
+
+/* ===== 히어로 (원본 주황 → 팔레트 peach) ===== */
+.hr-hero{background:var(--jb-peach);border-bottom:0;overflow:hidden}
+.hr-hero .back{display:inline-block;margin-top:45px;color:#111}
+.hr-hero-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center;padding:40px 0 76px}
+.hr-hero .eyebrow{color:#111}
+.hr-hero h1{font-size:clamp(38px,4.4vw,58px);line-height:1.25;margin-bottom:24px}
+.hr-hero h1 u{text-decoration:none;border-bottom:0;padding-bottom:3px}
+.hr-hero-desc{font-size:18px;line-height:1.8;color:#2a2410}
+.hr-hero .hero-actions{margin-top:32px}
+.hr-visual{position:relative;padding:20px 0 0 10px;min-width:0}
+.hr-visual-label{display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:700;margin-bottom:22px;border-bottom:1px solid rgba(17,17,17,.4);padding-bottom:12px}
+.hr-visual img{display:block;width:112%;max-width:none;height:auto;margin-left:-2%;filter:drop-shadow(0 18px 18px rgba(74,62,20,.2))}
+.hr-caption{font-size:12px;text-align:right;margin-top:15px;opacity:.75}
+
+/* ===== 업무 바로 찾기 ===== */
+.hr-quick{padding:24px 0;border-bottom:0;background:#fff}
+.hr-quick .wrap{display:flex;align-items:center;gap:26px}
+.hr-quick strong{font-size:14px;white-space:nowrap}
+.hr-quick nav{display:flex;flex-wrap:wrap;gap:8px}
+.hr-quick a{font-size:14px;border:0;border-radius:40px;padding:6px 15px;transition:background .2s}
+.hr-quick a:hover{background:var(--jb-lime)}
+
+/* ===== 서비스 카드 ===== */
+.hr-sec{padding:95px 0}
+.hr-head{display:flex;justify-content:space-between;gap:30px;align-items:flex-end;margin-bottom:45px}
+.hr-head>p{color:#454c47;font-size:17px;line-height:1.8;max-width:360px}
+.hr-group{display:flex;align-items:center;gap:13px;margin:40px 0 18px;font-weight:700;font-size:16px}
+.hr-group em{font-style:normal;color:#888;font-size:12px;letter-spacing:.06em}
+.hr-group:after{content:'';flex:1}
+.hr-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.hr-cards.one{grid-template-columns:1fr}
+.hr-card{display:flex;flex-direction:column;background:var(--jb-gray);border:0;border-radius:14px;box-shadow:none;padding:28px;min-height:317px;scroll-margin-top:110px;transition:transform .2s,box-shadow .2s}
+.hr-cards.one .hr-card{min-height:250px}
+.hr-card:hover{transform:translateY(-3px);box-shadow:none}
+.hr-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.hr-icon{width:48px;height:48px;border:0;border-radius:13px;display:grid;place-items:center;background:var(--jb-peach)}
+.hr-cards>.hr-card:nth-child(3n+2) .hr-icon{background:var(--jb-lime)}
+.hr-cards>.hr-card:nth-child(3n) .hr-icon{background:var(--jb-mint)}
+.hr-icon svg{width:24px;height:24px;fill:none;stroke:#111;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.hr-num{font-size:12px;color:#777;letter-spacing:.08em}
+.hr-card h3{font-size:23px;margin-bottom:12px}
+.hr-card>p{font-size:16px;color:#535954;line-height:1.75;margin-bottom:18px}
+.hr-tags{font-size:13px;color:#555;margin-bottom:22px}
+.hr-tags span+span:before{content:'·';padding:0 8px}
+.hr-card .hr-note{font-size:13px;margin:-10px 0 18px;color:var(--jb-brown)}
+.hr-detail{align-self:flex-start;margin-top:auto;padding:8px 0 2px;border-bottom:0;font-size:15px;font-weight:700}
+.hr-detail:hover{color:var(--jb-forest);border-color:var(--jb-forest)}
+
+/* ===== 업무 흐름 (어두운 밴드) ===== */
+.hr-flow{background:#111;color:#fff;border-block:0}
+.hr-flow .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);gap:80px}
+.hr-flow .eyebrow{color:var(--jb-peach)}
+.hr-flow h2{color:#fff}
+.hr-flow-intro p:not(.eyebrow){color:#c8c8c4;font-size:17px;line-height:1.8;margin-top:22px}
+.hr-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 34px}
+.hr-step{border-top:1px solid #5a5a56;padding:24px 0 22px}
+.hr-step b{display:block;font-size:14px;color:var(--jb-peach);margin-bottom:14px}
+.hr-step h3{font-size:21px;color:#fff;margin-bottom:10px}
+.hr-step p{color:#c8c8c4;font-size:15px}
+.hr-step a{display:inline-block;margin-top:15px;font-size:14px;text-decoration:underline;text-underline-offset:5px;color:var(--jb-lime)}
+
+/* ===== 하단 CTA 버튼 2개 ===== */
+.closing .hr-actions{display:flex;gap:16px;flex-wrap:wrap;flex:none}
+
+/* ===== 반응형 ===== */
+@media(max-width:1100px){.hr-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){
+  .hr-hero-layout{grid-template-columns:1fr;padding:32px 0 40px;gap:12px}
+  .hr-visual{max-width:570px;width:100%;margin:auto;padding:20px 0 0}
+  .hr-visual img{width:100%;margin:0}
+  .hr-quick .wrap{display:block}
+  .hr-quick strong{display:block;margin-bottom:12px}
+  .hr-head{display:block;margin-bottom:30px}
+  .hr-head>p{margin-top:18px}
+  .hr-flow .wrap{grid-template-columns:1fr;gap:30px}
+}
+@media(max-width:640px){
+  .hr-hero .back{margin-top:25px}
+  .hr-hero h1{font-size:36px}
+  .hr-hero-desc{font-size:16px}
+  .hr-sec{padding:60px 0}
+  .hr-cards,.hr-cards.one{grid-template-columns:1fr;gap:16px}
+  .hr-card,.hr-cards.one .hr-card{min-height:0;padding:24px}
+  .hr-steps{grid-template-columns:1fr}
+  .closing .hr-actions{margin-top:26px}
+  .closing .hr-actions .btn{margin-top:0}
+}
+
+/* 어두운 밴드 바로 뒤 FAQ 여백 */
+.hr-flow+.faq-section{padding-top:95px}
+@media(max-width:640px){.hr-flow+.faq-section{padding-top:60px}}
+
+/* 자버 아이콘 */
+.hr-icon svg{color:#111}
+.hr-quick a{background:var(--jb-gray)}

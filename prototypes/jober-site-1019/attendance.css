@@ -367,3 +367,5 @@
 .at2 .phn .paddr{padding-left:0;text-align:center}
 /* 엑셀 F열(내 위치)도 다른 칸과 같은 줄 높이 — 글자 시작선이 위로 뜨지 않게 */
 .at .sxg > span:nth-child(7n){line-height:inherit}
+/* ⓘ 아이콘: i 글자가 원 안에서 위로 뜨지 않게 가운데로 */
+.at .doc .dsec em,.at .pcwin .pc-sec em{box-sizing:border-box;line-height:1;padding-top:1px}

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서브 메뉴 손잡이 + 팝오버 — 자버</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../components.css">
+<style>
+/* ── 1. RESET / PAGE ─────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-base);
+  background: var(--color-page);
+  color: var(--color-text);
+  word-break: keep-all;
+}
+button { font-family: inherit; }
+
+.board { max-width: 1320px; margin: 0 auto; padding: 40px 24px 80px; }
+.board-head p { margin-top: 4px; }
+.board-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 20px 0 16px; }
+
+/* ── 2. APP FRAME — 실서비스 화면 구성 ─────── */
+.app-scroll { overflow-x: auto; border-radius: var(--r-2xl); box-shadow: var(--shadow-2); }
+.app {
+  position: relative;
+  display: flex;
+  min-width: 1200px;
+  height: 820px;
+  background: var(--color-surface-sub);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+}
+
+/* 좌측 레일 — 바닥 위에 떠 있는 흰 카드 */
+/* 팝오버(z 5)보다 위 — 팝오버가 떠 있어도 손잡이를 눌러 펼침 고정할 수 있게 */
+.rail-wrap { padding: 12px 0 12px 12px; flex-shrink: 0; position: relative; z-index: 6; }
+.rail {
+  width: 72px; height: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 12px 0;
+  background: var(--color-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-1);
+}
+.rail-sep { width: 40px; height: 1px; background: var(--color-border-split); margin: 4px 0; }
+.rail-spacer { flex: 1; }
+.rail-item {
+  position: relative;
+  width: 56px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 4px 0;
+  border: 0; background: none; cursor: pointer;
+  color: var(--color-text);
+  font-size: var(--fs-12);
+}
+.rail-item:focus-visible { outline: none; }
+.rail-item:focus-visible .rail-icon { box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline); }
+.rail-icon {
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  border-radius: var(--r-lg);
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+.rail-item:hover .rail-icon { background: var(--color-bg-base); }
+.rail-item.is-active .rail-icon { background: var(--color-text); color: var(--color-surface); }
+.rail-me {
+  width: 32px; height: 32px; margin-top: 8px;
+  display: grid; place-items: center;
+  border-radius: var(--r-md);
+  background: var(--color-error-border); color: var(--color-on-primary);
+  font-size: var(--fs-11); font-weight: var(--fw-bold);
+}
+
+/* ① 손잡이 — 접힘 상태에서 선택된 메뉴 옆, 레일 카드 바깥에 붙는다 */
+.rail-handle {
+  position: absolute;
+  top: 6px; right: -24px;          /* 아이템(56) ↔ 카드(72) 여백 8 + 손잡이 폭 16 */
+  width: 16px; height: 32px;
+  display: grid; place-items: center;
+  background: var(--color-text);
+  color: var(--color-surface);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  opacity: 0;
+  transform: translateX(-8px);
+  pointer-events: none;
+  transition: opacity var(--motion-standard) var(--ease-standard),
+              transform var(--motion-standard) var(--ease-standard);
+}
+.rail-handle .icon { width: 12px; height: 12px; }
+/* 보이는 크기는 16×32 그대로, 클릭되는 범위만 사방으로 넓힌다 */
+.rail-handle::before { content: ""; position: absolute; inset: -8px -12px -8px -4px; }
+.app.is-collapsed .rail-item.is-active.has-sub .rail-handle {
+  opacity: 1; transform: none; pointer-events: auto; cursor: pointer;
+}
+/* 팝오버가 떠 있는 동안엔 숨긴다 — 고정은 팝오버 제목 옆 버튼이나 메뉴 아이콘으로 */
+.app.is-collapsed.pop-open .rail-item.is-active.has-sub .rail-handle { opacity: 0; pointer-events: none; }
+/* 접히는 순간 한 번만 살짝 흔든다 */
+.app.nudge .rail-handle { animation: nudge 900ms var(--ease-standard) 220ms 1; }
+@keyframes nudge {
+  0%, 100% { translate: 0; }
+  20% { translate: 4px; }
+  40% { translate: 0; }
+  60% { translate: 4px; }
+  80% { translate: 0; }
+}
+
+/* 서브 메뉴 */
+.sub {
+  width: 248px; flex-shrink: 0;
+  overflow: hidden;
+  transition: width var(--motion-standard) var(--ease-standard);
+}
+.app.is-collapsed .sub, .app.no-sub .sub { width: 0; }
+.sub-inner { width: 248px; height: 100%; overflow-y: auto; padding: 20px 12px 20px 20px; }
+
+.sub-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 0 12px 4px; }
+.sub-title { font-size: var(--fs-20); font-weight: var(--fw-bold); }
+/* ② 닫기·고정 버튼 — 평소엔 차분한 회색, 올리면 검정 */
+.sub-btn { width: 28px; height: 28px; }
+.sub-btn:hover, .sub-btn:focus-visible { background: var(--color-text); color: var(--color-surface); }
+.sub-btn svg { width: var(--icon-sm); height: var(--icon-sm); }
+.sub-btn.sb-close svg, .sub-btn.sb-pin svg { width: var(--icon-lg); height: var(--icon-lg); }  /* 패널 아이콘은 안쪽이 촘촘해 한 단계 크게 */
+
+.sub-hint {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 12px; margin-bottom: 16px;
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  font-size: var(--fs-12);
+  color: var(--color-text);
+}
+.sub-hint .icon { color: var(--color-primary); flex-shrink: 0; margin-top: 2px; }
+
+.tree-head {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 0 8px;
+  font-size: var(--fs-12); color: var(--color-text-secondary);
+}
+.tree-head .grow { flex: 1; display: flex; align-items: center; gap: 4px; }
+.tree-head .icon-btn { width: 24px; height: 24px; color: var(--color-text); }
+.tree-head .icon-btn.is-danger { color: var(--color-error); }
+.tree-head .icon-btn svg { width: var(--icon-sm); height: var(--icon-sm); }
+
+.sub .menu, .pop .menu { padding: 0; box-shadow: none; background: none; min-width: 0; }
+.sub .menu-item, .pop .menu-item {
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border-radius: var(--r-md); padding: 8px;
+}
+.menu-item .icon { flex-shrink: 0; }
+.menu-item .caret { width: 12px; height: 12px; }
+.menu-item .count { margin-left: auto; color: var(--color-text-secondary); font-size: var(--fs-12); }
+
+/* ── 3. 콘텐츠 ────────────────────────────── */
+.main {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column;
+  background: var(--color-surface);
+  position: relative; z-index: 1;
+}
+.topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px 12px 24px; }
+.searchbox {
+  width: 520px;
+  height: var(--control-h-lg);
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 12px 0 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+}
+.chip {
+  height: 28px; padding: 0 12px;
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 0; border-radius: var(--r-full);
+  background: var(--color-bg-base);
+  font-size: var(--fs-12); font-weight: var(--fw-bold); color: var(--color-text);
+  white-space: nowrap;
+}
+.chip .icon { width: 12px; height: 12px; color: var(--color-text-secondary); }
+.searchbox input {
+  flex: 1; min-width: 0; height: 100%;
+  border: 0; outline: none; background: none; padding: 0 8px;
+  font-family: inherit; font-size: var(--fs-14); color: var(--color-text);
+}
+.searchbox input::placeholder { color: var(--color-disabled); }
+.topbar .grow, .toolbar .grow { flex: 1; }
+.point {
+  height: var(--control-h-lg);
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border); border-radius: var(--r-lg);
+  font-size: var(--fs-14); font-weight: var(--fw-bold); color: var(--color-primary);
+}
+.point-p {
+  width: 20px; height: 20px; border-radius: var(--r-full);
+  display: grid; place-items: center;
+  background: var(--color-primary); color: var(--color-on-primary); font-size: var(--fs-11);
+}
+.point .charge { color: var(--color-primary); font-weight: var(--fw-medium); }
+
+.toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 20px 12px 24px; }
+.viewseg { display: inline-flex; border: 1px solid var(--color-border); border-radius: var(--r-full); overflow: hidden; }
+.viewseg button { width: 44px; height: var(--control-h); border: 0; background: none; color: var(--color-text-secondary); display: grid; place-items: center; }
+.viewseg button.is-on { background: var(--color-primary-bg); color: var(--color-primary); }
+.tabs { display: flex; gap: 4px; margin-left: 12px; }
+.tab { padding: 4px 12px; border-radius: var(--r-lg); font-size: var(--fs-14); color: var(--color-text-secondary); white-space: nowrap; }
+.tab.is-on { background: var(--color-primary-bg); color: var(--color-primary); font-weight: var(--fw-bold); }
+.pill {
+  height: var(--control-h); padding: 0 12px;
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid var(--color-border); border-radius: var(--r-full);
+  background: var(--color-surface); font-size: var(--fs-14); color: var(--color-text); white-space: nowrap;
+}
+.pill .icon { width: 12px; height: 12px; color: var(--color-text-secondary); }
+.pager { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-14); }
+.pager .box { width: 48px; height: var(--control-h); display: grid; place-items: center; border: 1px solid var(--color-border); border-radius: var(--r-md); }
+
+.table { margin: 0 20px 0 24px; flex: 1; overflow: hidden; font-size: var(--fs-14); }
+.tr {
+  display: grid;
+  grid-template-columns: 88px 1.3fr 1.3fr 0.9fr 1fr 1.2fr 1.2fr 0.8fr 104px;
+  align-items: center;
+  height: 52px;
+  border-bottom: 1px solid var(--color-border-split);
+}
+.tr > * { padding: 0 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tr.th { font-weight: var(--fw-bold); border-bottom-color: var(--color-border); background: var(--color-surface-sub); }
+.tr.th .icon { width: 12px; height: 12px; color: var(--color-disabled); margin-left: 4px; }
+.cell-check { display: flex; align-items: center; gap: 8px; }
+.msg { display: flex !important; align-items: center; gap: 8px; color: var(--color-primary); }
+.kk { width: 16px; height: 16px; flex-shrink: 0; }
+.name { color: var(--color-primary); display: flex !important; align-items: center; gap: 8px; }
+.name .icon { color: var(--color-disabled); }
+.doc { color: var(--color-primary); font-weight: var(--fw-bold); display: flex !important; align-items: center; gap: 4px; }
+.doc .icon { color: var(--color-accent-purple-fg); }
+.seen { color: var(--color-text-secondary); display: flex !important; align-items: center; gap: 8px; }
+.acts { display: flex !important; gap: 8px; }
+.acts .icon-btn { border-color: var(--color-border-split); }
+
+.empty { flex: 1; display: grid; place-items: center; text-align: center; color: var(--color-text-secondary); font-size: var(--fs-14); }
+.empty-title { margin-top: 8px; color: var(--color-text); }
+
+/* ③ 호버 팝오버 — 콘텐츠를 밀지 않고 위에 겹친다 */
+.pop {
+  position: absolute;
+  top: 12px; bottom: 12px; left: 100px;
+  width: 248px;
+  background: var(--color-surface-sub);
+  border: 1px solid var(--color-border-split);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-4);
+  z-index: 5;
+  opacity: 0;
+  transform: translateX(-8px);
+  pointer-events: none;
+  transition: opacity var(--motion-standard) var(--ease-exit),
+              transform var(--motion-standard) var(--ease-exit);
+}
+.pop.is-open { opacity: 1; transform: none; pointer-events: auto; transition-timing-function: var(--ease-enter); }
+/* 레일 ↔ 팝오버 사이 틈을 메워, 이동 중에 닫히지 않게 */
+.pop::before { content: ""; position: absolute; top: 0; bottom: 0; left: -16px; width: 16px; }
+.pop .sub-inner { width: 100%; }
+
+/* ── 4. NOTES ─────────────────────────────── */
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+.note h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.note li { margin-left: 16px; font-size: var(--fs-14); color: var(--color-text-secondary); line-height: var(--lh-base); }
+.num {
+  width: 20px; height: 20px; border-radius: var(--r-full);
+  display: inline-grid; place-items: center;
+  background: var(--color-text); color: var(--color-surface); font-size: var(--fs-12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app.nudge .rail-handle { animation: none; }
+  .sub, .pop, .rail-handle { transition: none; }
+}
+</style>
+</head>
+<body>
+<script src="../../assets/icons.js"></script>
+
+<div class="board">
+  <div class="board-head">
+    <h1 class="text-24 font-bold">서브 메뉴 손잡이 + 호버 팝오버</h1>
+    <p class="text-14 text-secondary">손잡이안을 기본으로, 접힘 상태 호버 팝오버를 더했어요. 상단바는 기존 그대로예요.</p>
+  </div>
+
+  <div class="board-tools">
+    <div class="segmented" id="stateSeg">
+      <button class="segmented-item is-selected" data-state="open">펼침 상태</button>
+      <button class="segmented-item" data-state="closed">접힘 상태</button>
+    </div>
+    <span class="text-14 text-secondary" id="stateNote"></span>
+  </div>
+
+  <div class="app-scroll">
+  <div class="app" id="app">
+    <div class="rail-wrap"><nav class="rail" id="rail"></nav></div>
+
+    <aside class="sub"><div class="sub-inner" id="subInner"></div></aside>
+
+    <div class="pop" id="pop"><div class="sub-inner" id="popInner"></div></div>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="searchbox">
+          <span class="chip">연락처<svg class="icon"><use href="#down-outlined"></use></svg></span>
+          <span class="chip">전체 검색</span>
+          <input placeholder="클릭하거나 Enter 를 눌러 검색어를 입력해주세요.">
+          <svg class="icon"><use href="#search-outlined"></use></svg>
+        </div>
+        <span class="grow"></span>
+        <button class="icon-btn icon-btn-lg" aria-label="알림"><svg class="icon"><use href="#bell-outlined"></use></svg></button>
+        <span class="point"><span class="point-p">P</span>497.9P<span class="charge">충전</span></span>
+        <button class="btn btn-lg btn-primary"><svg class="icon"><use href="#send-outlined"></use></svg>발송하기</button>
+      </div>
+      <div id="content"></div>
+    </main>
+  </div>
+  </div>
+
+  <div class="notes">
+    <div class="card note">
+      <h3 class="text-16 font-bold"><span class="num">1</span>접힘 — 손잡이</h3>
+      <ul>
+        <li>선택된 메뉴 오른쪽, 레일 바깥에 검정 <code>›</code> 손잡이</li>
+        <li>손잡이 또는 선택된 메뉴 아이콘 클릭 → 펼침</li>
+        <li>접히는 순간 한 번만 살짝 흔들림</li>
+        <li>손잡이는 작게 보이지만 주변까지 눌림</li>
+        <li>팝오버가 떠 있는 동안엔 손잡이를 숨김</li>
+      </ul>
+    </div>
+    <div class="card note">
+      <h3 class="text-16 font-bold"><span class="num">2</span>펼침 — 닫기 버튼</h3>
+      <ul>
+        <li>서브 메뉴 제목 오른쪽 회색 사이드바 접기 아이콘 버튼</li>
+        <li>마우스를 올리면 검정으로</li>
+        <li>상단바는 기존 그대로 — 검색창 위치 변화 없음</li>
+      </ul>
+    </div>
+    <div class="card note">
+      <h3 class="text-16 font-bold"><span class="num">3</span>접힘 — 호버 팝오버</h3>
+      <ul>
+        <li>선택된 메뉴·손잡이에 250ms 머물면 서브 메뉴가 겹쳐 뜸</li>
+        <li>팝오버로 옮겨가는 동안 유지, 벗어나면 닫힘</li>
+        <li>항목 클릭 → 이동 / 제목 옆 사이드바 열기 버튼 → 펼침 고정</li>
+        <li>홈·AI·빠른발송 등 서브 메뉴 없는 메뉴는 제외</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── 데이터 (이름·번호는 가짜) ─────────────────
+const folders = ['0. 권한관리 테스트','2025-06-19-10:14:49','2025-06-19-10:24:43','2025-11-04-13:52:02',
+  '2026-01-12-13:01:19','2026-01-12-15:51:32','2026-06-16-10:57:20','2026-06-16-11:03:04','2026-06-16-11:04:25',
+  '2026-06-16-15:14:50','2026-06-16-16:23:29','2026-06-16-16:37:54'];
+const RAIL = [
+  { id: 'ai',    label: 'AI',       icon: 'a-i-outlined' },
+  { id: 'start', label: '시작하기', icon: 'rocket-outlined' },
+  { id: 'home',  label: '홈',       icon: 'home-outlined' },
+  { sep: true },
+  { id: 'quick', label: '빠른발송', icon: 'thunderbolt-outlined' },
+  { id: 'contact', label: '연락처', icon: 'contacts-outlined',
+    sub: { items: [['전체 연락처','team-outlined',1284],['즐겨찾기','star-outlined',32],['고객사 A','user-outlined',210],['고객사 B','user-outlined',96],['휴지통','delete-outlined',4]] } },
+  { id: 'kakao', label: '카톡', icon: 'message-outlined',
+    sub: { items: [['알림톡 템플릿','message-outlined',18],['친구톡','message-outlined',6],['발신 프로필','user-outlined',2]] } },
+  { id: 'form',  label: '서식', icon: 'file-text-outlined',
+    sub: { items: [['내 서식','file-text-outlined',24],['공유 서식','team-outlined',11],['즐겨찾기','star-outlined',5]] } },
+  { id: 'folder', label: '폴더', icon: 'folder-outlined',
+    sub: { hint: '보낸 문서와 받은 문서를 폴더로 정리할 수 있어요.', tree: true,
+      items: folders.map((f, i) => [f, 'folder-outlined', null, i === 0]) } },
+  { id: 'sent',  label: '보낸문서', icon: 'send-outlined',
+    sub: { items: [['전체 문서','send-outlined',236],['발송전','send-outlined',4],['진행중','send-outlined',72],['완료','send-outlined',150],['실패','send-outlined',10]] } },
+  { id: 'inbox', label: '받은문서', icon: 'inbox-outlined',
+    sub: { items: [['전체 문서','inbox-outlined',58],['확인 필요','inbox-outlined',3],['완료','inbox-outlined',55]] } },
+  { sep: true },
+  { id: 'setting', label: '설정', icon: 'setting-outlined' },
+  { spacer: true },
+  { me: true },
+];
+const ROWS = [
+  ['입금 요청 1 (이미지형+버튼)','2026-10-30 16:56','김민준','010-****-8698','2026-10-31','완료'],
+  ['모임 일정 안내2 (이미지형+버튼)','2026-10-29 14:35','이서연','010-****-4237','2026-10-29','완료'],
+  ['모임 일정 안내2 (이미지형+버튼)','2026-10-29 11:00','박지호','010-****-4476','2026-10-30','완료'],
+  ['입금 요청 1 (이미지형+버튼)','2026-10-27 14:25','최수아','010-****-4983','2026-10-27','완료'],
+  ['입금 요청 1 (이미지형+버튼)','2026-10-27 14:25','정하윤','010-****-5987','2026-10-27','완료'],
+  ['입금 요청 1 (이미지형+버튼)','2026-10-27 14:25','강도윤','010-****-7867','2026-10-27','상대방 검토 중'],
+];
+
+const state = { menu: 'folder', page: 0, collapsed: false };
+const $ = id => document.getElementById(id);
+const app = $('app'), pop = $('pop');
+const icon = (id, cls = 'icon') => `<svg class="${cls}"><use href="#${id}"></use></svg>`;
+const cur = () => RAIL.find(r => r.id === state.menu);
+
+// ── 렌더 ────────────────────────────────────
+function renderRail() {
+  $('rail').innerHTML = RAIL.map(r => {
+    if (r.sep) return '<div class="rail-sep"></div>';
+    if (r.spacer) return '<div class="rail-spacer"></div>';
+    if (r.me) return '<div class="rail-me">펠로</div>';
+    const active = r.id === state.menu;
+    return `<button class="rail-item${active ? ' is-active' : ''}${r.sub ? ' has-sub' : ''}" data-id="${r.id}">
+      <span class="rail-icon">${icon(r.icon, 'icon icon-lg')}</span>${r.label}
+      ${r.sub ? `<span class="rail-handle" aria-label="${r.label} 메뉴 열기">${icon('right-outlined')}</span>` : ''}
+    </button>`;
+  }).join('');
+}
+
+// 사이드바 헤더엔 ‹ 닫기, 팝오버 헤더엔 › 펼침 고정
+function subHTML(m, inPopover) {
+  if (!m.sub) return '';
+  const btn = inPopover
+    ? `<button class="icon-btn sub-btn sb-pin" aria-label="서브 메뉴 펼쳐 두기">${icon('sidebar-open')}</button>`
+    : `<button class="icon-btn sub-btn sb-close" aria-label="서브 메뉴 접기">${icon('sidebar-close')}</button>`;
+  const tree = m.sub.tree ? `<div class="tree-head">
+      <span class="grow">${icon('caret-down-outlined','icon icon-sm')}전체 폴더</span>
+      <button class="icon-btn is-danger" aria-label="삭제">${icon('delete-outlined')}</button>
+      <button class="icon-btn" aria-label="업로드">${icon('cloud-upload-outlined')}</button>
+      <button class="icon-btn" aria-label="검색">${icon('search-outlined')}</button>
+      <button class="icon-btn" aria-label="권한">${icon('user-add-outlined')}</button>
+      <button class="icon-btn" aria-label="추가">${icon('plus-outlined')}</button></div>` : '';
+  return `<div class="sub-head"><span class="sub-title">${m.label}</span>${btn}</div>
+    ${m.sub.hint ? `<div class="sub-hint">${icon('info-circle-outlined','icon icon-sm')}${m.sub.hint}</div>` : ''}
+    ${tree}
+    <div class="menu">${m.sub.items.map(([name, ic, n, caret], i) =>
+      `<button class="menu-item${i === state.page ? ' is-selected' : ''}" data-page="${i}">
+        ${caret ? icon('caret-right-outlined','icon caret') : ''}${icon(ic)}<span>${name}</span>${n != null ? `<span class="count">${n}</span>` : ''}</button>`).join('')}
+    </div>`;
+}
+
+function renderContent() {
+  const m = cur();
+  if (!m.sub) {
+    $('content').innerHTML = `<div class="empty"><div>${icon(m.icon,'icon icon-xl')}
+      <p class="text-16 font-bold empty-title">${m.label}</p>
+      <p>서브 메뉴가 없는 화면 — 손잡이·팝오버를 적용하지 않아요.</p></div></div>`;
+    return;
+  }
+  const rows = ROWS.map(([msg, at, who, tel, seen, st]) => `<div class="tr">
+      <span></span>
+      <span class="msg">${icon('kakao','kk')}${msg}</span>
+      <span>전달 성공: ${at}</span>
+      <span class="name">${icon('check-circle-filled')}${who}</span>
+      <span>${tel}</span>
+      <span class="doc">${icon('file-text-outlined')}11/4(수)_안내문서</span>
+      <span class="seen">${icon('mail-outlined')}버튼 확인: ${seen}</span>
+      <span><span class="badge badge-sm ${st === '완료' ? 'badge-weak-neutral' : 'badge-weak-primary'}">${st}</span></span>
+      <span class="acts"><button class="icon-btn icon-btn-border" aria-label="다운로드">${icon('cloud-download-outlined')}</button>
+        <button class="icon-btn icon-btn-border" aria-label="더보기">${icon('more-outlined')}</button></span>
+    </div>`).join('');
+  $('content').innerHTML = `
+    <div class="toolbar">
+      <span class="viewseg"><button class="is-on">${icon('file-outlined')}</button><button>${icon('bar-chart-outlined')}</button></span>
+      <span class="tabs"><span class="tab is-on">전체 문서 (6)</span><span class="tab">발송전</span><span class="tab">실패</span><span class="tab">진행중 (1)</span><span class="tab">완료 (5)</span></span>
+      <span class="pill">${icon('swap-outlined')}정렬${icon('down-outlined')}</span>
+      <span class="pill">${icon('mail-outlined')}버튼(문서) 확인 전체${icon('down-outlined')}</span>
+      <span class="grow"></span>
+      <span class="pager">${icon('search-outlined')}검색 <span class="box">100줄</span> <span class="box">1</span> / 1</span>
+    </div>
+    <div class="table">
+      <div class="tr th"><span class="cell-check"><input type="checkbox" class="checkbox">${icon('down-outlined')}</span>
+        <span>발신 메시지</span><span>메시지 전달</span><span>수신인</span><span>수신인 연락처</span>
+        <span>버튼 (문서명)</span><span>버튼(문서) 확인</span><span>문서 상태</span><span></span></div>
+      ${rows}
+    </div>`;
+}
+
+function render() {
+  const m = cur();
+  app.classList.toggle('is-collapsed', state.collapsed);
+  app.classList.toggle('no-sub', !m.sub);
+  renderRail();
+  $('subInner').innerHTML = subHTML(m, false);
+  $('popInner').innerHTML = subHTML(m, true);
+  renderContent();
+  document.querySelectorAll('#stateSeg .segmented-item').forEach(b =>
+    b.classList.toggle('is-selected', (b.dataset.state === 'closed') === state.collapsed));
+  $('stateNote').textContent = !m.sub ? '서브 메뉴가 없는 메뉴예요.'
+    : state.collapsed ? '검정 손잡이를 누르거나, 폴더 아이콘에 마우스를 올려 보세요.'
+    : '서브 메뉴 제목 오른쪽 사이드바 접기 버튼으로 접어 보세요.';
+}
+
+// ── 접기/펼치기 ─────────────────────────────
+let nudgeT;
+function setCollapsed(v) {
+  const changed = v !== state.collapsed;
+  state.collapsed = v; closePopNow(); render();
+  if (v && changed) {   // 접히는 순간 한 번만
+    clearTimeout(nudgeT);
+    app.classList.remove('nudge'); void app.offsetWidth; app.classList.add('nudge');
+    nudgeT = setTimeout(() => app.classList.remove('nudge'), 1300);
+  }
+}
+
+// ── 팝오버 (열림 250ms 지연 / 닫힘 150ms 유예) ──
+let openT, closeT;
+function setPop(v) { pop.classList.toggle('is-open', v); app.classList.toggle('pop-open', v); }
+function openPopSoon() { clearTimeout(closeT); openT = setTimeout(() => setPop(true), 250); }
+function closePopSoon() { clearTimeout(openT); closeT = setTimeout(() => setPop(false), 150); }
+function closePopNow() { clearTimeout(openT); clearTimeout(closeT); setPop(false); }
+
+$('rail').addEventListener('mouseover', e => {
+  const b = e.target.closest('.rail-item');
+  if (!b) return;
+  (state.collapsed && b.dataset.id === state.menu && cur().sub) ? openPopSoon() : closePopSoon();
+});
+$('rail').addEventListener('mouseleave', closePopSoon);
+pop.addEventListener('mouseenter', () => clearTimeout(closeT));
+pop.addEventListener('mouseleave', closePopSoon);
+
+// ── 이벤트 ──────────────────────────────────
+$('rail').addEventListener('click', e => {
+  const b = e.target.closest('.rail-item');
+  if (!b) return;
+  if (b.dataset.id === state.menu) {             // 선택된 메뉴 다시 클릭 · 손잡이 → 펼침
+    if (state.collapsed && cur().sub) setCollapsed(false);
+    return;
+  }
+  state.menu = b.dataset.id; state.page = 0;     // 다른 메뉴로 이동 — 접힘 상태는 유지
+  closePopNow(); render();
+});
+function pickPage(e) {
+  const b = e.target.closest('.menu-item');
+  if (!b) return;
+  state.page = +b.dataset.page;
+  closePopNow(); render();
+}
+$('subInner').addEventListener('click', e => { if (e.target.closest('.sb-close')) return setCollapsed(true); pickPage(e); });
+$('popInner').addEventListener('click', e => { if (e.target.closest('.sb-pin')) return setCollapsed(false); pickPage(e); });
+$('stateSeg').addEventListener('click', e => {
+  const b = e.target.closest('.segmented-item');
+  if (!b) return;
+  if (!cur().sub) state.menu = 'folder';
+  setCollapsed(b.dataset.state === 'closed');
+});
+
+render();
+</script>
+</body>
+</html>

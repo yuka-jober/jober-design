@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서브 메뉴 손잡이 + 팝오버 — 자버</title>
+<style>
+/* ============================================
+   Jober Design Tokens
+   단일 진실 공급원. 반드시 먼저 로드할 것.
+
+   출처
+   - 컬러  : 첨부 컬러 시스템 (Ant Design 프리셋 팔레트 기반 3계층)
+   - 타이포: 첨부 타이포 시스템 (Spoqa Han Sans Neo / 160% / -1%)
+
+   ※ radius · shadow · motion · control 높이는 첨부 자료에
+     명세가 없어 Ant Design 기준값으로 채운 항목이다. 확정 전까지 잠정값.
+   ============================================ */
+
+@import url('https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css');
+
+:root {
+
+  /* ==========================================
+     PALETTE
+     raw 색상값. Main/Semantic 토큰에서만 참조할 것.
+     컴포넌트에서 직접 쓰지 않는다.
+     ========================================== */
+
+  /* Dust Red */
+  --palette-red-1:  #fff1f0;
+  --palette-red-2:  #ffccc7;
+  --palette-red-3:  #ffa39e;
+  --palette-red-4:  #ff7875;
+  --palette-red-5:  #ff4d4f;
+  --palette-red-6:  #f5222d;
+  --palette-red-7:  #cf1322;
+  --palette-red-8:  #a8071a;
+  --palette-red-9:  #820014;
+  --palette-red-10: #5c0011;
+
+  /* Volcano */
+  --palette-volcano-1:  #fff2e8;
+  --palette-volcano-2:  #ffd8bf;
+  --palette-volcano-3:  #ffbb96;
+  --palette-volcano-4:  #ff9c6e;
+  --palette-volcano-5:  #ff7a45;
+  --palette-volcano-6:  #fa541c;
+  --palette-volcano-7:  #d4380d;
+  --palette-volcano-8:  #ad2102;
+  --palette-volcano-9:  #871400;
+  --palette-volcano-10: #610b00;
+
+  /* Sunset Orange */
+  --palette-orange-1:  #fff7e6;
+  --palette-orange-2:  #ffe7ba;
+  --palette-orange-3:  #ffd591;
+  --palette-orange-4:  #ffc069;
+  --palette-orange-5:  #ffa940;
+  --palette-orange-6:  #fa8c16;
+  --palette-orange-7:  #d46b08;
+  --palette-orange-8:  #ad4e00;
+  --palette-orange-9:  #873800;
+  --palette-orange-10: #612500;
+
+  /* Calendula Gold */
+  --palette-gold-1:  #fffbe6;
+  --palette-gold-2:  #fff1b8;
+  --palette-gold-3:  #ffe58f;
+  --palette-gold-4:  #ffd666;
+  --palette-gold-5:  #ffc53d;
+  --palette-gold-6:  #faad14;
+  --palette-gold-7:  #d48806;
+  --palette-gold-8:  #ad6800;
+  --palette-gold-9:  #874d00;
+  --palette-gold-10: #613400;
+
+  /* Sunrise Yellow */
+  --palette-yellow-1:  #feffe6;
+  --palette-yellow-2:  #ffffb8;
+  --palette-yellow-3:  #fffb8f;
+  --palette-yellow-4:  #fff566;
+  --palette-yellow-5:  #ffec3d;
+  --palette-yellow-6:  #fadb14;
+  --palette-yellow-7:  #d4b106;
+  --palette-yellow-8:  #ad8b00;
+  --palette-yellow-9:  #876800;
+  --palette-yellow-10: #614700;
+
+  /* Lime */
+  --palette-lime-1:  #fcffe6;
+  --palette-lime-2:  #f4ffb8;
+  --palette-lime-3:  #eaff8f;
+  --palette-lime-4:  #d3f261;
+  --palette-lime-5:  #bae637;
+  --palette-lime-6:  #a0d911;
+  --palette-lime-7:  #7cb305;
+  --palette-lime-8:  #5b8c00;
+  --palette-lime-9:  #3f6600;
+  --palette-lime-10: #254000;
+
+  /* Polar Green */
+  --palette-green-1:  #f6ffed;
+  --palette-green-2:  #d9f7be;
+  --palette-green-3:  #b7eb8f;
+  --palette-green-4:  #95de64;
+  --palette-green-5:  #73d13d;
+  --palette-green-6:  #52c41a;
+  --palette-green-7:  #389e0d;
+  --palette-green-8:  #237804;
+  --palette-green-9:  #135200;
+  --palette-green-10: #092b00;
+
+  /* Cyan */
+  --palette-cyan-1:  #e6fffb;
+  --palette-cyan-2:  #b5f5ec;
+  --palette-cyan-3:  #87e8de;
+  --palette-cyan-4:  #5cdbd3;
+  --palette-cyan-5:  #36cfc9;
+  --palette-cyan-6:  #13c2c2;
+  --palette-cyan-7:  #08979c;
+  --palette-cyan-8:  #006d75;
+  --palette-cyan-9:  #00474f;
+  --palette-cyan-10: #002329;
+
+  /* Daybreak Blue */
+  --palette-blue-1:  #e6f7ff;
+  --palette-blue-2:  #bae7ff;
+  --palette-blue-3:  #91d5ff;
+  --palette-blue-4:  #69c0ff;
+  --palette-blue-5:  #40a9ff;
+  --palette-blue-6:  #1890ff;
+  --palette-blue-7:  #096dd9;
+  --palette-blue-8:  #0050b3;
+  --palette-blue-9:  #003a8c;
+  --palette-blue-10: #002766;
+
+  /* Geek Blue */
+  --palette-geekblue-1:  #f0f5ff;
+  --palette-geekblue-2:  #d6e4ff;
+  --palette-geekblue-3:  #adc6ff;
+  --palette-geekblue-4:  #85a5ff;
+  --palette-geekblue-5:  #597ef7;
+  --palette-geekblue-6:  #2f54eb;
+  --palette-geekblue-7:  #1d39c4;
+  --palette-geekblue-8:  #10239e;
+  --palette-geekblue-9:  #061178;
+  --palette-geekblue-10: #030852;
+
+  /* Golden Purple */
+  --palette-purple-1:  #f9f0ff;
+  --palette-purple-2:  #efdbff;
+  --palette-purple-3:  #d3adf7;
+  --palette-purple-4:  #b37feb;
+  --palette-purple-5:  #9254de;
+  --palette-purple-6:  #722ed1;
+  --palette-purple-7:  #531dab;
+  --palette-purple-8:  #391085;
+  --palette-purple-9:  #22075e;
+  --palette-purple-10: #120338;
+
+  /* Magenta */
+  --palette-magenta-1:  #fff0f6;
+  --palette-magenta-2:  #ffd6e7;
+  --palette-magenta-3:  #ffadd2;
+  --palette-magenta-4:  #ff85c0;
+  --palette-magenta-5:  #f759ab;
+  --palette-magenta-6:  #eb2f96;
+  --palette-magenta-7:  #c41d7f;
+  --palette-magenta-8:  #9e1068;
+  --palette-magenta-9:  #780650;
+  --palette-magenta-10: #520339;
+
+  /* Gray — 불투명 중립색 */
+  --palette-gray-1:  #ffffff;
+  --palette-gray-2:  #fafafa;
+  --palette-gray-3:  #f5f5f5;
+  --palette-gray-4:  #f0f0f0;
+  --palette-gray-5:  #d9d9d9;
+  --palette-gray-6:  #bfbfbf;
+  --palette-gray-7:  #8c8c8c;
+  --palette-gray-8:  #595959;
+  --palette-gray-9:  #434343;
+  --palette-gray-10: #262626;
+  --palette-gray-11: #1f1f1f;
+  --palette-gray-12: #141414;
+  --palette-gray-13: #000000;
+
+  /* Brand — 외부 서비스 고정 색. 브랜드 가이드상 바꾸지 않는다 */
+  --palette-kakao-yellow: #FAE100;
+  --palette-kakao-ink:    #371D1E;
+
+  /* Black — 알파 단계. 배경색이 비쳐야 하는 중립 요소에 사용 */
+  --palette-black-2:   rgba(0, 0, 0, 0.02);
+  --palette-black-4:   rgba(0, 0, 0, 0.04);  /* semantic background-base 전용 단계 */
+  --palette-black-6:   rgba(0, 0, 0, 0.06);
+  --palette-black-15:  rgba(0, 0, 0, 0.15);
+  --palette-black-25:  rgba(0, 0, 0, 0.25);
+  --palette-black-35:  rgba(0, 0, 0, 0.35);
+  --palette-black-45:  rgba(0, 0, 0, 0.45);
+  --palette-black-65:  rgba(0, 0, 0, 0.65);
+  --palette-black-85:  rgba(0, 0, 0, 0.85);
+  --palette-black-100: rgba(0, 0, 0, 1);
+
+
+  /* ==========================================
+     MAIN TOKENS
+     브랜드 색을 팔레트에서 한 번 갈아끼우는 지점.
+     브랜드가 바뀌면 이 10줄만 다른 색상군으로 교체한다.
+     ========================================== */
+
+  --palette-primary-1:  var(--palette-blue-1);
+  --palette-primary-2:  var(--palette-blue-2);
+  --palette-primary-3:  var(--palette-blue-3);
+  --palette-primary-4:  var(--palette-blue-4);
+  --palette-primary-5:  var(--palette-blue-5);
+  --palette-primary-6:  var(--palette-blue-6);
+  --palette-primary-7:  var(--palette-blue-7);
+  --palette-primary-8:  var(--palette-blue-8);
+  --palette-primary-9:  var(--palette-blue-9);
+  --palette-primary-10: var(--palette-blue-10);
+
+  /* outline 알파값 — focus 링 공통 투명도 */
+  --outline-fade: 0.2;
+  --outline-w:    2px;
+
+
+  /* ==========================================
+     SEMANTIC COLORS
+     용도 기반. 실제 코드에서 이 변수를 사용.
+     ========================================== */
+
+  /* Primary */
+  --color-primary:         var(--palette-primary-6);
+  --color-primary-hover:   var(--palette-primary-5);
+  --color-primary-active:  var(--palette-primary-7);
+  --color-primary-bg:      var(--palette-primary-1);
+  --color-primary-border:  var(--palette-primary-3);
+  --color-primary-outline: rgba(24, 144, 255, 0.2);
+
+  /* Neutral — Text */
+  --color-text:           var(--palette-black-85);
+  --color-text-secondary: var(--palette-black-45);
+  --color-disabled:       var(--palette-black-25);
+
+  /* Neutral — Border */
+  --color-border:       var(--palette-black-15);
+  --color-border-split: var(--palette-black-6);
+
+  /* Neutral — Surface */
+  --color-surface:  var(--palette-gray-1);   /* 카드·시트·인풋 바닥 */
+  --color-surface-sub: var(--palette-gray-2); /* 흰색보다 살짝 눌린 면 (#fafafa) */
+  --color-bg-base:  var(--palette-black-4);  /* 페이지·비활성 채움 */
+  --color-bg-light: var(--palette-black-2);  /* hover 등 가장 옅은 면 */
+
+  /* Surface — 페이지 바닥 */
+  --color-page: var(--palette-gray-3);        /* 불투명 페이지 배경. 카드가 흰색으로 떠 보인다 */
+  --color-surface-veil: rgba(255, 255, 255, 0.7);  /* 그라데이션 위에 얹는 반투명 흰 면 */
+
+  /* Brand Gradient — 홈 히어로 배경 */
+  --color-hero-gradient: linear-gradient(160deg,
+                           var(--palette-blue-2) 0%,
+                           var(--palette-green-2) 100%);
+
+  /* Accent Surface — 아이콘 타일·안내 카드처럼 옅게 강조하는 면.
+     -bg 는 배경, -fg 는 그 위에 얹는 아이콘·텍스트 색 */
+  --color-accent-blue-bg:   var(--palette-blue-1);
+  --color-accent-blue-fg:   var(--palette-blue-6);
+  --color-accent-cyan-bg:   var(--palette-cyan-1);
+  --color-accent-cyan-fg:   var(--palette-cyan-7);
+  --color-accent-purple-bg: var(--palette-purple-1);
+  --color-accent-purple-fg: var(--palette-purple-6);
+  --color-accent-orange-bg: var(--palette-orange-1);
+  --color-accent-orange-fg: var(--palette-orange-6);
+  /* lilac·gold 는 2단계 — 아이콘 타일이 아니라 넓은 안내 패널 배경용이라,
+     1단계로는 흰 카드 위에서 면으로 읽히지 않는다 */
+  --color-accent-lilac-bg:  var(--palette-geekblue-2);
+  --color-accent-lilac-fg:  var(--palette-geekblue-6);
+
+  /* Inverse / On-Color */
+  --color-on-primary: var(--palette-gray-1);
+  --color-on-warning: var(--palette-black-85);  /* gold 배경은 밝아서 흰 글씨가 읽히지 않는다 */
+  --color-scrim:      var(--palette-black-45);
+
+  /* Icon — TwoTone 아이콘의 액센트 색. 컨텍스트별로 덮어쓸 수 있다 */
+  --icon-accent: var(--color-primary);
+
+  /* Social Brand — 카카오 (브랜드 가이드상 색 고정) */
+  --color-kakao:        var(--palette-kakao-yellow);
+  --color-on-kakao:     var(--palette-kakao-ink);
+  --color-kakao-subtle: var(--palette-gold-1);  /* 흰 카드들 사이에서 카톡 카드만 띄울 때 */
+
+  /* Social Brand — 자버 프로필 (검정 바탕 + 흰 워드마크, 테마와 무관하게 고정) */
+  --color-jober:    var(--palette-gray-13);
+  --color-on-jober: var(--palette-gray-1);
+
+  /* Functional — Info */
+  --color-info:        var(--color-primary);
+  --color-info-bg:     var(--palette-primary-1);
+  --color-info-border: var(--palette-primary-3);
+
+  /* Functional — Success */
+  --color-success:         var(--palette-green-6);
+  --color-success-hover:   var(--palette-green-5);
+  --color-success-active:  var(--palette-green-7);
+  --color-success-outline: rgba(82, 196, 26, 0.2);
+  --color-success-bg:      var(--palette-green-1);
+  --color-success-border:  var(--palette-green-3);
+
+  /* Functional — Warning */
+  --color-warning:         var(--palette-gold-6);
+  --color-warning-hover:   var(--palette-gold-5);
+  --color-warning-active:  var(--palette-gold-7);
+  --color-warning-outline: rgba(250, 173, 20, 0.2);
+  --color-warning-bg:      var(--palette-gold-1);
+  --color-warning-border:  var(--palette-gold-3);
+
+  /* Functional — Error */
+  --color-error:         var(--palette-red-5);
+  --color-error-hover:   var(--palette-red-4);
+  --color-error-active:  var(--palette-red-6);
+  --color-error-outline: rgba(255, 77, 79, 0.2);
+  --color-error-bg:      var(--palette-red-1);
+  --color-error-border:  var(--palette-red-3);
+
+
+  /* ==========================================
+     TYPOGRAPHY
+     스케일 기반. 크기 · 굵기를 각각 조합해서 쓴다.
+
+     한글은 Spoqa Han Sans Neo, 라틴/숫자는 시스템 산세리프(SF Pro Text)가
+     맡도록 시스템 폰트를 앞에 둔다 — 첨부 타이포 자료와 동일한 조합.
+     ========================================== */
+
+  --font-base: -apple-system, BlinkMacSystemFont, 'Spoqa Han Sans Neo',
+               'Segoe UI', Roboto, sans-serif;
+
+  /* Font Size — 첨부 자료의 10단 스케일 */
+  --fs-11: 11px;
+  --fs-12: 12px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-20: 20px;
+  --fs-24: 24px;
+  --fs-30: 30px;
+  --fs-38: 38px;
+  --fs-46: 46px;
+  --fs-56: 56px;
+
+  /* Font Weight — Spoqa Han Sans Neo 3단 */
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-bold:    700;
+
+  /* Line Height / Letter Spacing — 전 스케일 공통 */
+  --lh-base: 1.6;      /* 160% */
+  --ls-base: -0.01em;  /* -1% */
+  --ls-tight: -0.02em; /* -2% — 24px 이상 큰 제목용. 클수록 자간이 벌어 보여 더 조인다 */
+  --ls-tighter: -0.03em; /* -3% — 30px 이상 배너 제목용 */
+  --lh-tight: 1.3;     /* 130% — 여러 줄로 놓이는 큰 제목용. 본문 160%는 너무 벌어진다 */
+
+
+  /* ==========================================
+     RADIUS
+     ========================================== */
+
+  --r-xs:   2px;
+  --r-sm:   4px;
+  --r-md:   6px;   /* 기본값 — 버튼·인풋·카드 */
+  --r-lg:   8px;
+  --r-xl:   12px;
+  --r-2xl:  16px;  /* 카드 */
+  --r-3xl:  20px;  /* 히어로·큰 패널 */
+  --r-full: 9999px;
+
+
+  /* ==========================================
+     SHADOW
+     ========================================== */
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.09);
+  --shadow-3: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-4: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+              0 6px 16px rgba(0, 0, 0, 0.08),
+              0 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+
+  /* ==========================================
+     MOTION
+     ========================================== */
+
+  --motion-fast:     100ms;
+  --motion-standard: 200ms;
+  --motion-slow:     300ms;
+
+  --ease-enter:    cubic-bezier(0.08, 0.82, 0.17, 1);
+  --ease-exit:     cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  --ease-standard: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+
+  /* ==========================================
+     FORM CONTROL
+     버튼 · 인풋 · 셀렉트 공통 치수
+     ========================================== */
+
+  --control-h-sm: 24px;
+  --control-h:    32px;   /* 기본 */
+  --control-h-lg: 40px;
+  --control-h-xl: 48px;   /* 배너 CTA 등 큰 버튼 */
+
+  --control-px-sm: 8px;
+  --control-px:    12px;
+  --control-px-lg: 16px;
+  --control-px-xl: 24px;
+
+  --textarea-py: 8px;
+  --textarea-h:  64px;
+
+
+  /* ==========================================
+     ICON
+     ========================================== */
+
+  --icon-sm: 14px;
+  --icon-md: 16px;   /* 기본 — 버튼·메뉴·인풋 안 */
+  --icon-lg: 20px;
+  --icon-xl: 24px;
+}
+
+
+/* ==========================================
+   TYPOGRAPHY UTILITY CLASSES
+   크기 클래스 + 굵기 클래스를 조합해서 사용한다.
+   예) <p class="text-16 font-medium">
+   ========================================== */
+
+.text-11, .text-12, .text-14, .text-16, .text-20,
+.text-24, .text-30, .text-38, .text-46, .text-56 {
+  font-family: var(--font-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+}
+
+.text-11 { font-size: var(--fs-11); }
+.text-12 { font-size: var(--fs-12); }
+.text-14 { font-size: var(--fs-14); }
+.text-16 { font-size: var(--fs-16); }
+.text-20 { font-size: var(--fs-20); }
+.text-24 { font-size: var(--fs-24); }
+.text-30 { font-size: var(--fs-30); }
+.text-38 { font-size: var(--fs-38); }
+.text-46 { font-size: var(--fs-46); }
+.text-56 { font-size: var(--fs-56); }
+
+.font-regular { font-weight: var(--fw-regular); }
+.font-medium  { font-weight: var(--fw-medium); }
+.font-bold    { font-weight: var(--fw-bold); }
+
+/* 색 보조 유틸 — 텍스트 위계 */
+.text-secondary { color: var(--color-text-secondary); }
+.text-disabled  { color: var(--color-disabled); }
+
+</style>
+<style>
+/* ============================================
+   Jober Components
+   반드시 tokens.css 를 먼저 로드할 것.
+
+   모든 값은 tokens.css 의 변수를 참조한다. raw 값 하드코딩 금지.
+   ============================================ */
+
+
+/* ==========================================
+   LABEL
+   ========================================== */
+
+.label {
+  display: block;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+}
+
+.label-required::before {
+  content: '* ';
+  color: var(--color-error);
+}
+
+
+/* ==========================================
+   BUTTON
+   .btn + 크기 + 스타일 조합
+   ========================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  font-family: var(--font-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  border-radius: var(--r-md);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    border-color     var(--motion-standard) var(--ease-standard),
+    color            var(--motion-standard) var(--ease-standard),
+    box-shadow       var(--motion-standard) var(--ease-standard);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+
+.btn:disabled,
+.btn[disabled] {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--color-disabled);
+  background: var(--color-bg-base);
+  border-color: var(--color-border);
+}
+
+/* sizes */
+.btn-sm { height: var(--control-h-sm); padding: 0 var(--control-px-sm); font-size: var(--fs-12); }
+.btn-md { height: var(--control-h);    padding: 0 var(--control-px);    font-size: var(--fs-14); }
+.btn-lg { height: var(--control-h-lg); padding: 0 var(--control-px-lg); font-size: var(--fs-16); }
+.btn-xl { height: var(--control-h-xl); padding: 0 var(--control-px-xl); font-size: var(--fs-16); }
+
+.btn-block { width: 100%; }
+.btn-pill  { border-radius: var(--r-full); }
+
+/* primary — 채운 강조 버튼 */
+.btn-primary          { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.btn-primary:hover    { background: var(--color-primary-hover); border-color: var(--color-primary-hover); }
+.btn-primary:active   { background: var(--color-primary-active); border-color: var(--color-primary-active); }
+
+/* default — 테두리 버튼 */
+.btn-default          { background: var(--color-surface); border-color: var(--color-border); color: var(--color-text); }
+.btn-default:hover    { border-color: var(--color-primary-hover); color: var(--color-primary-hover); }
+.btn-default:active   { border-color: var(--color-primary-active); color: var(--color-primary-active); }
+
+/* dashed — 추가/생성 액션 */
+.btn-dashed           { background: var(--color-surface); border-color: var(--color-border); border-style: dashed; color: var(--color-text); }
+.btn-dashed:hover     { border-color: var(--color-primary-hover); color: var(--color-primary-hover); }
+.btn-dashed:active    { border-color: var(--color-primary-active); color: var(--color-primary-active); }
+
+/* text — 배경 없는 보조 액션 */
+.btn-text             { color: var(--color-text); }
+.btn-text:hover       { background: var(--color-bg-base); }
+.btn-text:active      { background: var(--color-border-split); }
+
+/* link — 링크형 액션 */
+.btn-link             { color: var(--color-primary); }
+.btn-link:hover       { color: var(--color-primary-hover); }
+.btn-link:active      { color: var(--color-primary-active); }
+
+/* white — 색이 깔린 면(배너·히어로) 위에 얹는 흰 버튼. 테두리 없이 그림자로 떠오른다 */
+.btn-white            { background: var(--color-surface); border-color: transparent; color: var(--color-text); }
+.btn-white:hover      { box-shadow: var(--shadow-2); }
+.btn-white:active     { box-shadow: var(--shadow-1); }
+
+/* danger — 위 스타일에 겹쳐 쓰는 위험 액션 모디파이어 */
+.btn-primary.is-danger        { background: var(--color-error); border-color: var(--color-error); color: var(--color-on-primary); }
+.btn-primary.is-danger:hover  { background: var(--color-error-hover); border-color: var(--color-error-hover); }
+.btn-primary.is-danger:active { background: var(--color-error-active); border-color: var(--color-error-active); }
+
+.btn-default.is-danger        { border-color: var(--color-error); color: var(--color-error); }
+.btn-default.is-danger:hover  { border-color: var(--color-error-hover); color: var(--color-error-hover); }
+
+.btn-text.is-danger,
+.btn-link.is-danger           { color: var(--color-error); }
+.btn-text.is-danger:hover     { background: var(--color-error-bg); }
+.btn-link.is-danger:hover     { color: var(--color-error-hover); }
+
+/* loading */
+.btn.is-loading {
+  pointer-events: none;
+  position: relative;
+  color: transparent;
+}
+.btn.is-loading::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--r-full);
+  color: var(--color-on-primary);
+  animation: jd-spin var(--motion-slow) linear infinite;
+}
+.btn-default.is-loading::after,
+.btn-dashed.is-loading::after,
+.btn-text.is-loading::after,
+.btn-link.is-loading::after { color: var(--color-primary); }
+
+@keyframes jd-spin { to { transform: rotate(360deg); } }
+
+
+/* ==========================================
+   ICON BUTTON
+   ========================================== */
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-h);
+  height: var(--control-h);
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: var(--r-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    color            var(--motion-standard) var(--ease-standard);
+}
+.icon-btn:hover  { background: var(--color-bg-base); color: var(--color-text); }
+.icon-btn:active { background: var(--color-border-split); }
+.icon-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.icon-btn:disabled { color: var(--color-disabled); cursor: not-allowed; pointer-events: none; }
+
+.icon-btn-sm { width: var(--control-h-sm); height: var(--control-h-sm); }
+.icon-btn-lg { width: var(--control-h-lg); height: var(--control-h-lg); }
+
+.icon-btn-border { border-color: var(--color-border); background: var(--color-surface); }
+.icon-btn-fill   { background: var(--color-primary); color: var(--color-on-primary); }
+.icon-btn-fill:hover { background: var(--color-primary-hover); color: var(--color-on-primary); }
+
+.icon-btn i,
+.icon-btn svg { width: 16px; height: 16px; }
+
+
+/* ==========================================
+   INPUT
+   ========================================== */
+
+.input {
+  display: block;
+  width: 100%;
+  height: var(--control-h);
+  padding: 0 var(--control-px);
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  transition:
+    border-color var(--motion-standard) var(--ease-standard),
+    box-shadow   var(--motion-standard) var(--ease-standard);
+}
+.input::placeholder { color: var(--color-disabled); }
+.input:hover        { border-color: var(--color-primary-hover); }
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.input:disabled {
+  background: var(--color-bg-base);
+  color: var(--color-disabled);
+  cursor: not-allowed;
+}
+.input.is-error         { border-color: var(--color-error); }
+.input.is-error:focus   { box-shadow: 0 0 0 var(--outline-w) var(--color-error-outline); }
+
+.input-sm { height: var(--control-h-sm); padding: 0 var(--control-px-sm); font-size: var(--fs-12); }
+.input-lg { height: var(--control-h-lg); padding: 0 var(--control-px-lg); font-size: var(--fs-16); }
+
+.input-error-msg {
+  margin-top: 4px;
+  font-family: var(--font-base);
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-error);
+}
+
+/* Input Affix — 입력칸 안 앞·뒤에 아이콘이나 기호(#)를 둔다. .select 에도 쓴다 (화살표 자리)
+   <span class="input-affix has-end"><input class="input"><span class="input-affix-end">…</span></span> */
+.input-affix { position: relative; display: block; }
+.input-affix-start,
+.input-affix-end {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+.input-affix-start { left: var(--control-px); }
+.input-affix-end   { right: var(--control-px); }
+.input-affix-start button,
+.input-affix-end button { pointer-events: auto; }
+.input-affix.has-start > .input,
+.input-affix.has-start > .select { padding-left: calc(var(--control-px) + var(--icon-lg)); }
+.input-affix.has-end > .input,
+.input-affix.has-end > .select { padding-right: calc(var(--control-px) + var(--icon-md) * 2 + 8px); }
+
+/* 입력칸 안 지우기(✕) 버튼 — 입력값이 있을 때만 보인다 */
+.input-clear {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-disabled);
+  cursor: pointer;
+}
+.input-clear:hover { color: var(--color-text-secondary); }
+.input-clear[hidden] { display: none; }
+
+
+/* ==========================================
+   TEXTAREA
+   ========================================== */
+
+.textarea {
+  display: block;
+  width: 100%;
+  min-height: var(--textarea-h);
+  padding: var(--textarea-py) var(--control-px);
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  resize: vertical;
+  transition:
+    border-color var(--motion-standard) var(--ease-standard),
+    box-shadow   var(--motion-standard) var(--ease-standard);
+}
+.textarea::placeholder { color: var(--color-disabled); }
+.textarea:hover        { border-color: var(--color-primary-hover); }
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.textarea.is-error       { border-color: var(--color-error); }
+.textarea.is-error:focus { box-shadow: 0 0 0 var(--outline-w) var(--color-error-outline); }
+.textarea-auto { resize: none; overflow: hidden; }
+
+
+/* ==========================================
+   SELECT
+   ========================================== */
+
+.select {
+  display: block;
+  width: 100%;
+  height: var(--control-h);
+  padding: 0 var(--control-px);
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-md);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  cursor: pointer;
+  appearance: none;
+  transition:
+    border-color var(--motion-standard) var(--ease-standard),
+    box-shadow   var(--motion-standard) var(--ease-standard);
+}
+.select:hover { border-color: var(--color-primary-hover); }
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.select:disabled { background: var(--color-bg-base); color: var(--color-disabled); cursor: not-allowed; }
+
+.select-lg { height: var(--control-h-lg); padding: 0 var(--control-px-lg); font-size: var(--fs-16); }
+
+
+/* ==========================================
+   CHECKBOX / RADIO
+   ========================================== */
+
+.checkbox,
+.radio {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    border-color     var(--motion-standard) var(--ease-standard);
+}
+.checkbox { border-radius: var(--r-xs); }
+.radio    { border-radius: var(--r-full); }
+
+.checkbox:hover,
+.radio:hover { border-color: var(--color-primary); }
+
+.checkbox:checked,
+.radio:checked { background: var(--color-primary); border-color: var(--color-primary); }
+
+.checkbox:checked::after {
+  content: '';
+  width: 4px;
+  height: 8px;
+  border: 2px solid var(--color-on-primary);
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg) translateY(-1px);
+}
+.radio:checked::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: var(--color-on-primary);
+}
+
+.checkbox:focus-visible,
+.radio:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+.checkbox:disabled,
+.radio:disabled { background: var(--color-bg-base); border-color: var(--color-border); cursor: not-allowed; }
+
+
+/* ==========================================
+   TOGGLE (Switch)
+   ========================================== */
+
+.toggle {
+  appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  margin: 0;
+  background: var(--color-disabled);
+  border: none;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: background-color var(--motion-standard) var(--ease-standard);
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--color-surface);
+  border-radius: var(--r-full);
+  box-shadow: var(--shadow-1);
+  transition: transform var(--motion-standard) var(--ease-standard);
+}
+.toggle:checked        { background: var(--color-primary); }
+.toggle:checked::after { transform: translateX(20px); }
+.toggle:focus-visible  { outline: none; box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline); }
+.toggle:disabled       { opacity: 0.4; cursor: not-allowed; }
+
+.toggle-sm        { width: 32px; height: 16px; }
+.toggle-sm::after { top: 2px; left: 2px; width: 12px; height: 12px; }
+.toggle-sm:checked::after { transform: translateX(16px); }
+
+/* ==========================================
+   SEGMENTED (Tab Toggle)
+   .segmented + .segmented-item (+ .is-selected)
+   ========================================== */
+
+.segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.segmented-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--control-h);
+  padding: 0 var(--control-px-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-full);
+  background: var(--color-surface);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    border-color     var(--motion-standard) var(--ease-standard),
+    color            var(--motion-standard) var(--ease-standard);
+}
+.segmented-item:hover { color: var(--color-text); }
+.segmented-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+
+.segmented-item.is-selected {
+  background: var(--color-primary-bg);
+  border-color: var(--color-primary-border);
+  color: var(--color-primary);
+}
+.segmented-item.is-selected:hover { color: var(--color-primary); }
+
+.segmented-item:disabled {
+  border-color: var(--color-border-split);
+  color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+/* ==========================================
+   MENU (Dropdown)
+   ========================================== */
+
+.menu {
+  min-width: 160px;
+  padding: 4px 0;
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+}
+
+.menu-header {
+  padding: 8px var(--control-px);
+  font-family: var(--font-base);
+  font-size: var(--fs-12);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px var(--control-px);
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  transition: background-color var(--motion-fast) var(--ease-standard);
+}
+.menu-item:hover           { background: var(--color-bg-base); }
+.menu-item.is-selected     { background: var(--color-primary-bg); color: var(--color-primary); }
+.menu-item.is-danger       { color: var(--color-error); }
+.menu-item.is-danger:hover { background: var(--color-error-bg); }
+.menu-item:disabled        { color: var(--color-disabled); cursor: not-allowed; }
+
+
+/* ==========================================
+   BADGE (Tag)
+   ========================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-family: var(--font-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  white-space: nowrap;
+}
+
+.badge-sm { height: 20px; padding: 0 var(--control-px-sm); font-size: var(--fs-11); }
+.badge-md { height: 24px; padding: 0 var(--control-px-sm); font-size: var(--fs-12); }
+.badge-lg { height: 28px; padding: 0 var(--control-px);    font-size: var(--fs-14); }
+
+.badge-pill { border-radius: var(--r-full); }
+
+/* fill — 채운 배지 */
+.badge-fill-primary { background: var(--color-primary); color: var(--color-on-primary); }
+.badge-fill-success { background: var(--color-success); color: var(--color-on-primary); }
+.badge-fill-warning { background: var(--color-warning); color: var(--color-on-warning); }
+.badge-fill-error   { background: var(--color-error);   color: var(--color-on-primary); }
+.badge-fill-neutral { background: var(--color-text);    color: var(--color-on-primary); }
+
+/* weak — 옅은 배경 + 테두리 */
+.badge-weak-primary { background: var(--color-primary-bg); border-color: var(--color-primary-border); color: var(--color-primary); }
+.badge-weak-success { background: var(--color-success-bg); border-color: var(--color-success-border); color: var(--color-success); }
+.badge-weak-warning { background: var(--color-warning-bg); border-color: var(--color-warning-border); color: var(--color-warning); }
+.badge-weak-error   { background: var(--color-error-bg);   border-color: var(--color-error-border);   color: var(--color-error); }
+.badge-weak-neutral { background: var(--color-bg-base);    border-color: var(--color-border);         color: var(--color-text-secondary); }
+
+
+/* ==========================================
+   ALERT
+   ========================================== */
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px var(--control-px);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+}
+.alert-info    { background: var(--color-info-bg);    border-color: var(--color-info-border); }
+.alert-success { background: var(--color-success-bg); border-color: var(--color-success-border); }
+.alert-warning { background: var(--color-warning-bg); border-color: var(--color-warning-border); }
+.alert-error   { background: var(--color-error-bg);   border-color: var(--color-error-border); }
+
+.alert-info    .alert-icon { color: var(--color-info); }
+.alert-success .alert-icon { color: var(--color-success); }
+.alert-warning .alert-icon { color: var(--color-warning); }
+.alert-error   .alert-icon { color: var(--color-error); }
+
+.alert-icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 4px; }
+
+
+/* ==========================================
+   DIALOG / MODAL
+   ========================================== */
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--control-px-lg);
+  background: var(--color-scrim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-standard) var(--ease-standard);
+}
+.dialog-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+.dialog {
+  width: 100%;
+  max-width: 416px;
+  padding: 20px 24px;
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+  transform: scale(0.96);
+  transition: transform var(--motion-standard) var(--ease-enter);
+}
+.dialog-overlay.is-open .dialog { transform: scale(1); }
+
+.dialog-title {
+  margin: 0;
+  font-family: var(--font-base);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+}
+.dialog-desc {
+  margin: 8px 0 0;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text-secondary);
+}
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+
+/* ==========================================
+   TOAST
+   ========================================== */
+
+.toast-container {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 480px;
+  padding: 8px var(--control-px-lg);
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-4);
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+  pointer-events: auto;
+}
+.toast-icon { flex-shrink: 0; width: 16px; height: 16px; }
+.toast-success .toast-icon { color: var(--color-success); }
+.toast-warning .toast-icon { color: var(--color-warning); }
+.toast-error   .toast-icon { color: var(--color-error); }
+.toast-info    .toast-icon { color: var(--color-info); }
+
+.toast-with-action { padding-right: var(--control-px-sm); }
+.toast-action {
+  border: none;
+  background: transparent;
+  padding: 0 var(--control-px-sm);
+  cursor: pointer;
+  font-family: var(--font-base);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  color: var(--color-primary);
+}
+
+
+/* ==========================================
+   AVATAR
+   ========================================== */
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--color-bg-base);
+  border-radius: var(--r-full);
+  object-fit: cover;
+  font-family: var(--font-base);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-secondary);
+}
+.avatar-xs { width: 20px; height: 20px; font-size: var(--fs-11); }
+.avatar-sm { width: 24px; height: 24px; font-size: var(--fs-12); }
+.avatar-md { width: 32px; height: 32px; font-size: var(--fs-14); }
+.avatar-lg { width: 40px; height: 40px; font-size: var(--fs-16); }
+.avatar-xl { width: 64px; height: 64px; font-size: var(--fs-24); }
+
+.avatar-rounded { border-radius: var(--r-md); }
+
+
+/* ==========================================
+   CARD
+   배경색 위에 흰 면으로 떠 있는 기본 컨테이너.
+   .card-action 을 함께 쓰면 통째로 클릭 가능한 버튼이 된다.
+   ========================================== */
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-1);
+  padding: 24px;
+}
+
+.card-lg { padding: 40px; }
+
+.card-action {
+  display: block;
+  width: 100%;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-base);
+  color: var(--color-text);
+  transition:
+    box-shadow var(--motion-standard) var(--ease-standard),
+    transform  var(--motion-standard) var(--ease-standard);
+}
+.card-action:hover  { box-shadow: var(--shadow-3); transform: translateY(-2px); }
+.card-action:active { transform: translateY(0); box-shadow: var(--shadow-2); }
+.card-action:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-2), 0 0 0 var(--outline-w) var(--color-primary-outline);
+}
+
+
+/* ==========================================
+   ICON
+   스프라이트의 심볼을 <use> 로 참조한다.
+   색은 부모의 color 를 따라가므로 버튼·배지 안에 넣으면 자동으로 맞는다.
+
+     <svg class="icon icon-lg"><use href="assets/icons.svg#home-outlined"></use></svg>
+   ========================================== */
+
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  vertical-align: -0.15em;
+  fill: currentColor;
+}
+
+.icon-sm { width: var(--icon-sm); height: var(--icon-sm); }
+.icon-lg { width: var(--icon-lg); height: var(--icon-lg); }
+.icon-xl { width: var(--icon-xl); height: var(--icon-xl); }
+
+/* TwoTone 액센트를 지역적으로 바꿀 때 */
+.icon-accent-success { --icon-accent: var(--color-success); }
+.icon-accent-warning { --icon-accent: var(--color-warning); }
+.icon-accent-error   { --icon-accent: var(--color-error); }
+
+
+/* ==========================================
+   DIVIDER
+   ========================================== */
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-border-split);
+  margin: var(--control-px) 0;
+}
+.divider-vertical {
+  border: none;
+  border-left: 1px solid var(--color-border-split);
+  align-self: stretch;
+  margin: 0 var(--control-px-sm);
+}
+
+</style>
+<style>
+/* ── 1. RESET / PAGE ─────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-base);
+  background: var(--color-page);
+  color: var(--color-text);
+  word-break: keep-all;
+}
+button { font-family: inherit; }
+
+.board { max-width: 1320px; margin: 0 auto; padding: 40px 24px 80px; }
+.board-head p { margin-top: 4px; }
+.board-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 20px 0 16px; }
+
+/* ── 2. APP FRAME — 실서비스 화면 구성 ─────── */
+.app-scroll { overflow-x: auto; border-radius: var(--r-2xl); box-shadow: var(--shadow-2); }
+.app {
+  position: relative;
+  display: flex;
+  min-width: 1200px;
+  height: 820px;
+  background: var(--color-surface-sub);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+}
+
+/* 좌측 레일 — 바닥 위에 떠 있는 흰 카드 */
+/* 팝오버(z 5)보다 위 — 팝오버가 떠 있어도 손잡이를 눌러 펼침 고정할 수 있게 */
+.rail-wrap { padding: 12px 0 12px 12px; flex-shrink: 0; position: relative; z-index: 6; }
+.rail {
+  width: 72px; height: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 12px 0;
+  background: var(--color-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-1);
+}
+.rail-sep { width: 40px; height: 1px; background: var(--color-border-split); margin: 4px 0; }
+.rail-spacer { flex: 1; }
+.rail-item {
+  position: relative;
+  width: 56px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 4px 0;
+  border: 0; background: none; cursor: pointer;
+  color: var(--color-text);
+  font-size: var(--fs-12);
+}
+.rail-item:focus-visible { outline: none; }
+.rail-item:focus-visible .rail-icon { box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline); }
+.rail-icon {
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  border-radius: var(--r-lg);
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+.rail-item:hover .rail-icon { background: var(--color-bg-base); }
+.rail-item.is-active .rail-icon { background: var(--color-text); color: var(--color-surface); }
+.rail-me {
+  width: 32px; height: 32px; margin-top: 8px;
+  display: grid; place-items: center;
+  border-radius: var(--r-md);
+  background: var(--color-error-border); color: var(--color-on-primary);
+  font-size: var(--fs-11); font-weight: var(--fw-bold);
+}
+
+/* ① 손잡이 — 접힘 상태에서 선택된 메뉴 옆, 레일 카드 바깥에 붙는다 */
+.rail-handle {
+  position: absolute;
+  top: 6px; right: -24px;          /* 아이템(56) ↔ 카드(72) 여백 8 + 손잡이 폭 16 */
+  width: 16px; height: 32px;
+  display: grid; place-items: center;
+  background: var(--color-text);
+  color: var(--color-surface);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  opacity: 0;
+  transform: translateX(-8px);
+  pointer-events: none;
+  transition: opacity var(--motion-standard) var(--ease-standard),
+              transform var(--motion-standard) var(--ease-standard);
+}
+.rail-handle .icon { width: 12px; height: 12px; }
+/* 보이는 크기는 16×32 그대로, 클릭되는 범위만 사방으로 넓힌다 */
+.rail-handle::before { content: ""; position: absolute; inset: -8px -12px -8px -4px; }
+.app.is-collapsed .rail-item.is-active.has-sub .rail-handle {
+  opacity: 1; transform: none; pointer-events: auto; cursor: pointer;
+}
+/* 팝오버가 떠 있는 동안엔 숨긴다 — 고정은 팝오버 제목 옆 버튼이나 메뉴 아이콘으로 */
+.app.is-collapsed.pop-open .rail-item.is-active.has-sub .rail-handle { opacity: 0; pointer-events: none; }
+/* 접히는 순간 한 번만 살짝 흔든다 */
+.app.nudge .rail-handle { animation: nudge 900ms var(--ease-standard) 220ms 1; }
+@keyframes nudge {
+  0%, 100% { translate: 0; }
+  20% { translate: 4px; }
+  40% { translate: 0; }
+  60% { translate: 4px; }
+  80% { translate: 0; }
+}
+
+/* 서브 메뉴 */
+.sub {
+  width: 248px; flex-shrink: 0;
+  overflow: hidden;
+  transition: width var(--motion-standard) var(--ease-standard);
+}
+.app.is-collapsed .sub, .app.no-sub .sub { width: 0; }
+.sub-inner { width: 248px; height: 100%; overflow-y: auto; padding: 20px 12px 20px 20px; }
+
+.sub-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 0 12px 4px; }
+.sub-title { font-size: var(--fs-20); font-weight: var(--fw-bold); }
+/* ② 닫기·고정 버튼 — 평소엔 차분한 회색, 올리면 검정 */
+.sub-btn { width: 28px; height: 28px; }
+.sub-btn:hover, .sub-btn:focus-visible { background: var(--color-text); color: var(--color-surface); }
+.sub-btn svg { width: var(--icon-sm); height: var(--icon-sm); }
+.sub-btn.sb-close svg, .sub-btn.sb-pin svg { width: var(--icon-lg); height: var(--icon-lg); }  /* 패널 아이콘은 안쪽이 촘촘해 한 단계 크게 */
+
+.sub-hint {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 12px; margin-bottom: 16px;
+  background: var(--color-surface);
+  border-radius: var(--r-lg);
+  font-size: var(--fs-12);
+  color: var(--color-text);
+}
+.sub-hint .icon { color: var(--color-primary); flex-shrink: 0; margin-top: 2px; }
+
+.tree-head {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 0 8px;
+  font-size: var(--fs-12); color: var(--color-text-secondary);
+}
+.tree-head .grow { flex: 1; display: flex; align-items: center; gap: 4px; }
+.tree-head .icon-btn { width: 24px; height: 24px; color: var(--color-text); }
+.tree-head .icon-btn.is-danger { color: var(--color-error); }
+.tree-head .icon-btn svg { width: var(--icon-sm); height: var(--icon-sm); }
+
+.sub .menu, .pop .menu { padding: 0; box-shadow: none; background: none; min-width: 0; }
+.sub .menu-item, .pop .menu-item {
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border-radius: var(--r-md); padding: 8px;
+}
+.menu-item .icon { flex-shrink: 0; }
+.menu-item .caret { width: 12px; height: 12px; }
+.menu-item .count { margin-left: auto; color: var(--color-text-secondary); font-size: var(--fs-12); }
+
+/* ── 3. 콘텐츠 ────────────────────────────── */
+.main {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column;
+  background: var(--color-surface);
+  position: relative; z-index: 1;
+}
+.topbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px 12px 24px; }
+.searchbox {
+  width: 520px;
+  height: var(--control-h-lg);
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 12px 0 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-lg);
+}
+.chip {
+  height: 28px; padding: 0 12px;
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 0; border-radius: var(--r-full);
+  background: var(--color-bg-base);
+  font-size: var(--fs-12); font-weight: var(--fw-bold); color: var(--color-text);
+  white-space: nowrap;
+}
+.chip .icon { width: 12px; height: 12px; color: var(--color-text-secondary); }
+.searchbox input {
+  flex: 1; min-width: 0; height: 100%;
+  border: 0; outline: none; background: none; padding: 0 8px;
+  font-family: inherit; font-size: var(--fs-14); color: var(--color-text);
+}
+.searchbox input::placeholder { color: var(--color-disabled); }
+.topbar .grow, .toolbar .grow { flex: 1; }
+.point {
+  height: var(--control-h-lg);
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border); border-radius: var(--r-lg);
+  font-size: var(--fs-14); font-weight: var(--fw-bold); color: var(--color-primary);
+}
+.point-p {
+  width: 20px; height: 20px; border-radius: var(--r-full);
+  display: grid; place-items: center;
+  background: var(--color-primary); color: var(--color-on-primary); font-size: var(--fs-11);
+}
+.point .charge { color: var(--color-primary); font-weight: var(--fw-medium); }
+
+.toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 20px 12px 24px; }
+.viewseg { display: inline-flex; border: 1px solid var(--color-border); border-radius: var(--r-full); overflow: hidden; }
+.viewseg button { width: 44px; height: var(--control-h); border: 0; background: none; color: var(--color-text-secondary); display: grid; place-items: center; }
+.viewseg button.is-on { background: var(--color-primary-bg); color: var(--color-primary); }
+.tabs { display: flex; gap: 4px; margin-left: 12px; }
+.tab { padding: 4px 12px; border-radius: var(--r-lg); font-size: var(--fs-14); color: var(--color-text-secondary); white-space: nowrap; }
+.tab.is-on { background: var(--color-primary-bg); color: var(--color-primary); font-weight: var(--fw-bold); }
+.pill {
+  height: var(--control-h); padding: 0 12px;
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1px solid var(--color-border); border-radius: var(--r-full);
+  background: var(--color-surface); font-size: var(--fs-14); color: var(--color-text); white-space: nowrap;
+}
+.pill .icon { width: 12px; height: 12px; color: var(--color-text-secondary); }
+.pager { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-14); }
+.pager .box { width: 48px; height: var(--control-h); display: grid; place-items: center; border: 1px solid var(--color-border); border-radius: var(--r-md); }
+
+.table { margin: 0 20px 0 24px; flex: 1; overflow: hidden; font-size: var(--fs-14); }
+.tr {
+  display: grid;
+  grid-template-columns: 88px 1.3fr 1.3fr 0.9fr 1fr 1.2fr 1.2fr 0.8fr 104px;
+  align-items: center;
+  height: 52px;
+  border-bottom: 1px solid var(--color-border-split);
+}
+.tr > * { padding: 0 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tr.th { font-weight: var(--fw-bold); border-bottom-color: var(--color-border); background: var(--color-surface-sub); }
+.tr.th .icon { width: 12px; height: 12px; color: var(--color-disabled); margin-left: 4px; }
+.cell-check { display: flex; align-items: center; gap: 8px; }
+.msg { display: flex !important; align-items: center; gap: 8px; color: var(--color-primary); }
+.kk { width: 16px; height: 16px; flex-shrink: 0; }
+.name { color: var(--color-primary); display: flex !important; align-items: center; gap: 8px; }
+.name .icon { color: var(--color-disabled); }
+.doc { color: var(--color-primary); font-weight: var(--fw-bold); display: flex !important; align-items: center; gap: 4px; }
+.doc .icon { color: var(--color-accent-purple-fg); }
+.seen { color: var(--color-text-secondary); display: flex !important; align-items: center; gap: 8px; }
+.acts { display: flex !important; gap: 8px; }
+.acts .icon-btn { border-color: var(--color-border-split); }
+
+.empty { flex: 1; display: grid; place-items: center; text-align: center; color: var(--color-text-secondary); font-size: var(--fs-14); }
+.empty-title { margin-top: 8px; color: var(--color-text); }
+
+/* ③ 호버 팝오버 — 콘텐츠를 밀지 않고 위에 겹친다 */
+.pop {
+  position: absolute;
+  top: 12px; bottom: 12px; left: 100px;
+  width: 248px;
+  background: var(--color-surface-sub);
+  border: 1px solid var(--color-border-split);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-4);
+  z-index: 5;
+  opacity: 0;
+  transform: translateX(-8px);
+  pointer-events: none;
+  transition: opacity var(--motion-standard) var(--ease-exit),
+              transform var(--motion-standard) var(--ease-exit);
+}
+.pop.is-open { opacity: 1; transform: none; pointer-events: auto; transition-timing-function: var(--ease-enter); }
+/* 레일 ↔ 팝오버 사이 틈을 메워, 이동 중에 닫히지 않게 */
+.pop::before { content: ""; position: absolute; top: 0; bottom: 0; left: -16px; width: 16px; }
+.pop .sub-inner { width: 100%; }
+
+/* ── 4. NOTES ─────────────────────────────── */
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+.note h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.note li { margin-left: 16px; font-size: var(--fs-14); color: var(--color-text-secondary); line-height: var(--lh-base); }
+.num {
+  width: 20px; height: 20px; border-radius: var(--r-full);
+  display: inline-grid; place-items: center;
+  background: var(--color-text); color: var(--color-surface); font-size: var(--fs-12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app.nudge .rail-handle { animation: none; }
+  .sub, .pop, .rail-handle { transition: none; }
+}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none"><symbol id="a-i-outlined" viewBox="0 0 24 24"><path d="M6.65 2.32C6.91 1.89 7.53 1.89 7.8 2.32L8.96 4.16C9.01 4.24 9.09 4.31 9.17 4.37L11.01 5.53L11.09 5.59C11.44 5.88 11.41 6.44 11.01 6.69L9.17 7.85L9.11 7.89C9.06 7.94 9.01 8 8.96 8.06L7.8 9.9C7.53 10.33 6.91 10.33 6.65 9.9L5.48 8.06C5.43 7.98 5.35 7.91 5.27 7.85L3.43 6.69C3.03 6.44 3.01 5.88 3.36 5.59L3.43 5.53L5.27 4.37C5.35 4.32 5.42 4.24 5.48 4.16L6.65 2.32ZM6.92 5.07L6.9 5.1L6.88 5.13C6.76 5.3 6.53 5.58 6.18 5.81L6.18 5.81L5.7 6.11L6.18 6.41L6.21 6.43L6.24 6.46C6.41 6.58 6.69 6.8 6.92 7.16H6.92L7.22 7.63L7.52 7.16L7.55 7.12L7.57 7.09C7.69 6.92 7.91 6.64 8.27 6.41V6.41L8.74 6.11L8.27 5.81L8.23 5.79L8.2 5.76C8.03 5.65 7.75 5.42 7.53 5.07L7.52 5.07L7.22 4.59L6.92 5.07Z" fill="currentColor"/><path d="M6.31 13.99C6.58 13.56 7.2 13.56 7.47 13.99L8.63 15.82C8.68 15.91 8.76 15.98 8.84 16.04L10.68 17.2L10.75 17.25C11.1 17.54 11.08 18.11 10.68 18.35L8.84 19.52L8.78 19.56C8.72 19.61 8.67 19.67 8.63 19.73L7.47 21.57C7.2 22 6.58 22 6.31 21.57L5.15 19.73C5.1 19.65 5.02 19.58 4.94 19.52L3.1 18.35C2.7 18.11 2.67 17.54 3.02 17.25L3.1 17.2L4.94 16.04C5.02 15.99 5.09 15.91 5.15 15.82L6.31 13.99ZM6.59 16.73L6.56 16.77L6.54 16.8C6.42 16.97 6.2 17.25 5.84 17.47L5.84 17.48L5.37 17.78L5.84 18.08L5.88 18.1L5.91 18.12C6.08 18.24 6.36 18.46 6.58 18.82H6.59L6.89 19.3L7.19 18.82L7.21 18.79L7.24 18.76C7.35 18.59 7.58 18.3 7.93 18.08V18.08L8.41 17.78L7.93 17.48L7.9 17.45L7.87 17.43C7.7 17.31 7.42 17.09 7.19 16.73L7.19 16.73L6.89 16.25L6.59 16.73Z" fill="currentColor"/><path d="M14.74 6.67C15.11 6.07 15.99 6.07 16.36 6.67L18 9.25C18.07 9.37 18.18 9.47 18.3 9.55L20.88 11.19C21.48 11.56 21.48 12.44 20.88 12.81L18.3 14.44L18.21 14.5C18.13 14.57 18.06 14.65 18 14.74L16.36 17.33C15.99 17.93 15.11 17.93 14.74 17.33L13.11 14.74C13.04 14.62 12.93 14.53 12.81 14.44L10.22 12.81C9.62 12.44 9.62 11.56 10.22 11.19L12.81 9.55C12.9 9.5 12.97 9.42 13.04 9.34L13.11 9.25L14.74 6.67ZM14.54 10.16L14.52 10.19L14.5 10.23C14.36 10.43 14.11 10.74 13.72 10.99L13.72 10.99L12.12 12L13.72 13.01L13.75 13.03L13.78 13.05C13.99 13.19 14.3 13.44 14.54 13.84H14.54L15.55 15.43L16.56 13.84L16.58 13.8L16.61 13.77C16.75 13.57 17 13.25 17.39 13.01L18.98 12L17.39 10.99L17.36 10.97L17.32 10.95C17.12 10.8 16.81 10.55 16.56 10.16V10.16L15.55 8.57L14.54 10.16Z" fill="currentColor"/></symbol><symbol id="bar-chart-outlined" viewBox="0 0 24 24"><path d="M20.81 18.56H4.69V3.94C4.69 3.83 4.6 3.75 4.5 3.75H3.19C3.08 3.75 3 3.83 3 3.94V20.06C3 20.17 3.08 20.25 3.19 20.25H20.81C20.92 20.25 21 20.17 21 20.06V18.75C21 18.65 20.92 18.56 20.81 18.56ZM6.75 16.69H8.06C8.17 16.69 8.25 16.6 8.25 16.5V13.12C8.25 13.02 8.17 12.94 8.06 12.94H6.75C6.65 12.94 6.56 13.02 6.56 13.12V16.5C6.56 16.6 6.65 16.69 6.75 16.69ZM10.31 16.69H11.62C11.73 16.69 11.81 16.6 11.81 16.5V9C11.81 8.9 11.73 8.81 11.62 8.81H10.31C10.21 8.81 10.12 8.9 10.12 9V16.5C10.12 16.6 10.21 16.69 10.31 16.69ZM13.88 16.69H15.19C15.29 16.69 15.38 16.6 15.38 16.5V10.83C15.38 10.72 15.29 10.64 15.19 10.64H13.88C13.77 10.64 13.69 10.72 13.69 10.83V16.5C13.69 16.6 13.77 16.69 13.88 16.69ZM17.44 16.69H18.75C18.85 16.69 18.94 16.6 18.94 16.5V7.12C18.94 7.02 18.85 6.94 18.75 6.94H17.44C17.33 6.94 17.25 7.02 17.25 7.12V16.5C17.25 16.6 17.33 16.69 17.44 16.69Z" fill="currentColor"/></symbol><symbol id="bell-outlined" viewBox="0 0 24 24"><path d="M19.12 18H18.56V10.03C18.56 6.72 16.12 3.99 12.94 3.54V2.62C12.94 2.11 12.52 1.69 12 1.69C11.48 1.69 11.06 2.11 11.06 2.62V3.54C7.88 3.99 5.44 6.72 5.44 10.03V18H4.88C4.46 18 4.12 18.34 4.12 18.75V19.5C4.12 19.6 4.21 19.69 4.31 19.69H9.38C9.38 21.14 10.55 22.31 12 22.31C13.45 22.31 14.62 21.14 14.62 19.69H19.69C19.79 19.69 19.88 19.6 19.88 19.5V18.75C19.88 18.34 19.54 18 19.12 18ZM12 20.81C11.38 20.81 10.88 20.31 10.88 19.69H13.12C13.12 20.31 12.62 20.81 12 20.81ZM7.12 18V10.03C7.12 8.73 7.63 7.5 8.55 6.58C9.47 5.66 10.7 5.16 12 5.16C13.3 5.16 14.53 5.66 15.45 6.58C16.37 7.5 16.88 8.73 16.88 10.03V18H7.12Z" fill="currentColor"/></symbol><symbol id="caret-down-outlined" viewBox="0 0 24 24"><path d="M19.7 7.03H4.3C3.84 7.03 3.58 7.52 3.87 7.85L11.57 16.78C11.79 17.03 12.21 17.03 12.43 16.78L20.13 7.85C20.42 7.52 20.16 7.03 19.7 7.03Z" fill="currentColor"/></symbol><symbol id="caret-right-outlined" viewBox="0 0 24 24"><path d="M16.78 11.57L7.85 3.87C7.52 3.58 7.03 3.84 7.03 4.3V19.7C7.03 20.16 7.52 20.42 7.85 20.13L16.78 12.43C17.03 12.21 17.03 11.79 16.78 11.57Z" fill="currentColor"/></symbol><symbol id="check-circle-filled" viewBox="0 0 24 24"><path d="M12 1.5C6.2 1.5 1.5 6.2 1.5 12C1.5 17.8 6.2 22.5 12 22.5C17.8 22.5 22.5 17.8 22.5 12C22.5 6.2 17.8 1.5 12 1.5ZM16.54 8.57L11.6 15.41C11.53 15.51 11.44 15.59 11.33 15.64C11.23 15.7 11.11 15.73 10.99 15.73C10.87 15.73 10.76 15.7 10.65 15.64C10.55 15.59 10.46 15.51 10.39 15.41L7.46 11.36C7.38 11.24 7.46 11.07 7.62 11.07H8.72C8.96 11.07 9.18 11.18 9.32 11.38L10.99 13.69L14.68 8.59C14.82 8.39 15.04 8.27 15.28 8.27H16.38C16.54 8.27 16.62 8.45 16.54 8.57Z" fill="currentColor"/></symbol><symbol id="cloud-download-outlined" viewBox="0 0 24 24"><path d="M14.62 16.55H12.89V10.88C12.89 10.77 12.8 10.69 12.7 10.69H11.29C11.19 10.69 11.11 10.77 11.11 10.88V16.55H9.37C9.22 16.55 9.13 16.73 9.23 16.86L11.85 20.18C11.87 20.2 11.89 20.22 11.92 20.23C11.94 20.24 11.97 20.25 12 20.25C12.03 20.25 12.06 20.24 12.08 20.23C12.11 20.22 12.13 20.2 12.15 20.18L14.77 16.86C14.87 16.73 14.78 16.55 14.62 16.55Z" fill="currentColor"/><path d="M19.02 8.59C17.94 5.76 15.21 3.75 12 3.75C8.8 3.75 6.07 5.76 4.99 8.59C2.98 9.12 1.5 10.95 1.5 13.12C1.5 15.71 3.6 17.81 6.19 17.81H7.12C7.23 17.81 7.31 17.73 7.31 17.62V16.22C7.31 16.12 7.23 16.03 7.12 16.03H6.19C5.4 16.03 4.65 15.72 4.1 15.15C3.55 14.58 3.26 13.82 3.28 13.02C3.3 12.41 3.51 11.82 3.9 11.33C4.29 10.84 4.84 10.47 5.44 10.31L6.33 10.08L6.66 9.22C6.86 8.69 7.14 8.19 7.5 7.73C7.84 7.29 8.26 6.89 8.72 6.56C9.69 5.89 10.82 5.53 12 5.53C13.19 5.53 14.32 5.89 15.29 6.56C15.75 6.89 16.16 7.29 16.51 7.73C16.87 8.19 17.15 8.69 17.35 9.22L17.67 10.08L18.56 10.31C19.83 10.65 20.72 11.81 20.72 13.12C20.72 13.9 20.42 14.63 19.87 15.18C19.6 15.45 19.28 15.67 18.93 15.81C18.57 15.96 18.2 16.03 17.81 16.03H16.88C16.77 16.03 16.69 16.12 16.69 16.22V17.62C16.69 17.73 16.77 17.81 16.88 17.81H17.81C20.4 17.81 22.5 15.71 22.5 13.12C22.5 10.95 21.02 9.12 19.02 8.59Z" fill="currentColor"/></symbol><symbol id="cloud-upload-outlined" viewBox="0 0 24 24"><path d="M12.15 10.76C12.13 10.74 12.11 10.72 12.08 10.71C12.06 10.69 12.03 10.69 12 10.69C11.97 10.69 11.94 10.69 11.92 10.71C11.89 10.72 11.87 10.74 11.85 10.76L9.23 14.08C9.21 14.11 9.19 14.14 9.19 14.18C9.19 14.21 9.19 14.25 9.21 14.28C9.22 14.31 9.25 14.34 9.28 14.35C9.31 14.37 9.34 14.38 9.38 14.38H11.11V20.06C11.11 20.17 11.19 20.25 11.3 20.25H12.7C12.8 20.25 12.89 20.17 12.89 20.06V14.38H14.63C14.78 14.38 14.87 14.2 14.77 14.08L12.15 10.76Z" fill="currentColor"/><path d="M19.02 8.59C17.94 5.76 15.21 3.75 12 3.75C8.8 3.75 6.07 5.76 4.99 8.59C2.98 9.12 1.5 10.95 1.5 13.12C1.5 15.71 3.6 17.81 6.19 17.81H7.12C7.23 17.81 7.31 17.73 7.31 17.62V16.22C7.31 16.12 7.23 16.03 7.12 16.03H6.19C5.4 16.03 4.65 15.72 4.1 15.15C3.55 14.58 3.26 13.82 3.28 13.02C3.3 12.41 3.51 11.82 3.9 11.33C4.29 10.84 4.84 10.47 5.44 10.31L6.33 10.08L6.66 9.22C6.86 8.69 7.14 8.19 7.5 7.73C7.84 7.29 8.26 6.89 8.72 6.56C9.69 5.89 10.82 5.53 12 5.53C13.19 5.53 14.32 5.89 15.29 6.56C15.75 6.89 16.16 7.29 16.51 7.73C16.87 8.19 17.15 8.69 17.35 9.22L17.67 10.08L18.56 10.31C19.83 10.65 20.72 11.81 20.72 13.12C20.72 13.9 20.42 14.63 19.87 15.18C19.6 15.45 19.28 15.67 18.93 15.81C18.57 15.96 18.2 16.03 17.81 16.03H16.88C16.77 16.03 16.69 16.12 16.69 16.22V17.62C16.69 17.73 16.77 17.81 16.88 17.81H17.81C20.4 17.81 22.5 15.71 22.5 13.12C22.5 10.95 21.02 9.12 19.02 8.59Z" fill="currentColor"/></symbol><symbol id="contacts-outlined" viewBox="0 0 24 24"><path d="M13.93 14.1C14.37 13.61 14.61 12.98 14.61 12.33C14.61 10.88 13.44 9.7 12 9.7C10.56 9.7 9.39 10.88 9.39 12.33C9.39 13.01 9.65 13.63 10.07 14.1C9.56 14.41 9.14 14.85 8.83 15.36C8.53 15.88 8.35 16.46 8.32 17.05C8.32 17.08 8.33 17.1 8.33 17.13C8.34 17.15 8.36 17.17 8.37 17.19C8.39 17.21 8.41 17.22 8.44 17.23C8.46 17.24 8.48 17.25 8.51 17.25H9.54C9.64 17.25 9.72 17.17 9.72 17.07C9.81 15.89 10.8 14.95 12 14.95C13.2 14.95 14.19 15.89 14.28 17.07C14.29 17.17 14.37 17.25 14.47 17.25H15.49C15.52 17.25 15.54 17.24 15.57 17.23C15.59 17.22 15.61 17.21 15.63 17.19C15.65 17.17 15.66 17.15 15.67 17.13C15.68 17.1 15.68 17.08 15.68 17.05C15.61 15.8 14.93 14.72 13.93 14.1ZM12 13.55C11.33 13.55 10.79 13 10.79 12.33C10.79 11.66 11.33 11.11 12 11.11C12.67 11.11 13.21 11.66 13.21 12.33C13.21 13 12.67 13.55 12 13.55ZM21.75 5.25H18V3.94C18 3.83 17.92 3.75 17.81 3.75H16.5C16.4 3.75 16.31 3.83 16.31 3.94V5.25H12.84V3.94C12.84 3.83 12.76 3.75 12.66 3.75H11.34C11.24 3.75 11.16 3.83 11.16 3.94V5.25H7.69V3.94C7.69 3.83 7.6 3.75 7.5 3.75H6.19C6.08 3.75 6 3.83 6 3.94V5.25H2.25C1.84 5.25 1.5 5.59 1.5 6V19.5C1.5 19.91 1.84 20.25 2.25 20.25H21.75C22.16 20.25 22.5 19.91 22.5 19.5V6C22.5 5.59 22.16 5.25 21.75 5.25ZM20.81 18.56H3.19V6.94H6V8.25C6 8.35 6.08 8.44 6.19 8.44H7.5C7.6 8.44 7.69 8.35 7.69 8.25V6.94H11.16V8.25C11.16 8.35 11.24 8.44 11.34 8.44H12.66C12.76 8.44 12.84 8.35 12.84 8.25V6.94H16.31V8.25C16.31 8.35 16.4 8.44 16.5 8.44H17.81C17.92 8.44 18 8.35 18 8.25V6.94H20.81V18.56Z" fill="currentColor"/></symbol><symbol id="delete-outlined" viewBox="0 0 24 24"><path d="M8.44 4.31H8.25C8.35 4.31 8.44 4.23 8.44 4.12V4.31H15.56V4.12C15.56 4.23 15.65 4.31 15.75 4.31H15.56V6H17.25V4.12C17.25 3.3 16.58 2.62 15.75 2.62H8.25C7.42 2.62 6.75 3.3 6.75 4.12V6H8.44V4.31ZM20.25 6H3.75C3.34 6 3 6.34 3 6.75V7.5C3 7.6 3.08 7.69 3.19 7.69H4.6L5.18 19.95C5.22 20.74 5.88 21.38 6.68 21.38H17.32C18.12 21.38 18.78 20.75 18.82 19.95L19.4 7.69H20.81C20.92 7.69 21 7.6 21 7.5V6.75C21 6.34 20.66 6 20.25 6ZM17.14 19.69H6.86L6.29 7.69H17.71L17.14 19.69Z" fill="currentColor"/></symbol><symbol id="down-outlined" viewBox="0 0 24 24"><path d="M20.72 6H18.96C18.84 6 18.73 6.06 18.66 6.15L12 15.33L5.34 6.15C5.27 6.06 5.16 6 5.04 6H3.28C3.13 6 3.04 6.17 3.13 6.3L11.39 17.69C11.69 18.1 12.31 18.1 12.6 17.69L20.87 6.3C20.96 6.17 20.87 6 20.72 6Z" fill="currentColor"/></symbol><symbol id="file-outlined" viewBox="0 0 24 24"><path d="M20.03 6.76L14.99 1.72C14.85 1.58 14.66 1.5 14.46 1.5H4.5C4.09 1.5 3.75 1.84 3.75 2.25V21.75C3.75 22.16 4.09 22.5 4.5 22.5H19.5C19.91 22.5 20.25 22.16 20.25 21.75V7.3C20.25 7.1 20.17 6.9 20.03 6.76ZM18.52 7.64H14.11V3.23L18.52 7.64ZM18.56 20.81H5.44V3.19H12.52V8.25C12.52 8.51 12.62 8.76 12.8 8.95C12.99 9.13 13.24 9.23 13.5 9.23H18.56V20.81Z" fill="currentColor"/></symbol><symbol id="file-text-outlined" viewBox="0 0 24 24"><path d="M20.03 6.76L14.99 1.72C14.85 1.58 14.66 1.5 14.46 1.5H4.5C4.09 1.5 3.75 1.84 3.75 2.25V21.75C3.75 22.16 4.09 22.5 4.5 22.5H19.5C19.91 22.5 20.25 22.16 20.25 21.75V7.3C20.25 7.1 20.17 6.9 20.03 6.76ZM18.52 7.64H14.11V3.23L18.52 7.64ZM18.56 20.81H5.44V3.19H12.52V8.25C12.52 8.51 12.62 8.76 12.8 8.95C12.99 9.13 13.24 9.23 13.5 9.23H18.56V20.81ZM11.81 14.48H7.5C7.4 14.48 7.31 14.57 7.31 14.67V15.8C7.31 15.9 7.4 15.98 7.5 15.98H11.81C11.92 15.98 12 15.9 12 15.8V14.67C12 14.57 11.92 14.48 11.81 14.48ZM7.31 11.48V12.61C7.31 12.71 7.4 12.8 7.5 12.8H16.5C16.6 12.8 16.69 12.71 16.69 12.61V11.48C16.69 11.38 16.6 11.3 16.5 11.3H7.5C7.4 11.3 7.31 11.38 7.31 11.48Z" fill="currentColor"/></symbol><symbol id="folder-outlined" viewBox="0 0 24 24"><path d="M20.62 6.99H12.21L9.46 4.36C9.43 4.33 9.38 4.31 9.33 4.31H3.38C2.96 4.31 2.62 4.65 2.62 5.06V18.94C2.62 19.35 2.96 19.69 3.38 19.69H20.62C21.04 19.69 21.38 19.35 21.38 18.94V7.74C21.38 7.33 21.04 6.99 20.62 6.99ZM19.69 18H4.31V6H8.73L11.53 8.68H19.69V18Z" fill="currentColor"/></symbol><symbol id="home-outlined" viewBox="0 0 24 24"><path d="M22.18 11.84L13.13 2.79L12.52 2.18C12.38 2.04 12.2 1.96 12 1.96C11.81 1.96 11.62 2.04 11.48 2.18L1.82 11.84C1.68 11.98 1.56 12.15 1.49 12.33C1.41 12.52 1.37 12.72 1.38 12.92C1.39 13.74 2.07 14.4 2.9 14.4H3.89V22.03H20.11V14.4H21.12C21.53 14.4 21.9 14.24 22.19 13.96C22.33 13.82 22.44 13.65 22.51 13.47C22.59 13.29 22.63 13.09 22.62 12.9C22.62 12.5 22.47 12.12 22.18 11.84ZM13.31 20.35H10.69V15.56H13.31V20.35ZM18.42 12.71V20.35H14.81V15C14.81 14.48 14.39 14.06 13.88 14.06H10.13C9.61 14.06 9.19 14.48 9.19 15V20.35H5.58V12.71H3.33L12 4.05L12.54 4.59L20.67 12.71H18.42Z" fill="currentColor"/></symbol><symbol id="inbox-outlined" viewBox="0 0 24 24"><path d="M20.75 10.46L20.74 10.44L18.11 3.76C18 3.38 17.65 3.12 17.25 3.12H6.59C6.19 3.12 5.84 3.39 5.73 3.77L3.27 10.38L3.26 10.4L3.26 10.42C3.23 10.53 3.22 10.65 3.23 10.77C3.23 10.8 3.23 10.84 3.23 10.88V19.45C3.23 19.83 3.38 20.19 3.65 20.46C3.91 20.73 4.28 20.88 4.65 20.88H19.35C20.14 20.88 20.78 20.24 20.78 19.45V10.88C20.78 10.85 20.78 10.82 20.78 10.79C20.79 10.68 20.78 10.57 20.75 10.46ZM13.81 9.45L13.81 9.82C13.79 10.87 13.06 11.58 12 11.58C11.48 11.58 11.04 11.41 10.72 11.1C10.4 10.78 10.22 10.34 10.21 9.82L10.2 9.45H5.38L7.24 4.92H16.6L18.51 9.45H13.81ZM5.03 11.25H8.71C9.28 12.59 10.49 13.38 12 13.38C12.79 13.38 13.53 13.16 14.12 12.74C14.64 12.38 15.05 11.87 15.31 11.25H18.98V19.08H5.03V11.25Z" fill="currentColor"/></symbol><symbol id="info-circle-outlined" viewBox="0 0 24 24"><path d="M12 1.5C6.2 1.5 1.5 6.2 1.5 12C1.5 17.8 6.2 22.5 12 22.5C17.8 22.5 22.5 17.8 22.5 12C22.5 6.2 17.8 1.5 12 1.5ZM12 20.72C7.19 20.72 3.28 16.81 3.28 12C3.28 7.19 7.19 3.28 12 3.28C16.81 3.28 20.72 7.19 20.72 12C20.72 16.81 16.81 20.72 12 20.72Z" fill="currentColor"/><path d="M10.88 7.88C10.88 8.17 10.99 8.46 11.2 8.67C11.42 8.88 11.7 9 12 9C12.3 9 12.58 8.88 12.8 8.67C13.01 8.46 13.12 8.17 13.12 7.88C13.12 7.58 13.01 7.29 12.8 7.08C12.58 6.87 12.3 6.75 12 6.75C11.7 6.75 11.42 6.87 11.2 7.08C10.99 7.29 10.88 7.58 10.88 7.88ZM12.56 10.5H11.44C11.33 10.5 11.25 10.58 11.25 10.69V17.06C11.25 17.17 11.33 17.25 11.44 17.25H12.56C12.67 17.25 12.75 17.17 12.75 17.06V10.69C12.75 10.58 12.67 10.5 12.56 10.5Z" fill="currentColor"/></symbol><symbol id="kakao" viewBox="0 0 24 24"><g clip-path="url(#kakao-clip0_4171_64)"><rect width="24" height="24" rx="6" fill="#FAE100"/><path d="M12 4.8C7.36 4.8 3.6 7.8 3.6 11.51C3.6 13.93 5.19 16.04 7.58 17.22C7.41 17.89 6.95 19.62 6.86 20C6.74 20.46 7.02 20.45 7.21 20.33C7.35 20.23 9.51 18.75 10.44 18.11C10.95 18.18 11.47 18.22 12 18.22C16.64 18.22 20.4 15.22 20.4 11.51C20.4 7.81 16.64 4.8 12 4.8Z" fill="#371D1E"/></g><defs><clipPath id="kakao-clip0_4171_64"><rect width="24" height="24" fill="white"/></clipPath></defs></symbol><symbol id="mail-outlined" viewBox="0 0 24 24"><path d="M21.75 3.75H2.25C1.84 3.75 1.5 4.09 1.5 4.5V19.5C1.5 19.91 1.84 20.25 2.25 20.25H21.75C22.16 20.25 22.5 19.91 22.5 19.5V4.5C22.5 4.09 22.16 3.75 21.75 3.75ZM20.81 6.35V18.56H3.19V6.35L2.54 5.84L3.46 4.66L4.46 5.44H19.54L20.54 4.66L21.46 5.84L20.81 6.35ZM19.54 5.44L12 11.3L4.46 5.44L3.46 4.66L2.54 5.84L3.19 6.34L11.19 12.57C11.42 12.75 11.7 12.85 12 12.85C12.29 12.85 12.57 12.75 12.8 12.57L20.81 6.35L21.46 5.84L20.54 4.66L19.54 5.44Z" fill="currentColor"/></symbol><symbol id="message-outlined" viewBox="0 0 24 24"><path d="M10.88 12C10.88 12.3 10.99 12.58 11.2 12.8C11.42 13.01 11.7 13.12 12 13.12C12.3 13.12 12.58 13.01 12.8 12.8C13.01 12.58 13.13 12.3 13.13 12C13.13 11.7 13.01 11.42 12.8 11.2C12.58 10.99 12.3 10.88 12 10.88C11.7 10.88 11.42 10.99 11.2 11.2C10.99 11.42 10.88 11.7 10.88 12ZM15.56 12C15.56 12.3 15.68 12.58 15.89 12.8C16.1 13.01 16.39 13.12 16.69 13.12C16.99 13.12 17.27 13.01 17.48 12.8C17.69 12.58 17.81 12.3 17.81 12C17.81 11.7 17.69 11.42 17.48 11.2C17.27 10.99 16.99 10.88 16.69 10.88C16.39 10.88 16.1 10.99 15.89 11.2C15.68 11.42 15.56 11.7 15.56 12ZM6.19 12C6.19 12.3 6.31 12.58 6.52 12.8C6.73 13.01 7.01 13.12 7.31 13.12C7.61 13.12 7.9 13.01 8.11 12.8C8.32 12.58 8.44 12.3 8.44 12C8.44 11.7 8.32 11.42 8.11 11.2C7.9 10.99 7.61 10.88 7.31 10.88C7.01 10.88 6.73 10.99 6.52 11.2C6.31 11.42 6.19 11.7 6.19 12ZM21.68 7.93C21.15 6.67 20.4 5.54 19.43 4.57C18.47 3.61 17.33 2.84 16.07 2.32C14.78 1.77 13.41 1.5 12 1.5H11.95C10.53 1.51 9.16 1.79 7.86 2.34C6.62 2.87 5.49 3.64 4.54 4.6C3.58 5.57 2.82 6.7 2.3 7.95C1.77 9.25 1.49 10.63 1.5 12.05C1.51 13.68 1.89 15.28 2.63 16.73V20.3C2.63 20.58 2.74 20.86 2.94 21.06C3.14 21.26 3.42 21.38 3.7 21.38H7.27C8.72 22.11 10.33 22.49 11.95 22.5H12C13.41 22.5 14.77 22.23 16.05 21.7C17.3 21.18 18.44 20.42 19.4 19.46C20.36 18.51 21.13 17.39 21.66 16.14C22.21 14.84 22.49 13.47 22.5 12.05C22.51 10.62 22.23 9.23 21.68 7.93ZM18.14 18.2C16.5 19.82 14.32 20.72 12 20.72H11.96C10.55 20.71 9.14 20.36 7.9 19.7L7.71 19.59H4.41V16.29L4.3 16.1C3.64 14.86 3.29 13.45 3.28 12.04C3.27 9.7 4.17 7.51 5.8 5.86C7.44 4.2 9.63 3.29 11.96 3.28H12C13.17 3.28 14.31 3.51 15.38 3.96C16.43 4.4 17.36 5.03 18.17 5.83C18.98 6.64 19.61 7.58 20.05 8.62C20.5 9.71 20.73 10.85 20.72 12.04C20.71 14.37 19.79 16.56 18.14 18.2Z" fill="currentColor"/></symbol><symbol id="more-outlined" viewBox="0 0 24 24"><path d="M10.69 5.41C10.69 5.76 10.83 6.1 11.07 6.34C11.32 6.59 11.65 6.73 12 6.73C12.35 6.73 12.68 6.59 12.93 6.34C13.17 6.1 13.31 5.76 13.31 5.41C13.31 5.07 13.17 4.73 12.93 4.49C12.68 4.24 12.35 4.1 12 4.1C11.65 4.1 11.32 4.24 11.07 4.49C10.83 4.73 10.69 5.07 10.69 5.41ZM10.69 11.98C10.69 12.32 10.83 12.66 11.07 12.9C11.32 13.15 11.65 13.29 12 13.29C12.35 13.29 12.68 13.15 12.93 12.9C13.17 12.66 13.31 12.32 13.31 11.98C13.31 11.63 13.17 11.29 12.93 11.05C12.68 10.8 12.35 10.66 12 10.66C11.65 10.66 11.32 10.8 11.07 11.05C10.83 11.29 10.69 11.63 10.69 11.98ZM10.69 18.54C10.69 18.89 10.83 19.22 11.07 19.47C11.32 19.71 11.65 19.85 12 19.85C12.35 19.85 12.68 19.71 12.93 19.47C13.17 19.22 13.31 18.89 13.31 18.54C13.31 18.19 13.17 17.86 12.93 17.61C12.68 17.36 12.35 17.23 12 17.23C11.65 17.23 11.32 17.36 11.07 17.61C10.83 17.86 10.69 18.19 10.69 18.54Z" fill="currentColor"/></symbol><symbol id="plus-outlined" viewBox="0 0 24 24"><path d="M11.3 3.56H12.7C12.83 3.56 12.89 3.62 12.89 3.75V20.25C12.89 20.38 12.83 20.44 12.7 20.44H11.3C11.17 20.44 11.11 20.38 11.11 20.25V3.75C11.11 3.62 11.17 3.56 11.3 3.56Z" fill="currentColor"/><path d="M4.12 11.11H19.88C20 11.11 20.06 11.17 20.06 11.3V12.7C20.06 12.83 20 12.89 19.88 12.89H4.12C4 12.89 3.94 12.83 3.94 12.7V11.3C3.94 11.17 4 11.11 4.12 11.11Z" fill="currentColor"/></symbol><symbol id="right-outlined" viewBox="0 0 24 24"><path d="M17.95 11.41L7.38 3.16C7.35 3.14 7.32 3.12 7.28 3.12C7.25 3.11 7.21 3.12 7.18 3.14C7.15 3.15 7.12 3.18 7.11 3.21C7.09 3.24 7.08 3.27 7.08 3.3V5.12C7.08 5.23 7.13 5.34 7.22 5.41L15.66 12L7.22 18.59C7.13 18.66 7.08 18.77 7.08 18.88V20.7C7.08 20.85 7.26 20.94 7.38 20.84L17.95 12.59C18.04 12.52 18.11 12.43 18.16 12.33C18.21 12.23 18.23 12.11 18.23 12C18.23 11.89 18.21 11.77 18.16 11.67C18.11 11.57 18.04 11.48 17.95 11.41Z" fill="currentColor"/></symbol><symbol id="rocket-outlined" viewBox="0 0 24 24"><path d="M20.25 17.25C20.25 14.63 18.72 12.38 16.5 11.32V7.44C16.5 7.08 16.38 6.74 16.15 6.47L12.57 2.24C12.42 2.06 12.21 1.97 12 1.97C11.79 1.97 11.58 2.06 11.43 2.24L7.85 6.47C7.63 6.74 7.5 7.08 7.5 7.44V11.32C5.28 12.38 3.75 14.63 3.75 17.25H7.42C7.36 17.42 7.34 17.6 7.34 17.81C7.34 18.33 7.51 18.83 7.84 19.23C8.1 19.56 8.45 19.81 8.85 19.95C9.39 21.22 10.62 22.03 12 22.03C12.68 22.03 13.34 21.83 13.91 21.45C14.46 21.08 14.89 20.56 15.15 19.95C15.55 19.81 15.9 19.56 16.16 19.24C16.48 18.83 16.66 18.33 16.66 17.81C16.66 17.61 16.64 17.43 16.59 17.25H20.25V17.25ZM17.87 14.56C18.09 14.91 18.26 15.27 18.39 15.66H16.41V13.09C16.99 13.48 17.49 13.98 17.87 14.56ZM9.09 11.32V7.47L12 4.03L14.91 7.47V15.66H9.09V11.32ZM5.61 15.66C5.74 15.27 5.91 14.91 6.13 14.56C6.52 13.97 7.01 13.47 7.59 13.09V15.66H5.61ZM14.72 18.38C14.6 18.45 14.46 18.48 14.32 18.46L13.86 18.4L13.8 18.86C13.67 19.75 12.9 20.42 12 20.42C11.1 20.42 10.33 19.75 10.2 18.86L10.14 18.4L9.68 18.46C9.54 18.48 9.4 18.45 9.28 18.38C9.07 18.26 8.95 18.04 8.95 17.81C8.95 17.56 9.09 17.35 9.29 17.25H14.71C14.92 17.35 15.05 17.56 15.05 17.81C15.05 18.04 14.93 18.26 14.72 18.38ZM10.88 9.38C10.88 9.67 10.99 9.96 11.2 10.17C11.42 10.38 11.7 10.5 12 10.5C12.3 10.5 12.58 10.38 12.8 10.17C13.01 9.96 13.12 9.67 13.12 9.38C13.12 9.08 13.01 8.79 12.8 8.58C12.58 8.37 12.3 8.25 12 8.25C11.7 8.25 11.42 8.37 11.2 8.58C10.99 8.79 10.88 9.08 10.88 9.38Z" fill="currentColor"/></symbol><symbol id="search-outlined" viewBox="0 0 24 24"><path d="M21.32 20.03L15.23 13.94C16.18 12.72 16.69 11.23 16.69 9.66C16.69 7.78 15.95 6.01 14.63 4.69C13.3 3.36 11.53 2.62 9.66 2.62C7.78 2.62 6.01 3.36 4.69 4.69C3.36 6.01 2.62 7.78 2.62 9.66C2.62 11.53 3.36 13.3 4.69 14.63C6.01 15.96 7.78 16.69 9.66 16.69C11.23 16.69 12.72 16.18 13.94 15.23L20.02 21.32C20.04 21.34 20.06 21.35 20.09 21.36C20.11 21.37 20.14 21.38 20.16 21.38C20.19 21.38 20.21 21.37 20.23 21.36C20.26 21.35 20.28 21.34 20.3 21.32L21.32 20.3C21.34 20.28 21.35 20.26 21.36 20.24C21.37 20.21 21.38 20.19 21.38 20.16C21.38 20.14 21.37 20.11 21.36 20.09C21.35 20.07 21.34 20.05 21.32 20.03ZM13.37 13.37C12.38 14.36 11.06 14.91 9.66 14.91C8.25 14.91 6.94 14.36 5.94 13.37C4.95 12.38 4.41 11.06 4.41 9.66C4.41 8.25 4.95 6.94 5.94 5.94C6.94 4.95 8.25 4.41 9.66 4.41C11.06 4.41 12.38 4.95 13.37 5.94C14.36 6.94 14.91 8.25 14.91 9.66C14.91 11.06 14.36 12.38 13.37 13.37Z" fill="currentColor"/></symbol><symbol id="send-outlined" viewBox="0 0 24 24"><path d="M21.83 11.69L2.22 1.86C2.15 1.82 2.05 1.81 1.97 1.83C1.77 1.88 1.64 2.08 1.69 2.29L3.71 10.54C3.74 10.67 3.83 10.77 3.96 10.81L7.42 11.99L3.96 13.18C3.84 13.22 3.75 13.32 3.72 13.45L1.69 21.71C1.67 21.8 1.68 21.89 1.72 21.97C1.81 22.15 2.04 22.23 2.22 22.14L21.83 12.36C21.9 12.33 21.96 12.27 22 12.2C22.09 12.01 22.02 11.79 21.83 11.69ZM4 19.37L5.18 14.55L12.1 12.17C12.16 12.15 12.2 12.11 12.22 12.05C12.25 11.96 12.2 11.85 12.1 11.82L5.18 9.44L4.01 4.64L18.73 12.02L4 19.37Z" fill="currentColor"/></symbol><symbol id="setting-outlined" viewBox="0 0 24 24"><path d="M21.68 14.66L20.14 13.35C20.21 12.91 20.25 12.45 20.25 12C20.25 11.54 20.21 11.09 20.14 10.64L21.68 9.33C21.79 9.23 21.87 9.1 21.91 8.95C21.95 8.8 21.95 8.65 21.89 8.5L21.87 8.44C21.45 7.26 20.82 6.17 20 5.21L19.96 5.16C19.86 5.05 19.73 4.96 19.59 4.92C19.44 4.88 19.28 4.89 19.14 4.94L17.23 5.62C16.53 5.04 15.75 4.59 14.9 4.27L14.53 2.27C14.5 2.12 14.43 1.99 14.32 1.88C14.21 1.77 14.08 1.7 13.93 1.67L13.86 1.66C12.64 1.44 11.36 1.44 10.14 1.66L10.07 1.67C9.92 1.7 9.78 1.77 9.68 1.88C9.57 1.99 9.5 2.12 9.47 2.27L9.1 4.28C8.26 4.59 7.47 5.05 6.78 5.62L4.86 4.94C4.71 4.89 4.56 4.88 4.41 4.92C4.26 4.96 4.13 5.05 4.03 5.16L3.99 5.21C3.18 6.17 2.55 7.26 2.12 8.44L2.1 8.5C2 8.8 2.08 9.13 2.32 9.33L3.88 10.66C3.8 11.1 3.77 11.55 3.77 11.99C3.77 12.44 3.8 12.89 3.88 13.33L2.32 14.66C2.21 14.76 2.12 14.89 2.08 15.04C2.04 15.18 2.05 15.34 2.1 15.48L2.12 15.54C2.55 16.73 3.18 17.82 3.99 18.78L4.03 18.83C4.13 18.94 4.26 19.02 4.41 19.06C4.56 19.1 4.71 19.1 4.86 19.05L6.78 18.37C7.48 18.94 8.26 19.4 9.1 19.71L9.47 21.71C9.5 21.86 9.57 22 9.68 22.11C9.78 22.22 9.92 22.29 10.07 22.32L10.14 22.33C11.37 22.55 12.63 22.55 13.86 22.33L13.93 22.32C14.08 22.29 14.21 22.22 14.32 22.11C14.43 22 14.5 21.86 14.53 21.71L14.9 19.72C15.75 19.4 16.54 18.95 17.23 18.37L19.14 19.05C19.28 19.1 19.44 19.11 19.59 19.07C19.73 19.03 19.86 18.94 19.96 18.83L20 18.78C20.82 17.81 21.45 16.73 21.87 15.54L21.89 15.48C22 15.2 21.91 14.87 21.68 14.66ZM18.48 10.92C18.54 11.27 18.57 11.64 18.57 12C18.57 12.36 18.54 12.72 18.48 13.08L18.32 14.02L20.07 15.52C19.81 16.13 19.47 16.71 19.07 17.24L16.9 16.47L16.16 17.07C15.6 17.53 14.98 17.9 14.3 18.15L13.41 18.48L12.99 20.76C12.33 20.83 11.66 20.83 11 20.76L10.58 18.48L9.69 18.14C9.03 17.89 8.41 17.52 7.85 17.07L7.11 16.46L4.93 17.24C4.53 16.7 4.19 16.12 3.93 15.51L5.7 14L5.54 13.06C5.49 12.72 5.46 12.35 5.46 12C5.46 11.64 5.49 11.28 5.54 10.93L5.7 9.99L3.93 8.48C4.19 7.87 4.53 7.29 4.93 6.76L7.11 7.54L7.85 6.93C8.41 6.47 9.03 6.11 9.69 5.86L10.58 5.52L11 3.24C11.66 3.17 12.33 3.17 12.99 3.24L13.41 5.52L14.31 5.85C14.98 6.11 15.61 6.47 16.17 6.93L16.9 7.53L19.08 6.76C19.48 7.3 19.81 7.88 20.08 8.49L18.32 9.98L18.48 10.92ZM12 7.64C9.72 7.64 7.88 9.49 7.88 11.76C7.88 14.04 9.72 15.89 12 15.89C14.28 15.89 16.13 14.04 16.13 11.76C16.13 9.49 14.28 7.64 12 7.64ZM13.86 13.62C13.61 13.86 13.32 14.06 13.01 14.19C12.69 14.32 12.35 14.39 12 14.39C11.3 14.39 10.64 14.11 10.14 13.62C9.9 13.38 9.71 13.09 9.57 12.77C9.44 12.45 9.38 12.11 9.38 11.76C9.38 11.06 9.65 10.4 10.14 9.91C10.64 9.41 11.3 9.14 12 9.14C12.7 9.14 13.36 9.41 13.86 9.91C14.1 10.15 14.29 10.44 14.43 10.76C14.56 11.08 14.63 11.42 14.63 11.76C14.63 12.46 14.35 13.12 13.86 13.62Z" fill="currentColor"/></symbol><symbol id="star-outlined" viewBox="0 0 24 24"><path d="M21.28 8.27L15.33 7.41L12.67 2.02C12.6 1.87 12.48 1.75 12.33 1.68C11.96 1.49 11.51 1.65 11.33 2.02L8.67 7.41L2.72 8.27C2.55 8.3 2.4 8.38 2.29 8.49C2.15 8.64 2.07 8.83 2.07 9.03C2.08 9.23 2.16 9.42 2.3 9.55L6.61 13.75L5.59 19.68C5.57 19.82 5.58 19.96 5.63 20.09C5.69 20.22 5.77 20.33 5.89 20.41C6 20.5 6.13 20.54 6.27 20.55C6.41 20.56 6.55 20.53 6.68 20.47L12 17.67L17.32 20.47C17.47 20.55 17.64 20.57 17.8 20.54C18.21 20.47 18.48 20.09 18.41 19.68L17.39 13.75L21.7 9.55C21.82 9.44 21.89 9.29 21.92 9.13C21.98 8.72 21.69 8.34 21.28 8.27ZM15.58 13.16L16.43 18.09L12 15.77L7.57 18.09L8.42 13.16L4.84 9.67L9.79 8.95L12 4.47L14.21 8.95L19.16 9.67L15.58 13.16Z" fill="currentColor"/></symbol><symbol id="swap-outlined" viewBox="0 0 24 24"><path d="M19.87 13.88H3.56C3.46 13.88 3.38 13.96 3.38 14.06V15.47C3.38 15.57 3.46 15.66 3.56 15.66H17.75L14.37 19.95C14.27 20.07 14.36 20.25 14.51 20.25H16.21C16.33 20.25 16.44 20.2 16.51 20.11L20.46 15.09C20.85 14.6 20.5 13.88 19.87 13.88ZM20.44 8.34H6.25L9.64 4.05C9.73 3.93 9.65 3.75 9.49 3.75H7.79C7.67 3.75 7.57 3.8 7.49 3.89L3.54 8.91C3.15 9.4 3.5 10.12 4.13 10.12H20.44C20.54 10.12 20.63 10.04 20.63 9.94V8.53C20.63 8.43 20.54 8.34 20.44 8.34Z" fill="currentColor"/></symbol><symbol id="team-outlined" viewBox="0 0 24 24"><path d="M19.32 16.4C18.73 15.82 18.04 15.34 17.29 14.99C18.35 14.13 19.03 12.82 19.03 11.34C19.03 8.75 16.87 6.62 14.27 6.66C11.71 6.7 9.65 8.78 9.65 11.34C9.65 12.82 10.33 14.13 11.39 14.99C10.64 15.34 9.95 15.82 9.37 16.4C8.09 17.69 7.36 19.38 7.31 21.18C7.31 21.21 7.32 21.23 7.32 21.26C7.33 21.28 7.35 21.3 7.37 21.32C7.38 21.34 7.4 21.35 7.43 21.36C7.45 21.37 7.47 21.38 7.5 21.38H8.81C8.91 21.38 9 21.3 9 21.19C9.04 19.84 9.59 18.56 10.56 17.6C11.06 17.1 11.65 16.7 12.3 16.44C12.95 16.17 13.64 16.03 14.34 16.03C15.77 16.03 17.11 16.59 18.12 17.6C19.09 18.56 19.64 19.84 19.69 21.19C19.69 21.3 19.77 21.38 19.87 21.38H21.19C21.21 21.38 21.24 21.37 21.26 21.36C21.28 21.35 21.3 21.34 21.32 21.32C21.34 21.3 21.35 21.28 21.36 21.26C21.37 21.23 21.38 21.21 21.37 21.18C21.33 19.38 20.6 17.69 19.32 16.4ZM14.34 14.34C13.54 14.34 12.79 14.03 12.22 13.46C11.94 13.18 11.71 12.85 11.56 12.48C11.41 12.11 11.34 11.71 11.34 11.31C11.35 10.54 11.66 9.8 12.19 9.25C12.76 8.67 13.51 8.35 14.31 8.34C15.11 8.34 15.88 8.65 16.45 9.2C17.03 9.77 17.35 10.53 17.35 11.34C17.35 12.15 17.03 12.9 16.47 13.46C16.19 13.74 15.86 13.97 15.49 14.12C15.13 14.27 14.74 14.34 14.34 14.34ZM8.47 11.96C8.45 11.76 8.44 11.55 8.44 11.34C8.44 10.97 8.47 10.61 8.54 10.25C8.56 10.17 8.51 10.08 8.43 10.05C8.12 9.9 7.82 9.71 7.57 9.46C7.27 9.17 7.04 8.82 6.88 8.44C6.72 8.05 6.65 7.64 6.66 7.22C6.68 6.47 6.99 5.76 7.51 5.22C8.09 4.62 8.87 4.3 9.7 4.31C10.45 4.32 11.17 4.61 11.71 5.12C11.9 5.29 12.06 5.48 12.19 5.69C12.24 5.76 12.33 5.79 12.41 5.76C12.82 5.62 13.26 5.52 13.71 5.47C13.84 5.46 13.91 5.32 13.85 5.2C13.09 3.69 11.54 2.65 9.74 2.62C7.14 2.59 4.97 4.72 4.97 7.31C4.97 8.78 5.65 10.09 6.71 10.95C5.96 11.3 5.28 11.78 4.68 12.37C3.4 13.65 2.67 15.34 2.62 17.15C2.62 17.18 2.63 17.2 2.64 17.22C2.65 17.25 2.66 17.27 2.68 17.29C2.7 17.31 2.72 17.32 2.74 17.33C2.76 17.34 2.79 17.34 2.81 17.34H4.13C4.23 17.34 4.31 17.26 4.31 17.16C4.36 15.8 4.91 14.53 5.88 13.57C6.57 12.88 7.41 12.4 8.33 12.17C8.42 12.14 8.48 12.06 8.47 11.96Z" fill="currentColor"/></symbol><symbol id="thunderbolt-outlined" viewBox="0 0 24 24"><path d="M19.88 8.42H14.71L19.36 2.55C19.45 2.43 19.36 2.25 19.21 2.25H10.22C10.15 2.25 10.09 2.29 10.06 2.34L3.98 12.83C3.91 12.96 4 13.11 4.15 13.11H8.23L6.14 21.49C6.09 21.68 6.31 21.81 6.45 21.68L20 8.74C20.13 8.63 20.04 8.42 19.88 8.42ZM8.86 17.17L10.28 11.52H6.59L11.03 3.85H16.3L11.41 10.02H16.36L8.86 17.17Z" fill="currentColor"/></symbol><symbol id="user-add-outlined" viewBox="0 0 24 24"><path d="M15.9 15.06C16.46 14.75 17.11 14.58 17.8 14.58H17.81C17.88 14.58 17.91 14.49 17.86 14.45C17.14 13.8 16.32 13.28 15.43 12.9C15.42 12.9 15.41 12.9 15.4 12.89C16.86 11.84 17.8 10.12 17.8 8.18C17.8 4.97 15.21 2.37 12 2.37C8.8 2.37 6.2 4.97 6.2 8.18C6.2 10.12 7.15 11.84 8.61 12.89C8.6 12.9 8.59 12.9 8.58 12.9C7.53 13.35 6.59 13.98 5.78 14.79C4.98 15.6 4.34 16.55 3.9 17.59C3.47 18.62 3.23 19.72 3.21 20.83C3.21 20.86 3.21 20.88 3.22 20.9C3.23 20.93 3.25 20.95 3.26 20.97C3.28 20.98 3.3 21 3.33 21.01C3.35 21.02 3.37 21.02 3.4 21.02H4.8C4.9 21.02 4.99 20.94 4.99 20.84C5.04 19.03 5.76 17.34 7.04 16.05C8.37 14.72 10.13 13.99 12 13.99C13.33 13.99 14.61 14.36 15.71 15.05C15.74 15.07 15.77 15.08 15.8 15.08C15.83 15.08 15.87 15.07 15.9 15.06ZM12 12.21C10.93 12.21 9.92 11.79 9.16 11.03C8.78 10.66 8.49 10.21 8.28 9.72C8.08 9.23 7.98 8.71 7.98 8.18C7.98 7.1 8.4 6.09 9.16 5.33C9.92 4.57 10.93 4.15 12 4.15C13.08 4.15 14.09 4.57 14.85 5.33C15.22 5.7 15.52 6.15 15.72 6.64C15.93 7.13 16.03 7.65 16.03 8.18C16.03 9.26 15.61 10.27 14.85 11.03C14.09 11.79 13.08 12.21 12 12.21ZM20.62 17.79H18.66V15.82C18.66 15.72 18.57 15.63 18.47 15.63H17.16C17.05 15.63 16.97 15.72 16.97 15.82V17.79H15C14.9 17.79 14.81 17.87 14.81 17.98V19.29C14.81 19.39 14.9 19.48 15 19.48H16.97V21.45C16.97 21.55 17.05 21.63 17.16 21.63H18.47C18.57 21.63 18.66 21.55 18.66 21.45V19.48H20.62C20.73 19.48 20.81 19.39 20.81 19.29V17.98C20.81 17.87 20.73 17.79 20.62 17.79Z" fill="currentColor"/></symbol><symbol id="user-outlined" viewBox="0 0 24 24"><path d="M20.12 17.9C19.68 16.85 19.04 15.9 18.23 15.1C17.43 14.29 16.48 13.65 15.43 13.21C15.42 13.2 15.41 13.2 15.4 13.2C16.86 12.14 17.81 10.42 17.81 8.48C17.81 5.27 15.21 2.67 12 2.67C8.79 2.67 6.19 5.27 6.19 8.48C6.19 10.42 7.14 12.14 8.6 13.2C8.59 13.2 8.58 13.2 8.57 13.21C7.52 13.65 6.58 14.29 5.77 15.1C4.96 15.9 4.32 16.85 3.88 17.9C3.44 18.92 3.21 20.02 3.19 21.14C3.19 21.16 3.19 21.19 3.2 21.21C3.21 21.23 3.22 21.25 3.24 21.27C3.26 21.29 3.28 21.3 3.3 21.31C3.32 21.32 3.35 21.33 3.37 21.33H4.78C4.88 21.33 4.97 21.25 4.97 21.15C5.02 19.34 5.74 17.64 7.03 16.36C8.35 15.03 10.12 14.3 12 14.3C13.88 14.3 15.64 15.03 16.97 16.36C18.26 17.64 18.98 19.34 19.03 21.15C19.03 21.25 19.12 21.33 19.22 21.33H20.62C20.65 21.33 20.67 21.32 20.7 21.31C20.72 21.3 20.74 21.29 20.76 21.27C20.78 21.25 20.79 21.23 20.8 21.21C20.81 21.19 20.81 21.16 20.81 21.14C20.79 20.02 20.56 18.93 20.12 17.9ZM12 12.52C10.92 12.52 9.91 12.1 9.15 11.33C8.39 10.57 7.97 9.56 7.97 8.48C7.97 7.41 8.39 6.4 9.15 5.63C9.91 4.87 10.92 4.45 12 4.45C13.08 4.45 14.09 4.87 14.85 5.63C15.61 6.4 16.03 7.41 16.03 8.48C16.03 9.56 15.61 10.57 14.85 11.33C14.09 12.1 13.08 12.52 12 12.52Z" fill="currentColor"/></symbol><symbol id="sidebar-close" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M9 4.5V19.5" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15.5 9.5L13 12L15.5 14.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol><symbol id="sidebar-open" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M9 4.5V19.5" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M13 9.5L15.5 12L13 14.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol></svg>
+
+<div class="board">
+  <div class="board-head">
+    <h1 class="text-24 font-bold">서브 메뉴 손잡이 + 호버 팝오버</h1>
+    <p class="text-14 text-secondary">손잡이안을 기본으로, 접힘 상태 호버 팝오버를 더했어요. 상단바는 기존 그대로예요.</p>
+  </div>
+
+  <div class="board-tools">
+    <div class="segmented" id="stateSeg">
+      <button class="segmented-item is-selected" data-state="open">펼침 상태</button>
+      <button class="segmented-item" data-state="closed">접힘 상태</button>
+    </div>
+    <span class="text-14 text-secondary" id="stateNote"></span>
+  </div>
+
+  <div class="app-scroll">
+  <div class="app" id="app">
+    <div class="rail-wrap"><nav class="rail" id="rail"></nav></div>
+
+    <aside class="sub"><div class="sub-inner" id="subInner"></div></aside>
+
+    <div class="pop" id="pop"><div class="sub-inner" id="popInner"></div></div>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="searchbox">
+          <span class="chip">연락처<svg class="icon"><use href="#down-outlined"></use></svg></span>
+          <span class="chip">전체 검색</span>
+          <input placeholder="클릭하거나 Enter 를 눌러 검색어를 입력해주세요.">
+          <svg class="icon"><use href="#search-outlined"></use></svg>
+        </div>
+        <span class="grow"></span>
+        <button class="icon-btn icon-btn-lg" aria-label="알림"><svg class="icon"><use href="#bell-outlined"></use></svg></button>
+        <span class="point"><span class="point-p">P</span>497.9P<span class="charge">충전</span></span>
+        <button class="btn btn-lg btn-primary"><svg class="icon"><use href="#send-outlined"></use></svg>발송하기</button>
+      </div>
+      <div id="content"></div>
+    </main>
+  </div>
+  </div>
+
+  <div class="notes">
+    <div class="card note">
+      <h3 class="text-16 font-bold"><span class="num">1</span>접힘 — 손잡이</h3>
+      <ul>
+        <li>선택된 메뉴 오른쪽, 레일 바깥에 검정 <code>›</code> 손잡이</li>
+        <li>손잡이 또는 선택된 메뉴 아이콘 클릭 → 펼침</li>
+        <li>접히는 순간 한 번만 살짝 흔들림</li>
+        <li>손잡이는 작게 보이지만 주변까지 눌림</li>
+        <li>팝오버가 떠 있는 동안엔 손잡이를 숨김</li>
+      </ul>
+    </div>
+    <div class="card note">
+      <h3 class="text-16 font-bold"><span class="num">2</span>펼침 — 닫기 버튼</h3>
+      <ul>
+        <li>서브 메뉴 제목 오른쪽 회색 사이드바 접기 아이콘 버튼</li>
+        <li>마우스를 올리면 검정으로</li>
+        <li>상단바는 기존 그대로 — 검색창 위치 변화 없음</li>
+      </ul>
+    </div>
+    <div class="card note">
+      <h3 class="text-16 font-bold"><span class="num">3</span>접힘 — 호버 팝오버</h3>
+      <ul>
+        <li>선택된 메뉴·손잡이에 250ms 머물면 서브 메뉴가 겹쳐 뜸</li>
+        <li>팝오버로 옮겨가는 동안 유지, 벗어나면 닫힘</li>
+        <li>항목 클릭 → 이동 / 제목 옆 사이드바 열기 버튼 → 펼침 고정</li>
+        <li>홈·AI·빠른발송 등 서브 메뉴 없는 메뉴는 제외</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── 데이터 (이름·번호는 가짜) ─────────────────
+const folders = ['0. 권한관리 테스트','2025-06-19-10:14:49','2025-06-19-10:24:43','2025-11-04-13:52:02',
+  '2026-01-12-13:01:19','2026-01-12-15:51:32','2026-06-16-10:57:20','2026-06-16-11:03:04','2026-06-16-11:04:25',
+  '2026-06-16-15:14:50','2026-06-16-16:23:29','2026-06-16-16:37:54'];
+const RAIL = [
+  { id: 'ai',    label: 'AI',       icon: 'a-i-outlined' },
+  { id: 'start', label: '시작하기', icon: 'rocket-outlined' },
+  { id: 'home',  label: '홈',       icon: 'home-outlined' },
+  { sep: true },
+  { id: 'quick', label: '빠른발송', icon: 'thunderbolt-outlined' },
+  { id: 'contact', label: '연락처', icon: 'contacts-outlined',
+    sub: { items: [['전체 연락처','team-outlined',1284],['즐겨찾기','star-outlined',32],['고객사 A','user-outlined',210],['고객사 B','user-outlined',96],['휴지통','delete-outlined',4]] } },
+  { id: 'kakao', label: '카톡', icon: 'message-outlined',
+    sub: { items: [['알림톡 템플릿','message-outlined',18],['친구톡','message-outlined',6],['발신 프로필','user-outlined',2]] } },
+  { id: 'form',  label: '서식', icon: 'file-text-outlined',
+    sub: { items: [['내 서식','file-text-outlined',24],['공유 서식','team-outlined',11],['즐겨찾기','star-outlined',5]] } },
+  { id: 'folder', label: '폴더', icon: 'folder-outlined',
+    sub: { hint: '보낸 문서와 받은 문서를 폴더로 정리할 수 있어요.', tree: true,
+      items: folders.map((f, i) => [f, 'folder-outlined', null, i === 0]) } },
+  { id: 'sent',  label: '보낸문서', icon: 'send-outlined',
+    sub: { items: [['전체 문서','send-outlined',236],['발송전','send-outlined',4],['진행중','send-outlined',72],['완료','send-outlined',150],['실패','send-outlined',10]] } },
+  { id: 'inbox', label: '받은문서', icon: 'inbox-outlined',
+    sub: { items: [['전체 문서','inbox-outlined',58],['확인 필요','inbox-outlined',3],['완료','inbox-outlined',55]] } },
+  { sep: true },
+  { id: 'setting', label: '설정', icon: 'setting-outlined' },
+  { spacer: true },
+  { me: true },
+];
+const ROWS = [
+  ['입금 요청 1 (이미지형+버튼)','2026-10-30 16:56','김민준','010-****-8698','2026-10-31','완료'],
+  ['모임 일정 안내2 (이미지형+버튼)','2026-10-29 14:35','이서연','010-****-4237','2026-10-29','완료'],
+  ['모임 일정 안내2 (이미지형+버튼)','2026-10-29 11:00','박지호','010-****-4476','2026-10-30','완료'],
+  ['입금 요청 1 (이미지형+버튼)','2026-10-27 14:25','최수아','010-****-4983','2026-10-27','완료'],
+  ['입금 요청 1 (이미지형+버튼)','2026-10-27 14:25','정하윤','010-****-5987','2026-10-27','완료'],
+  ['입금 요청 1 (이미지형+버튼)','2026-10-27 14:25','강도윤','010-****-7867','2026-10-27','상대방 검토 중'],
+];
+
+const state = { menu: 'folder', page: 0, collapsed: false };
+const $ = id => document.getElementById(id);
+const app = $('app'), pop = $('pop');
+const icon = (id, cls = 'icon') => `<svg class="${cls}"><use href="#${id}"></use></svg>`;
+const cur = () => RAIL.find(r => r.id === state.menu);
+
+// ── 렌더 ────────────────────────────────────
+function renderRail() {
+  $('rail').innerHTML = RAIL.map(r => {
+    if (r.sep) return '<div class="rail-sep"></div>';
+    if (r.spacer) return '<div class="rail-spacer"></div>';
+    if (r.me) return '<div class="rail-me">펠로</div>';
+    const active = r.id === state.menu;
+    return `<button class="rail-item${active ? ' is-active' : ''}${r.sub ? ' has-sub' : ''}" data-id="${r.id}">
+      <span class="rail-icon">${icon(r.icon, 'icon icon-lg')}</span>${r.label}
+      ${r.sub ? `<span class="rail-handle" aria-label="${r.label} 메뉴 열기">${icon('right-outlined')}</span>` : ''}
+    </button>`;
+  }).join('');
+}
+
+// 사이드바 헤더엔 ‹ 닫기, 팝오버 헤더엔 › 펼침 고정
+function subHTML(m, inPopover) {
+  if (!m.sub) return '';
+  const btn = inPopover
+    ? `<button class="icon-btn sub-btn sb-pin" aria-label="서브 메뉴 펼쳐 두기">${icon('sidebar-open')}</button>`
+    : `<button class="icon-btn sub-btn sb-close" aria-label="서브 메뉴 접기">${icon('sidebar-close')}</button>`;
+  const tree = m.sub.tree ? `<div class="tree-head">
+      <span class="grow">${icon('caret-down-outlined','icon icon-sm')}전체 폴더</span>
+      <button class="icon-btn is-danger" aria-label="삭제">${icon('delete-outlined')}</button>
+      <button class="icon-btn" aria-label="업로드">${icon('cloud-upload-outlined')}</button>
+      <button class="icon-btn" aria-label="검색">${icon('search-outlined')}</button>
+      <button class="icon-btn" aria-label="권한">${icon('user-add-outlined')}</button>
+      <button class="icon-btn" aria-label="추가">${icon('plus-outlined')}</button></div>` : '';
+  return `<div class="sub-head"><span class="sub-title">${m.label}</span>${btn}</div>
+    ${m.sub.hint ? `<div class="sub-hint">${icon('info-circle-outlined','icon icon-sm')}${m.sub.hint}</div>` : ''}
+    ${tree}
+    <div class="menu">${m.sub.items.map(([name, ic, n, caret], i) =>
+      `<button class="menu-item${i === state.page ? ' is-selected' : ''}" data-page="${i}">
+        ${caret ? icon('caret-right-outlined','icon caret') : ''}${icon(ic)}<span>${name}</span>${n != null ? `<span class="count">${n}</span>` : ''}</button>`).join('')}
+    </div>`;
+}
+
+function renderContent() {
+  const m = cur();
+  if (!m.sub) {
+    $('content').innerHTML = `<div class="empty"><div>${icon(m.icon,'icon icon-xl')}
+      <p class="text-16 font-bold empty-title">${m.label}</p>
+      <p>서브 메뉴가 없는 화면 — 손잡이·팝오버를 적용하지 않아요.</p></div></div>`;
+    return;
+  }
+  const rows = ROWS.map(([msg, at, who, tel, seen, st]) => `<div class="tr">
+      <span></span>
+      <span class="msg">${icon('kakao','kk')}${msg}</span>
+      <span>전달 성공: ${at}</span>
+      <span class="name">${icon('check-circle-filled')}${who}</span>
+      <span>${tel}</span>
+      <span class="doc">${icon('file-text-outlined')}11/4(수)_안내문서</span>
+      <span class="seen">${icon('mail-outlined')}버튼 확인: ${seen}</span>
+      <span><span class="badge badge-sm ${st === '완료' ? 'badge-weak-neutral' : 'badge-weak-primary'}">${st}</span></span>
+      <span class="acts"><button class="icon-btn icon-btn-border" aria-label="다운로드">${icon('cloud-download-outlined')}</button>
+        <button class="icon-btn icon-btn-border" aria-label="더보기">${icon('more-outlined')}</button></span>
+    </div>`).join('');
+  $('content').innerHTML = `
+    <div class="toolbar">
+      <span class="viewseg"><button class="is-on">${icon('file-outlined')}</button><button>${icon('bar-chart-outlined')}</button></span>
+      <span class="tabs"><span class="tab is-on">전체 문서 (6)</span><span class="tab">발송전</span><span class="tab">실패</span><span class="tab">진행중 (1)</span><span class="tab">완료 (5)</span></span>
+      <span class="pill">${icon('swap-outlined')}정렬${icon('down-outlined')}</span>
+      <span class="pill">${icon('mail-outlined')}버튼(문서) 확인 전체${icon('down-outlined')}</span>
+      <span class="grow"></span>
+      <span class="pager">${icon('search-outlined')}검색 <span class="box">100줄</span> <span class="box">1</span> / 1</span>
+    </div>
+    <div class="table">
+      <div class="tr th"><span class="cell-check"><input type="checkbox" class="checkbox">${icon('down-outlined')}</span>
+        <span>발신 메시지</span><span>메시지 전달</span><span>수신인</span><span>수신인 연락처</span>
+        <span>버튼 (문서명)</span><span>버튼(문서) 확인</span><span>문서 상태</span><span></span></div>
+      ${rows}
+    </div>`;
+}
+
+function render() {
+  const m = cur();
+  app.classList.toggle('is-collapsed', state.collapsed);
+  app.classList.toggle('no-sub', !m.sub);
+  renderRail();
+  $('subInner').innerHTML = subHTML(m, false);
+  $('popInner').innerHTML = subHTML(m, true);
+  renderContent();
+  document.querySelectorAll('#stateSeg .segmented-item').forEach(b =>
+    b.classList.toggle('is-selected', (b.dataset.state === 'closed') === state.collapsed));
+  $('stateNote').textContent = !m.sub ? '서브 메뉴가 없는 메뉴예요.'
+    : state.collapsed ? '검정 손잡이를 누르거나, 폴더 아이콘에 마우스를 올려 보세요.'
+    : '서브 메뉴 제목 오른쪽 사이드바 접기 버튼으로 접어 보세요.';
+}
+
+// ── 접기/펼치기 ─────────────────────────────
+let nudgeT;
+function setCollapsed(v) {
+  const changed = v !== state.collapsed;
+  state.collapsed = v; closePopNow(); render();
+  if (v && changed) {   // 접히는 순간 한 번만
+    clearTimeout(nudgeT);
+    app.classList.remove('nudge'); void app.offsetWidth; app.classList.add('nudge');
+    nudgeT = setTimeout(() => app.classList.remove('nudge'), 1300);
+  }
+}
+
+// ── 팝오버 (열림 250ms 지연 / 닫힘 150ms 유예) ──
+let openT, closeT;
+function setPop(v) { pop.classList.toggle('is-open', v); app.classList.toggle('pop-open', v); }
+function openPopSoon() { clearTimeout(closeT); openT = setTimeout(() => setPop(true), 250); }
+function closePopSoon() { clearTimeout(openT); closeT = setTimeout(() => setPop(false), 150); }
+function closePopNow() { clearTimeout(openT); clearTimeout(closeT); setPop(false); }
+
+$('rail').addEventListener('mouseover', e => {
+  const b = e.target.closest('.rail-item');
+  if (!b) return;
+  (state.collapsed && b.dataset.id === state.menu && cur().sub) ? openPopSoon() : closePopSoon();
+});
+$('rail').addEventListener('mouseleave', closePopSoon);
+pop.addEventListener('mouseenter', () => clearTimeout(closeT));
+pop.addEventListener('mouseleave', closePopSoon);
+
+// ── 이벤트 ──────────────────────────────────
+$('rail').addEventListener('click', e => {
+  const b = e.target.closest('.rail-item');
+  if (!b) return;
+  if (b.dataset.id === state.menu) {             // 선택된 메뉴 다시 클릭 · 손잡이 → 펼침
+    if (state.collapsed && cur().sub) setCollapsed(false);
+    return;
+  }
+  state.menu = b.dataset.id; state.page = 0;     // 다른 메뉴로 이동 — 접힘 상태는 유지
+  closePopNow(); render();
+});
+function pickPage(e) {
+  const b = e.target.closest('.menu-item');
+  if (!b) return;
+  state.page = +b.dataset.page;
+  closePopNow(); render();
+}
+$('subInner').addEventListener('click', e => { if (e.target.closest('.sb-close')) return setCollapsed(true); pickPage(e); });
+$('popInner').addEventListener('click', e => { if (e.target.closest('.sb-pin')) return setCollapsed(false); pickPage(e); });
+$('stateSeg').addEventListener('click', e => {
+  const b = e.target.closest('.segmented-item');
+  if (!b) return;
+  if (!cur().sub) state.menu = 'folder';
+  setCollapsed(b.dataset.state === 'closed');
+});
+
+render();
+</script>
+</body>
+</html>

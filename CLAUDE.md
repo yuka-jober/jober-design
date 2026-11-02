@@ -21,7 +21,7 @@ Palette          Main Token              Semantic Token
 ## 파일
 - `tokens.css` — 단일 진실 공급원. **반드시 먼저 로드.**
 - `components.css` — tokens.css에 의존. 그다음 로드.
-- `assets/icons.svg` — 아이콘 스프라이트 833개. **직접 수정 금지 (빌드 산출물).**
+- `assets/icons.svg` — 아이콘 스프라이트 835개. **직접 수정 금지 (빌드 산출물).**
 - `assets/icons.js` — 같은 스프라이트를 문서에 심어주는 스크립트. **화면에서는 이쪽을 쓴다.**
 - `icon/` — Figma export 원본. **스프라이트의 소스이므로 지우지 않는다.** 아이콘 추가/교체는 여기에 넣는다.
 - `build-icons.py` — `icon/` → `assets/icons.svg` 빌드. 아이콘 바꾸면 재실행.
@@ -136,9 +136,9 @@ Ant Design 아이콘 세트(Figma export) + 커스텀 아이콘. 스프라이트
 
 - **이름 규칙:** PascalCase 파일명 → kebab-case 심볼 id
   (`HomeOutlined.svg` → `home-outlined`, `HeartTwoTone.svg` → `heart-twotone`)
-- **테마별 개수:** outlined 443 · filled 231 · twotone 151 · 커스텀 8 (총 833)
+- **테마별 개수:** outlined 443 · filled 231 · twotone 151 · 커스텀 10 (총 835)
   커스텀: `divider` `form-document` `jober-wordmark` `kakao` `linear-question` `paper-airplane-document`
-  `remove-duplicate` `tooltip`
+  `remove-duplicate` `sidebar-close` `sidebar-open` `tooltip`
 - **색:** 단색 아이콘은 `currentColor`라 부모 `color`를 따라간다. 아이콘에 색을 직접 칠하지 말고
   **부모 요소의 `color`를 바꾼다.**
 - **TwoTone:** 액센트가 `--icon-accent`(기본 primary)라 브랜드 색을 바꾸면 함께 따라온다.

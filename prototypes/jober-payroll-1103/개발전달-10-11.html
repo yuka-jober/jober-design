@@ -914,7 +914,7 @@ button.btn,button.pill{font-family:inherit;cursor:pointer}
   <div class="doc-head">
     <p class="kick">JOBER HR · 인건비 관리 · 개발 전달 · 제안</p>
     <h1>인건비 관리 개발 전달 사항</h1>
-    <p>인건비 관리 개선안 중 개발 쪽에 전달하거나 제안할 10~13번만 원본 그대로 따로 모은 파일입니다. 페이지 디자인(1~9번)은 같은 폴더의 services/payroll/ 에 반영했습니다. 화면 속 이름·금액·이메일은 모두 예시 데이터입니다.</p>
+    <p>인건비 관리 개선안 중 개발 쪽에 전달할 10~11번(회원가입 모달, 가입 후 이동 흐름)만 원본 그대로 따로 모은 파일입니다. 페이지 디자인(1~9번)은 같은 폴더의 services/payroll/ 에 반영했습니다. 화면 속 이름·금액·이메일은 모두 예시 데이터입니다.</p>
   </div>
 
   <!-- 10 -->
@@ -990,96 +990,6 @@ button.btn,button.pill{font-family:inherit;cursor:pointer}
         <span class="bt">기존 회원</span>
         <span>급여 관리 이용 문의하기</span><i>→</i><span>고객센터에서 기능 활성화</span><i>→</i><span class="hi">인건비 관리 이용</span>
         <small>기존 회원은 로그인만으로 급여 관리가 켜지지 않아, 모달 하단 문의 링크로 안내해요.</small>
-      </div>
-    </div>
-  </div>
-
-  <!-- 12 -->
-  <div class="block">
-    <div class="bh"><span class="no">12</span><h2>급여대장 체험 상태 · 제한 안내</h2><span class="nb">신규 개발 제안 · 현재 미제공</span><span class="lnkn">정책 미확정 · 개발팀 검토 필요</span></div>
-    <div class="sec">
-      <div class="tophead">
-        <div><p class="ey">체험 정책 제안</p><h3 class="h3x">처음 고른 귀속월,<br>1개월분을 체험해요</h3>
-          <p class="wayline">최초 업로드 때 선택한 급여 귀속월로 체험 범위를 고정하는 방향이에요.</p></div>
-        <div class="pol">
-          <div class="pol-r"><span>2026년 10월 · 최초 업로드</span><em class="ok">체험 가능</em></div>
-          <div class="pol-r"><span>2026년 10월 · 재업로드·수정</span><em class="ok">가능</em></div>
-          <div class="pol-r"><span>2026년 11월 급여대장</span><em class="pay">유료 이용 필요</em></div>
-          <div class="pol-r"><span>그 밖의 귀속월 추가 등록</span><em class="pay">유료 이용 필요</em></div>
-        </div>
-      </div>
-      <div class="mockgrid">
-        <div class="mcol"><span class="vlab">업로드 화면 <span>· 체험 상태 안내</span></span>
-          <div class="wz">
-            <p class="wz-h">급여대장 업로드</p>
-            <div class="trial"><b>급여 관리 체험 중</b><span>선택한 급여 귀속월 1개월분을 체험할 수 있어요. 다른 월은 유료 이용이 필요해요.</span><u>요금제 보기</u></div>
-            <div class="prog"><span><em>1/5</em> 대상 · 연월</span><span>20%</span></div>
-            <div class="bar"><i style="width:20%"></i></div>
-            <p class="fld">귀속 연월 <s>*</s></p>
-            <span class="inp">2026-10 <span aria-hidden="true">▦</span></span>
-            <p class="hint">처음 업로드하는 귀속월이 체험 귀속월로 저장돼요.</p>
-            <div class="wz-foot"><span class="go">다음</span></div>
-          </div>
-        </div>
-        <div class="mcol"><span class="vlab">다른 귀속월 업로드 시 <span>· 유료 이용 안내</span></span>
-          <div class="dim">
-            <div class="lim" role="img" aria-label="유료 이용 안내 모달 예시">
-              <p class="lim-t">급여 관리 체험을 완료했어요</p>
-              <p class="lim-d">선택한 급여 귀속월의 급여대장 업로드를 체험했어요.<br>다른 월의 급여대장을 등록하려면 유료 이용이 필요해요.</p>
-              <div class="lim-b"><span class="sec2">이전 화면으로</span><span class="pri2">요금제 확인하기</span></div>
-            </div>
-          </div>
-          <p class="mnote">강제 결제·자동 유료 전환 없이 안내만 해요.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 13 -->
-  <div class="block">
-    <div class="bh"><span class="no">13</span><h2>개발팀 전달 요구사항</h2><span class="nb">신규 개발 · 검토용</span><span class="lnkn">기존 결제·과금·업로드 로직은 변경하지 않음</span></div>
-    <div class="sec">
-      <div class="lbl-sw">
-        <div><p class="ey">버튼 문구 정책</p><p class="wayline">체험 제한 기능 <b>배포 전</b>에는 '인건비 관리 시작하기', <b>배포 후</b>에는 '인건비 관리 체험하기'를 써요. 히어로와 하단 CTA에 함께 적용돼요.</p></div>
-        <div class="seg2" role="radiogroup" aria-label="버튼 문구 미리보기">
-          <button type="button" role="radio" aria-checked="false" id="lbl-pre" data-label="인건비 관리 시작하기">배포 전</button>
-          <button type="button" role="radio" aria-checked="true" id="lbl-post" data-label="인건비 관리 체험하기">배포 후 (시안)</button>
-        </div>
-      </div>
-      <div class="req">
-        <div class="req-c"><p class="req-h">정책 · 데이터</p><ul class="dots">
-          <li>스페이스 단위로 체험 가능 여부 저장</li>
-          <li>최초 업로드한 급여 귀속월 저장</li>
-          <li>같은 귀속월 재업로드·수정 허용</li>
-          <li>다른 귀속월 업로드 제한</li>
-          <li>유료 이용 상태 확인, 전환 후 제한 해제</li>
-          <li>중복 가입·반복 체험 방지 정책</li>
-          <li>체험 중 등록한 데이터 보존</li>
-        </ul></div>
-        <div class="req-c"><p class="req-h">백엔드</p><ul class="dots">
-          <li>업로드 저장 API에서 체험 귀속월과 요청 귀속월 비교 후 거부</li>
-          <li>스페이스별 체험 상태·체험 귀속월 필드</li>
-          <li>유료 상태 조회와 제한 해제 연동</li>
-          <li>반복 체험 판별 기준 (사업자번호·이메일 등) 검토</li>
-        </ul></div>
-        <div class="req-c"><p class="req-h">프론트엔드</p><ul class="dots">
-          <li>업로드 화면 체험 상태 안내 표시</li>
-          <li>귀속월 선택 시 체험 귀속월 안내</li>
-          <li>서버가 거부하면 유료 이용 안내 모달 표시</li>
-          <li>버튼만 숨기는 방식으로 제한하지 않음</li>
-        </ul></div>
-      </div>
-      <div class="open">
-        <p class="req-h">정책 확정 전 검토 사항</p>
-        <ul class="dots">
-          <li>체험 중 급여명세서 실제 발송 가능 여부</li>
-          <li>문서 발송 시 별도 요금 발생 여부</li>
-          <li>사업소득대장 체험 범위</li>
-          <li>최초 선택한 귀속월 변경 가능 여부</li>
-          <li>이미 가입한 고객의 체험 이용 조건</li>
-          <li>체험 데이터 보관과 유료 전환 후 연속 사용</li>
-          <li>하나은행 간편급여이체 체험 범위 · 실제 자금 이체는 별도 확인·인증 없이 테스트 처리하지 않음</li>
-        </ul>
       </div>
     </div>
   </div>

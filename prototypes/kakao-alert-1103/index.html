@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>카카오 연동 알럿 개선 — 자버</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../components.css">
+<style>
+/* ── 1. RESET / PAGE ─────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-base);
+  background: var(--color-page);
+  color: var(--color-text);
+  word-break: keep-all;
+}
+button { font-family: inherit; }
+
+.board { max-width: 1240px; margin: 0 auto; padding: 40px 24px 80px; }
+.board-head { margin-bottom: 32px; }
+.board-head p { margin-top: 4px; }
+.board-grid { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; }
+.case { display: flex; flex-direction: column; gap: 12px; }
+.case-label { display: flex; align-items: center; gap: 8px; }
+.case-note { color: var(--color-text-secondary); }
+.case-note li { margin-left: 16px; }
+
+/* 시안 위에 그대로 펼쳐 보이도록 오버레이 없이 놓는다 */
+.board .dialog { transform: none; }
+
+/* ── 2. ALERT ─────────────────────────────── */
+.kalert {
+  width: 560px;
+  max-width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+.kalert-body { padding: 28px 24px 20px; }
+.kalert-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-20);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-base);
+}
+.kalert-title .icon { flex-shrink: 0; color: var(--color-primary); }
+.kalert-desc { margin-top: 8px; }
+
+/* 회색 안내 박스 */
+.kalert-box {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--color-bg-base);
+  border-radius: var(--r-lg);
+}
+.kalert-box-text { color: var(--color-text-secondary); }
+
+/* A — 단계 목록 */
+.kstep + .kstep {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-split);
+}
+.kstep-head { display: flex; align-items: center; gap: 8px; }
+.kstep-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--r-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+}
+.kstep-desc { margin: 4px 0 0 28px; color: var(--color-text-secondary); }
+/* 원본 이미지 위쪽의 빈 여백(약 70px/2008px)을 잘라 설명과 붙인다 */
+.kstep-img {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  aspect-ratio: 2008 / 918;
+  object-fit: cover;
+  object-position: bottom;
+}
+
+/* B — 비교 이미지 + 라벨. 라벨 열 비율은 이미지의 좌·화살표·우 폭(850:300:850)을 따른다 */
+.kcompare { margin-top: 12px; }
+.kcompare-labels {
+  display: grid;
+  grid-template-columns: 850fr 300fr 850fr;
+  margin-bottom: 8px;
+}
+.kcompare-labels .badge { justify-content: center; }
+.kcompare-labels .badge:last-child { grid-column: 3; }
+.badge-fill-muted { background: var(--color-disabled); color: var(--color-on-primary); }
+.kcompare img { display: block; width: 100%; }
+
+.kalert-help { margin-top: 16px; color: var(--color-text-secondary); }
+.kalert-help a { color: var(--color-primary); font-weight: var(--fw-bold); text-decoration: none; }
+
+/* 하단 버튼 — 꽉 찬 좌우 분할 */
+.kalert-actions { display: flex; border-top: 1px solid var(--color-border-split); }
+.kalert-actions .btn { border-radius: 0; border: 0; }
+.kalert-actions .btn-default { flex: 0 0 30%; }
+.kalert-actions .btn-primary { flex: 1; }
+</style>
+</head>
+<body>
+<script src="../../assets/icons.js"></script>
+
+<div class="board">
+  <header class="board-head">
+    <h1 class="text-24 font-bold">카카오 연동 알럿 개선안</h1>
+    <p class="text-14 text-secondary">A. 무료 발송 포인트 소진 · B. 카카오 비즈니스 채널 미연동</p>
+  </header>
+
+  <div class="board-grid">
+
+    <!-- ── A. 무료 발송 포인트 소진 ─────────────────── -->
+    <section class="case">
+      <div class="case-label">
+        <span class="badge badge-md badge-fill-primary">A</span>
+        <span class="text-16 font-bold">무료 발송 포인트 소진 시</span>
+      </div>
+
+      <div class="dialog kalert" role="dialog" aria-labelledby="a-title">
+        <div class="kalert-body">
+          <h2 class="kalert-title" id="a-title">
+            <svg class="icon icon-xl"><use href="#exclamation-circle-outlined"></use></svg>
+            무료 발송 포인트를 모두 사용했습니다.
+          </h2>
+          <p class="kalert-desc text-14">이어서 발송하려면 아래 2단계를 완료해주세요.</p>
+
+          <div class="kalert-box">
+            <div class="kstep">
+              <div class="kstep-head">
+                <span class="kstep-num">1</span>
+                <span class="text-16 font-bold">카카오 비즈니스 프로필 연동</span>
+              </div>
+              <p class="kstep-desc text-14">카카오 채널을 연동해 우리 회사 이름으로 알림톡을 발송하세요.</p>
+              <img class="kstep-img" src="../../assets/kakao-profile-compare-2.png"
+                   alt="기본 알림톡 발송 프로필과 카카오 프로필 연동 후 비교">
+            </div>
+            <div class="kstep">
+              <div class="kstep-head">
+                <span class="kstep-num">2</span>
+                <span class="text-16 font-bold">포인트 충전</span>
+              </div>
+              <p class="kstep-desc text-14">발송 1건마다 포인트가 차감됩니다.</p>
+            </div>
+          </div>
+
+          <p class="kalert-help text-14">도움이 필요하신가요? <a href="#">자버팀 문의하기</a></p>
+        </div>
+        <div class="kalert-actions">
+          <button class="btn btn-xl btn-default" type="button">닫기</button>
+          <button class="btn btn-xl btn-primary" type="button">1단계 프로필 연동하러 가기</button>
+        </div>
+      </div>
+
+      <ul class="case-note text-12">
+        <li>하단 문구 “연동이 어려우신가요?” → “도움이 필요하신가요?”</li>
+      </ul>
+    </section>
+
+    <!-- ── B. 카카오 비즈니스 채널 미연동 ─────────────── -->
+    <section class="case">
+      <div class="case-label">
+        <span class="badge badge-md badge-fill-primary">B</span>
+        <span class="text-16 font-bold">일반 채널 미연동 시</span>
+      </div>
+
+      <div class="dialog kalert" role="dialog" aria-labelledby="b-title">
+        <div class="kalert-body">
+          <h2 class="kalert-title" id="b-title">
+            <svg class="icon icon-xl"><use href="#exclamation-circle-outlined"></use></svg>
+            현재 등록된 카카오 비즈니스 채널이 없습니다.
+          </h2>
+
+          <div class="kalert-box">
+            <p class="kalert-box-text text-14">카카오 채널을 연동하면 우리 회사 이름으로 알림톡을 발송할 수 있어요.</p>
+            <div class="kcompare">
+              <div class="kcompare-labels">
+                <span class="badge badge-md badge-fill-muted">기본 알림톡 발송 프로필</span>
+                <span class="badge badge-md badge-fill-primary">카카오 프로필 연동 후</span>
+              </div>
+              <img src="../../assets/kakao-profile-compare-arrow.png"
+                   alt="기본 알림톡 발송 프로필(자버문서)에서 카카오 프로필 연동 후(우리 회사 이름)로 바뀌는 모습">
+            </div>
+          </div>
+
+          <p class="kalert-help text-14">도움이 필요하신가요? <a href="#">자버팀 문의하기</a></p>
+        </div>
+        <div class="kalert-actions">
+          <button class="btn btn-xl btn-default" type="button">닫기</button>
+          <button class="btn btn-xl btn-primary" type="button">프로필 연동하러 가기</button>
+        </div>
+      </div>
+
+      <ul class="case-note text-12">
+        <li>자버문서 관련 내용 삭제</li>
+        <li>박스 안 안내 문구 좌측 정렬</li>
+        <li>회색 박스 밖 설명 문구(“카카오 비즈니스 채널 연동을 해주세요.”) 제거</li>
+      </ul>
+    </section>
+
+  </div>
+</div>
+</body>
+</html>

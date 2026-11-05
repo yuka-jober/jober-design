@@ -599,3 +599,13 @@
 /* 설명글과 아래 목업 사이 간격: 근태 관리와 같이 32 */
 .py .py-head{margin-bottom:32px}
 @media(max-width:640px){.py .py-head{margin-bottom:24px}}
+
+/* 인사관리 메인 인건비 카드: 제목을 아이콘 오른쪽으로 올려 위쪽 빈 공간을 줄임 */
+.hr .hr-card-split .hr-card-top{justify-content:flex-start;gap:16px}
+.hr .hr-card-split .hr-card-top h3{margin:0!important}
+.hr .hr-card-split .hr-card-top .hr-num{margin-left:auto}
+/* 인건비 상세 주요 기능 카드: 아이콘 | 고객 | 기능명 한 줄 */
+.py .py-fh{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.py .py-fh .py-for{margin:0;padding-right:12px;border-right:1px solid #E4E6EB;line-height:1.2}
+.py .py-fh h3{margin:0!important}
+@media(max-width:640px){.py .py-fh{gap:10px}.py .py-fh .py-for{padding-right:10px;font-size:14px}}

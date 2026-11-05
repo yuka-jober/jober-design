@@ -1,65 +1,131 @@
-/* 인사관리 메인 히어로 오른쪽: 정보입력 요청 → 연락처 저장 → 계약서 자동 반영 애니메이션 (개선안 jober-hr-hero.html, hs- 접두어로 옮김) */
-.hs{--hs-line:#E9EAEE;--hs-acc:#3F5BC4;--hs-acc-bg:#EEF2FD;--hs-acc-line:#D9E1F7;--hs-green:#14A37F;--hs-green-bg:#E3F6EF;--hs-orange:#E58A3C;--hs-orange-bg:#FDF1E5;--hs-violet:#5B4FE0;--hs-violet-bg:#EEECFF;--hs-ease:cubic-bezier(.22,.61,.36,1);
-  position:relative;width:100%;max-width:600px;height:520px;margin-left:auto;border-radius:var(--r-card);background:var(--soft);font-family:inherit;letter-spacing:-.01em}
-.hs-card{position:absolute;background:#fff;border:1px solid var(--hs-line);border-radius:20px;box-shadow:0 1px 2px rgba(17,18,20,.04),0 10px 28px rgba(17,18,20,.07);padding:18px 20px;z-index:2}
+/* 인사관리 메인 히어로 오른쪽: 1 정보입력 요청 → 2 연락처에 저장 → 3 계약서 자동 반영
+   같은 폭 카드 3장을 위에서 아래로, 가운데만 오른쪽으로 비켜 쌓고 점선으로 잇는다 (개선안 jober-hr-hero.html을 hs- 접두어로 옮겨 정리)
+   색: 연한 연두·보라 면 없이 흰·회색 면 + 사이트 파랑 #3F5BC4 글자·선만 */
+.hs{--hs-line:#E9EAEE;--hs-acc:#3F5BC4;--hs-gray:#F3F4F6;--hs-ease:cubic-bezier(.22,.61,.36,1);--hs-w:420px;--hs-shift:108px;
+  position:relative;width:100%;max-width:600px;margin-left:auto;padding:28px 24px;border-radius:var(--r-card);background:var(--soft);display:flex;flex-direction:column;letter-spacing:-.01em}
+.hs-card{position:relative;width:var(--hs-w);max-width:100%;background:#fff;border:1px solid var(--hs-line);border-radius:20px;box-shadow:0 1px 2px rgba(17,18,20,.04),0 10px 28px rgba(17,18,20,.07);padding:18px 20px;transition:border-color .5s var(--hs-ease),box-shadow .5s var(--hs-ease)}
+.hs-card.active{border-color:#C9D2EE;box-shadow:0 2px 4px rgba(63,91,196,.06),0 18px 44px rgba(40,64,140,.14)}
+.hs-contact{align-self:flex-end}
+.hs-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:20px}
 .hs-step{font-size:12px;font-weight:600;color:#666B74;display:flex;align-items:center;gap:6px}
 .hs-step b{display:inline-flex;width:18px;height:18px;border-radius:50%;background:#C4C7CE;color:#fff;font-size:11px;align-items:center;justify-content:center;transition:background .5s var(--hs-ease)}
 .hs-card.active .hs-step b,.hs-card.complete .hs-step b{background:var(--hs-acc)}
 .hs-title{font-size:16px;font-weight:700;margin-top:6px;line-height:1.4;color:var(--ink)}
-.hs-req{left:24px;top:28px;width:252px}
-.hs-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.hs-chip{font-size:12px;padding:5px 9px;border-radius:8px;background:var(--soft);color:var(--sub);display:inline-flex;align-items:center;gap:4px;transition:background .5s var(--hs-ease),color .5s var(--hs-ease)}
-.hs-chip i{display:inline-block;width:0;overflow:hidden;font-style:normal;transition:width .4s var(--hs-ease)}
-.hs-chip.on{background:var(--hs-green-bg);color:#0F8A6B}
-.hs-chip.on i{width:10px}
-.hs-done{margin-top:12px;font-size:12px;font-weight:600;color:#0F8A6B;opacity:0;transition:opacity .5s var(--hs-ease)}
+/* 1: 체크 자리를 처음부터 잡아 두어 체크가 생겨도 칩 폭·줄바꿈이 바뀌지 않음. 체크되면 흰 바탕 + 파랑 테두리·글자 */
+.hs-chips{display:flex;flex-wrap:nowrap;gap:6px;margin-top:12px}
+.hs-chip{flex:none;font-size:12px;padding:4px 8px;border-radius:8px;border:1px solid transparent;background:var(--hs-gray);color:var(--sub);display:inline-flex;align-items:center;gap:3px;transition:background .5s var(--hs-ease),color .5s var(--hs-ease),border-color .5s var(--hs-ease)}
+.hs-chip i{display:inline-block;width:10px;font-style:normal;font-weight:700;opacity:0;transition:opacity .4s var(--hs-ease)}
+.hs-chip.on{background:#fff;border-color:#C9D2EE;color:var(--hs-acc)}
+.hs-chip.on i{opacity:1}
+.hs-done{font-size:12px;font-weight:600;color:var(--hs-acc);opacity:0;transition:opacity .5s var(--hs-ease)}
 .hs-done.on{opacity:1}
-.hs-contact{right:24px;top:136px;width:262px;border-color:var(--hs-acc-line);box-shadow:0 2px 4px rgba(63,91,196,.06),0 18px 44px rgba(40,64,140,.14);z-index:3}
-.hs-person{display:flex;align-items:center;gap:10px;margin:12px 0 10px}
-.hs-av{width:38px;height:38px;flex:none;border-radius:50%;background:var(--hs-green-bg);color:var(--hs-green);font-weight:700;display:flex;align-items:center;justify-content:center}
+/* 2 */
+.hs-cbody{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;margin-top:12px}
+.hs-person{display:flex;align-items:center;gap:10px}
+.hs-av{width:38px;height:38px;flex:none;border-radius:50%;background:var(--hs-gray);color:#8A909A;display:flex;align-items:center;justify-content:center}
 .hs-av .ji{width:18px;height:18px}
-.hs-person strong{font-size:15px;display:block;color:var(--ink)}
+.hs-person strong{font-size:15px;display:block;color:var(--ink);line-height:1.3}
 .hs-person span{font-size:12px;color:#747982}
-.hs-rows{border-top:1px solid var(--hs-line);padding-top:6px}
-.hs-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:5px 0;color:var(--sub)}
+.hs-rows{border-left:1px solid var(--hs-line);padding-left:20px}
+.hs-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;line-height:1.5;padding:2px 0;color:var(--sub)}
 .hs-row em{font-style:normal;color:var(--ink);font-weight:500;white-space:nowrap;opacity:0;transform:translateX(6px);transition:opacity .5s var(--hs-ease),transform .5s var(--hs-ease)}
 .hs-row.on em{opacity:1;transform:none}
-.hs-doc{left:24px;bottom:28px;width:280px}
-.hs-doc-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.hs-tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;background:var(--hs-violet-bg);color:var(--hs-violet);white-space:nowrap}
-.hs-doc-body{margin-top:10px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center;font-size:13px;color:var(--sub)}
-.hs-field{display:block;height:24px;line-height:24px;padding:0 8px;border-radius:6px;background:var(--soft);color:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .6s var(--hs-ease),color .6s var(--hs-ease)}
-.hs-field.on{background:var(--hs-violet-bg);color:#4A3FCF;font-weight:600}
-.hs-doc-foot{margin-top:12px;font-size:12px;color:#747982}
-.hs-links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
-.hs-links path{fill:none;stroke:#CFD3DA;stroke-width:1.5;stroke-dasharray:4 5;transition:stroke .5s var(--hs-ease)}
-.hs-links path.on{stroke:#9FB6F3}
-.hs-float{position:absolute;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--hs-line);border-radius:14px;box-shadow:0 1px 2px rgba(17,18,20,.04),0 6px 16px rgba(17,18,20,.06);padding:10px 14px;z-index:2;animation:hs-bob 7s ease-in-out infinite}
-.hs-float .hs-ic{width:30px;height:30px;flex:none;border-radius:9px;display:flex;align-items:center;justify-content:center}
-.hs-float .hs-ic svg{width:16px;height:16px}
-.hs-float small{display:block;font-size:11px;color:#666B74;line-height:1.3}
-.hs-float strong{display:block;font-size:13px;line-height:1.4;color:var(--ink)}
-.hs-float strong span{font-size:12px;font-weight:500;color:var(--sub)}
-.hs-pay{right:24px;top:40px}
-.hs-pay .hs-ic{background:var(--hs-acc-bg);color:var(--hs-acc)}
-.hs-leave{right:24px;bottom:28px;animation-delay:-3.5s}
-.hs-leave .hs-ic{background:var(--hs-orange-bg);color:var(--hs-orange)}
-@keyframes hs-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.hr .hr-hv.hs-wrap{display:block}
+/* 3: 채워진 칸은 회색 면 + 진한 글자 */
+.hs-tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;border:1px solid #C9D2EE;color:var(--hs-acc);white-space:nowrap}
+.hs-doc-body{margin-top:12px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center;font-size:13px;color:var(--sub)}
+.hs-field{display:block;height:24px;line-height:24px;padding:0 8px;border-radius:6px;background:var(--hs-gray);color:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .6s var(--hs-ease)}
+.hs-field.on{color:var(--ink);font-weight:600}
+/* 카드 사이 점선 (두 카드가 겹치는 구간의 가운데) */
+.hs-link{display:block;flex:none;width:0;height:24px;margin-left:calc((var(--hs-w) + var(--hs-shift)) / 2);border-left:1.5px dashed #CFD3DA;transition:border-color .5s var(--hs-ease)}
+.hs-link.on{border-left-color:#9FB0E0}
 @media(max-width:1100px){.hs{margin:0 auto}}
 @media(max-width:660px){
-  .hs{height:auto;padding:12px;border-radius:24px;display:flex;flex-direction:column;gap:8px}
-  .hs-card,.hs-float{position:relative;left:auto;right:auto;top:auto;bottom:auto;width:auto}
-  .hs-card{padding:13px 15px;border-radius:16px}
-  .hs-links,.hs-mhide{display:none}
+  .hs{padding:12px;border-radius:24px}
+  .hs-card{width:100%;padding:13px 15px;border-radius:16px}
+  .hs-link{margin-left:50%;height:12px}
   .hs-title{font-size:15px;margin-top:4px}
-  .hs-chips{gap:5px;margin-top:9px}.hs-chip{padding:4px 8px}.hs-done{margin-top:8px}
-  .hs-person{margin:8px 0 6px;gap:8px}.hs-av{width:32px;height:32px}
-  .hs-person strong{font-size:14px}.hs-rows{padding-top:4px}.hs-row{padding:3px 0}
-  .hs-doc-body{margin-top:8px;gap:5px 12px}.hs-field{height:22px;line-height:22px}.hs-doc-foot{margin-top:8px}
-  .hs-extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:8px}
-  .hs-float{animation:none;flex-direction:column;align-items:flex-start;gap:6px;padding:11px 13px;min-width:0}
-  .hs-float .hs-ic{width:26px;height:26px;border-radius:8px}.hs-float .hs-ic svg{width:14px;height:14px}
-  .hs-float strong{white-space:nowrap}
+  .hs-chips{flex-wrap:wrap;gap:5px;margin-top:9px}
+  .hs-cbody{grid-template-columns:1fr;gap:10px}.hs-rows{border-left:0;padding-left:0;border-top:1px solid var(--hs-line);padding-top:6px}
+  .hs-doc-body{margin-top:8px;gap:5px 12px}.hs-field{height:22px;line-height:22px}
 }
-@media(prefers-reduced-motion:reduce){.hs-float{animation:none}.hs *{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.hs *{transition:none!important}}
+
+/* ===== 장면 전환 애니메이션 (시프티식: 한 장면씩 나타나 마지막에 3장 흐름으로 모임) =====
+   1 정보입력 요청 카드가 가운데 크게 → 체크 → 왼쪽 위 제자리로 이동
+   2 점선이 그려지며 연락처 카드가 튀어나옴 → 값 채워짐
+   3 점선이 그려지며 계약서 카드가 튀어나옴 → 칸 채워짐 → 3장 흐름으로 잠시 멈춤 → 처음부터 */
+@media(min-width:661px){
+  .hs{display:block;height:589px}
+  .hs-card,.hs-link{position:absolute;margin:0}
+  .hs-req{left:24px;top:28px}
+  .hs-contact{left:132px;top:181px}
+  .hs-doc{left:24px;top:374px}
+  .hs-link{left:288px;height:24px}
+  .hs-l1{top:157px}.hs-l2{top:350px}
+  .hs-card{transition:transform .7s cubic-bezier(.22,1,.36,1),opacity .45s ease,border-color .5s var(--hs-ease),box-shadow .5s var(--hs-ease)}
+  .hs-link{transform-origin:top;transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .3s ease,border-color .5s var(--hs-ease)}
+  /* 장면 0~1: 정보입력 카드만, 가운데 크게 */
+  .hs[data-scene="0"] .hs-req,.hs[data-scene="1"] .hs-req{transform:translate(54px,202px) scale(1.1)}
+  .hs[data-scene="0"] .hs-req{opacity:0;transform:translate(54px,226px) scale(1.04)}
+  .hs[data-scene="0"] .hs-contact,.hs[data-scene="1"] .hs-contact,
+  .hs[data-scene="0"] .hs-doc,.hs[data-scene="1"] .hs-doc,.hs[data-scene="2"] .hs-doc{opacity:0;transform:translateY(24px) scale(.92)}
+  .hs[data-scene="0"] .hs-link,.hs[data-scene="1"] .hs-link,.hs[data-scene="2"] .hs-l2{opacity:0;transform:scaleY(0)}
+  /* 장면 끝(4): 다 같이 사라짐 */
+  .hs[data-scene="4"] .hs-card,.hs[data-scene="4"] .hs-link{opacity:0;transform:translateY(-12px) scale(.98)}
+  .hs-contact,.hs-doc{transition-timing-function:cubic-bezier(.34,1.56,.64,1),ease,var(--hs-ease),var(--hs-ease)}
+}
+/* 오른쪽 칸이 576px보다 좁아지는 화면(1240px 이하)에서는 히어로를 한 줄로 쌓아 판 크기를 지킴 */
+@media(max-width:1240px){.hr .hr-hero-layout:has(.hs){grid-template-columns:1fr}.hs{margin:0 auto}}
+/* 단계 설명 줄 제거: 카드마다 제목 한 줄만 (설명 두 번 반복 방지) */
+.hs .hs-head .hs-title{margin-top:0}
+/* 제목 한 줄로 줄어든 카드 높이(103·143·156)에 맞춘 위치 */
+@media(min-width:661px){
+  .hs{height:506px}
+  .hs-contact{top:155px}.hs-doc{top:322px}
+  .hs-l1{top:131px}.hs-l2{top:298px}
+  .hs[data-scene="0"] .hs-req{transform:translate(54px,197px) scale(1.04)}
+  .hs[data-scene="1"] .hs-req{transform:translate(54px,173px) scale(1.1)}
+}
+/* 첫 카드: 체크가 다 끝나면 제목 끝 "완료"가 파랑으로 나타남 */
+.hs-title .hs-done{font-size:inherit;font-weight:inherit}
+
+/* ===== 실서비스 패널처럼: 라운드 8, 얇은 테두리, 머리줄(아이콘+상태) + 본문, 자버 서비스 파랑 #1890FF ===== */
+.hs{--hs-acc:#1890FF;--hs-line:#E3E6EA}
+.hs-card{padding:0;border-radius:8px;border-color:var(--hs-line);box-shadow:0 1px 2px rgba(17,24,39,.04),0 10px 24px -14px rgba(17,24,39,.22)}
+.hs-card.active{border-color:var(--hs-acc);box-shadow:0 0 0 3px rgba(24,144,255,.10),0 10px 24px -14px rgba(17,24,39,.22)}
+.hs .hs-head{justify-content:flex-start;gap:8px;min-height:0;height:40px;padding:0 14px;border-bottom:1px solid #EEF0F2;background:#FAFBFC;border-radius:8px 8px 0 0}
+.hs-head>.ji{width:15px;height:15px;color:#8A909A;flex:none}
+.hs .hs-head .hs-title{font-size:14px;font-weight:600}
+.hs-bd{padding:12px 14px 14px}
+.hs-chips{margin-top:0}
+.hs-chip{border-radius:4px;border-color:var(--hs-line);background:#fff}
+.hs-chip.on{border-color:var(--hs-acc);color:var(--hs-acc)}
+.hs-cbody{margin-top:0}
+.hs-av{border-radius:50%;background:#F0F1F4}
+.hs-rows{border-left-color:#EEF0F2}
+/* 근로계약서: 실제 문서처럼 문장 속 빈칸이 채워짐 (빈칸은 회색 막대, 채워지면 진한 글자 + 파랑 밑줄) */
+.hs-paper{padding:14px 18px 16px;font-size:12.5px;line-height:1.75;color:#3A3F47}
+.hs-paper p{margin:0}
+.hs-paper p+p{margin-top:2px}
+.hs-ptitle{text-align:center;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px!important;letter-spacing:.02em}
+.hs-paper .hs-field{display:inline-block;height:auto;line-height:1.5;padding:0 3px;border-radius:2px;background:#EEF0F3;color:transparent;vertical-align:baseline;box-shadow:inset 0 -1.5px 0 transparent;transition:color .5s var(--hs-ease),background .5s var(--hs-ease),box-shadow .5s var(--hs-ease)}
+.hs-paper .hs-field.on{background:transparent;color:var(--ink);font-weight:600;box-shadow:inset 0 -1.5px 0 var(--hs-acc)}
+@media(min-width:661px){
+  .hs-req,.hs-contact,.hs-doc{top:28px}
+  .hs[data-scene="0"] .hs-req{transform:translate(var(--hs-cx,54px),calc(var(--hs-cy,173px) + 24px)) scale(1.04)}
+  .hs[data-scene="1"] .hs-req{transform:translate(var(--hs-cx,54px),var(--hs-cy,173px)) scale(1.1)}
+}
+@media(max-width:660px){.hs-card{border-radius:8px}.hs .hs-head{height:38px}}
+/* 계약서 빈칸이 문장 글자선보다 떠 보이던 것: 문장과 같은 줄 높이로 */
+.hs-paper .hs-field{display:inline;line-height:inherit;padding:1px 3px}
+/* 진행 중 카드의 두꺼운 하늘색 테두리(바깥 3px 링) 제거 — 진행 표시는 얇은 파랑 선 1px만 */
+.hs-card.active{box-shadow:0 1px 2px rgba(17,24,39,.04),0 10px 24px -14px rgba(17,24,39,.22)}
+/* 계약서 채워진 칸 밑줄: 끝이 둥글어 보이지 않게 모서리 없는 일자 밑줄 */
+.hs-paper .hs-field{border-radius:0;box-shadow:none}
+.hs-paper .hs-field.on{box-shadow:none;text-decoration:underline;text-decoration-color:var(--hs-acc);text-decoration-thickness:1.5px;text-underline-offset:4px}
+/* 근로계약서: 아래로 길게 이어지고 판 아래 끝에서 잘림 (실제 문서를 보는 느낌) */
+.hs{overflow:hidden}
+.hs-art{margin-top:10px!important;color:#6B7280}
+.hs-art b{font-weight:600;color:#3A3F47}
+@media(min-width:661px){.hs-doc{border-bottom-left-radius:0;border-bottom-right-radius:0}}
+@media(max-width:660px){.hs-doc{max-height:300px;overflow:hidden;border-bottom-left-radius:0;border-bottom-right-radius:0;margin-bottom:-12px}}

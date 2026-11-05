@@ -381,3 +381,6 @@
 .at2 .py-sn2{font-size:14px;font-weight:700;color:#A8AEBB;line-height:1.7;font-variant-numeric:tabular-nums}
 .at2 .py-scope b{display:block;font-size:16px;font-weight:600;color:var(--ink);line-height:1.6}
 .at2 .at-note .py-scope p{margin:4px 0 0}
+/* 설명글과 아래 목업 판 사이 간격 줄임 (48 → 32) */
+.at2 .at-pair{margin-bottom:32px}
+@media(max-width:900px){.at2 .at-pair{margin-bottom:24px}}

@@ -369,3 +369,18 @@
 .at .sxg > span:nth-child(7n){line-height:inherit}
 /* ⓘ 아이콘: i 글자가 원 안에서 위로 뜨지 않게 가운데로 */
 .at .doc .dsec em,.at .pcwin .pc-sec em{box-sizing:border-box;line-height:1;padding-top:1px}
+/* 폴더 목업 발신인 칸: 사이트 공통 컨테이너 .w(좌우 여백·최대폭)가 걸려 글자가 밀렸음 → 머리글과 같은 시작선 */
+.at .fold .ftr .w{padding:0;margin:0;max-width:none;width:auto}
+/* 직원별 문서함: 서식명과 저장 폴더 사이를 좁힘 */
+.at2 .indiv .ith,.at2 .indiv .itr{grid-template-columns:minmax(0,1.8fr) minmax(0,1fr) 36px}
+/* 이용 전 확인: 인건비 관리와 같은 번호 + 구분선 목록 (payroll.css의 .py-scope와 같은 값) */
+.at2 .py-scope{list-style:none;margin:0;padding:0}
+.at2 .py-scope li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px;padding:16px 0;border-top:1px solid #E4E6EB;border-bottom:0}
+.at2 .py-scope li:first-child{border-top:0;padding-top:4px}
+.at2 .py-scope li:last-child{padding-bottom:0}
+.at2 .py-sn2{font-size:14px;font-weight:700;color:#A8AEBB;line-height:1.7;font-variant-numeric:tabular-nums}
+.at2 .py-scope b{display:block;font-size:16px;font-weight:600;color:var(--ink);line-height:1.6}
+.at2 .at-note .py-scope p{margin:4px 0 0}
+/* 설명글과 아래 목업 판 사이 간격 줄임 (48 → 32) */
+.at2 .at-pair{margin-bottom:32px}
+@media(max-width:900px){.at2 .at-pair{margin-bottom:24px}}

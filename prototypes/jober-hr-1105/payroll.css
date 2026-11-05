@@ -609,3 +609,96 @@
 .py .py-fh .py-for{margin:0;padding-right:12px;border-right:1px solid #E4E6EB;line-height:1.2}
 .py .py-fh h3{margin:0!important}
 @media(max-width:640px){.py .py-fh{gap:10px}.py .py-fh .py-for{padding-right:10px;font-size:14px}}
+
+/* 급여대장 업로드: 회색 판 없이 화면(업로드 창)만 */
+@media(min-width:1px){
+  .py .py-wz-stage{background:none;padding:0;border-radius:0;min-height:0}
+  .py .py-wz-stage .wz{max-width:none;margin:0;box-shadow:0 10px 28px -16px rgba(31,42,90,.28)}
+  .py .py-ex{text-align:left;margin-top:12px}
+}
+/* 하나은행 단계: STEP 2 머리말, 2→3 전송 화살표(알약 없이), STEP 3 하나은행 기업뱅킹 이체 목록 */
+.py .jbh{display:flex;align-items:center;gap:6px;padding:0 2px 6px;border-bottom:1px solid var(--line-2);margin-bottom:2px}
+.py .jbh img{display:block;height:11px;width:auto}
+.py .jbh span{font-size:11px;font-weight:700;color:var(--ink-2)}
+.py .py-steps{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 56px minmax(0,1fr);gap:24px 16px}
+.py .py-steps>.py-step:first-child{margin-right:8px}
+.py .py-zone{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 56px minmax(0,1fr);gap:16px}
+.py .py-zone .j{grid-column:1 / span 2}
+.py .py-zone .k{grid-column:4}
+.py .py-send{align-self:end;display:flex;flex-direction:column;align-items:center;gap:8px;padding-bottom:110px;text-align:center}
+.py .py-send span{font-size:12px;font-weight:600;line-height:1.4;color:var(--blue)}
+.py .py-send i{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff}
+.py .py-send .ji{width:16px;height:16px}
+.py .hkh{display:flex;align-items:center;gap:5px;padding:0 2px 6px;border-bottom:1px solid var(--line-2)}
+.py .hkh img{width:16px;height:16px;border-radius:4px}
+.py .hkh b{font-size:11.5px;font-weight:700;color:var(--hana)}
+.py .hkh span{font-size:11px;color:var(--muted)}
+.py .hkt{margin:2px 0 0;font-size:11.5px;font-weight:700;color:var(--ink)}
+.py .hkt em{font-style:normal;font-weight:500;font-size:10.5px;color:var(--muted);margin-left:4px}
+.py .hkl{border-top:1px solid var(--line-2)}
+.py .hkr{display:grid;grid-template-columns:16px 40px minmax(0,1fr) auto;gap:6px;align-items:center;padding:4px 2px;border-bottom:1px solid var(--line-2);font-size:11px;color:var(--ink-2);white-space:nowrap}
+.py .hkr span:nth-child(3){overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.py .hkr span:last-child{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.py .hkth{font-size:10.5px;color:var(--faint)}.py .hkth span:last-child{font-weight:500;color:var(--faint)}
+.py .hkr .cb{display:block;background:var(--hana)}
+.py .hkgo{align-self:flex-end;margin-top:2px;font-size:11px;font-weight:700;color:#fff;background:#008375;border-radius:5px;padding:5px 12px}
+.py .f6 .st.k .mini{gap:5px;padding:10px 12px}
+@media(max-width:900px){
+  .py .py-steps{grid-template-columns:1fr}
+  .py .py-send{flex-direction:row;padding:0;justify-content:center}
+  .py .py-send span br{display:none}
+  .py .py-send i{transform:rotate(90deg)}
+  .py .py-steps>.py-step:first-child{margin-right:0}
+}
+/* 업로드: 화면은 위쪽에 붙이고 폭은 600까지, 예시 안내는 단계 목록 아래 */
+.py .panel{align-self:start}
+.py .py-wz-stage .wz{max-width:600px}
+.py .py-tabcol{display:flex;flex-direction:column}
+.py .py-tabcol .py-ex{margin:16px 0 0 16px;text-align:left}
+/* 하나은행 미니 화면 높이를 조금 키워 STEP 3 내용이 잘리지 않게 */
+.py .py-mini-stage .mini{height:212px}
+.py .py-send{padding-bottom:116px}
+@media(max-width:900px){.py .py-tabcol .py-ex{display:none}}
+@media(max-width:900px){.py .py-send{padding:0}}
+/* 자버에서 / 하나은행 기업뱅킹에서: 연한 면 대신 진한 색 글자 + 같은 색 2px 밑줄로 구간 표시 */
+.py .py-zone span{background:none!important;border-radius:0;padding:0 0 10px;border-bottom:2px solid currentColor;font-weight:700}
+.py .py-zone .j{color:var(--blue)}
+.py .py-zone .k{color:var(--hana)}
+/* 구간 표시 A안: 진한 색 채움 + 흰 글자. 자버는 브랜드 파랑(#457BF7), 하나은행은 하나 초록 */
+.py .py-zone span{border-bottom:0;padding:9px 12px;border-radius:12px;color:#fff!important;font-weight:600}
+.py .py-zone .j{background:#457BF7!important}
+.py .py-zone .k{background:var(--hana)!important}
+/* 구간 표시 B안: 흰 바탕 + 색 테두리·글자 (자버 브랜드 파랑 #457BF7 / 하나 초록) */
+.py .py-zone span{background:#fff!important;border:1px solid currentColor;padding:8px 12px;border-radius:12px;font-weight:600}
+.py .py-zone .j{color:#457BF7!important}
+.py .py-zone .k{color:var(--hana)!important}
+.py .py-zone .j,.py .py-zone .k{background:#fff!important}
+/* STEP 3 하나은행 화면: 머리말·제목·표의 왼쪽 시작선을 하나로, 위아래 여백 고르게 */
+.py .f6 .st.k .mini{justify-content:flex-start;padding:12px 12px 10px;gap:6px}
+.py .hkh,.py .hkt{padding-left:2px;padding-right:2px}
+.py .hkh{padding-bottom:8px}
+.py .hkr{padding-top:3px;padding-bottom:3px}
+.py .py-mini-stage .mini{height:220px}.py .py-send{padding-bottom:120px}@media(max-width:900px){.py .py-send{padding:0}}
+/* STEP 2 자버 화면도 STEP 3처럼 위에서부터 시작, 머리말 높이 맞춤 */
+.py .py-step:not(.k) .py-mini-stage .st .mini:has(.jbh){justify-content:flex-start;padding:12px 12px 10px;gap:6px}
+.py .jbh{min-height:24px;padding:0 2px 8px;margin-bottom:0}
+.py .jbh{min-height:25px}
+.py .jbh{padding-bottom:9px}
+/* 업로드 창이 오른쪽 끝(다른 섹션 목업과 같은 선)까지 채우게 */
+.py .py-wz-stage .wz{max-width:none}
+/* STEP 3 설명 두 줄(한 항목 한 줄): STEP 3 칸을 넓히고 단계 설명 글자를 14px로 */
+@media(min-width:901px){
+  .py .py-steps,.py .py-zone{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 56px minmax(0,1.4fr)}
+  .py .py-step li{font-size:14px;line-height:1.65}
+  .py .py-step .hbtn,.py .py-step .uib{font-size:12.5px}
+}
+/* 세 단계 모두 설명 두 줄: STEP 2 칸을 넓히고 STEP 1을 조금 좁힘, 카드 좌우 여백 24 */
+@media(min-width:901px){
+  .py .py-steps,.py .py-zone{grid-template-columns:minmax(0,.85fr) minmax(0,1.1fr) 56px minmax(0,1.35fr)}
+  .py .py-step{padding-left:24px;padding-right:24px}
+}
+/* STEP 1·2 같은 폭(약 340), STEP 3만 조금 넓게 — 세 단계 모두 설명 두 줄 유지 */
+@media(min-width:901px){.py .py-steps,.py .py-zone{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 56px minmax(0,1.22fr)}}
+.py .py-steps>.py-step:first-child{margin-right:0}
+/* 급여대장 업로드: 단계는 왼쪽 그대로, 업로드 창은 실제 크기(640)로 남은 칸 가운데 */
+.py .py-wz-stage .wz{max-width:640px;margin:0 auto}

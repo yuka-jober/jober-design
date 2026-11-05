@@ -129,3 +129,13 @@
 .hs-art b{font-weight:600;color:#3A3F47}
 @media(min-width:661px){.hs-doc{border-bottom-left-radius:0;border-bottom-right-radius:0}}
 @media(max-width:660px){.hs-doc{max-height:300px;overflow:hidden;border-bottom-left-radius:0;border-bottom-right-radius:0;margin-bottom:-12px}}
+/* 근로계약서 오른쪽에 겹쳐 마지막에 차례로 뜨는 알림 두 개 (인건비·연차): 아이콘 + 한 줄, 서비스명 회색 글자 없이 */
+.hs-pop{display:none}
+@media(min-width:661px){
+  .hs-pop{position:absolute;right:24px;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 16px 10px 10px;background:#fff;border:1px solid var(--hs-line);border-radius:8px;box-shadow:0 2px 4px rgba(17,24,39,.05),0 16px 32px -12px rgba(17,24,39,.24);font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;
+    opacity:0;transform:translateY(12px) scale(.9);transition:transform .6s cubic-bezier(.34,1.56,.64,1),opacity .35s ease}
+  .hs-pop.on{opacity:1;transform:none}
+  .hs-pi{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:#EEF6FF;color:var(--hs-acc)}
+  .hs-pi .ji{width:16px;height:16px}
+  .hs[data-scene="4"] .hs-pop{opacity:0;transform:translateY(-12px) scale(.98)}
+}

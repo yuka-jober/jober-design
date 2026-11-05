@@ -26,6 +26,8 @@
 <div class="hs-card hs-doc" id="hs-s3"><div class="hs-head"><svg class="ji" aria-hidden="true"><use href="#file-text-outlined"></use></svg><div class="hs-title">근로계약서 자동 입력</div></div>
 <div class="hs-bd hs-paper"><p class="hs-ptitle">근로계약서</p><p>주식회사 자버(이하 ‘회사’)와 <span class="hs-field">김자버</span>(이하 ‘근로자’)는 다음과 같이 근로계약을 체결한다.</p><p>근로자 생년월일 <span class="hs-field">1995.07.29</span></p><p>근로자 주소 <span class="hs-field">서울 마포구 양화로</span></p><p class="hs-art"><b>제1조 근로계약기간</b><br>1. 근로계약기간은 2026년 11월 3일부터 기간의 정함이 없는 계약으로 한다.</p><p class="hs-art"><b>제2조 근무장소 및 업무</b><br>1. 근무장소는 회사 사업장으로 하며, 담당업무는 경영지원으로 한다.</p><p class="hs-art"><b>제3조 근로시간 및 휴게시간</b><br>1. 근로시간은 09:00부터 18:00까지로 하며, 휴게시간은 1시간으로 한다.</p></div></div>
 </div>
+<div class="hs-pop" id="hs-p1" aria-hidden="true"><span class="hs-pi"><svg class="ji"><use href="#wallet-outlined"></use></svg></span>급여대장 업로드 완료</div>
+<div class="hs-pop" id="hs-p2" aria-hidden="true"><span class="hs-pi"><svg class="ji"><use href="#calendar-outlined"></use></svg></span>연차 승인 완료</div>
 </div>
 </div>
 </div>
@@ -105,13 +107,13 @@
   var st=document.querySelector('.hs');if(!st)return;
   var s1=document.getElementById('hs-s1'),s2=document.getElementById('hs-s2'),s3=document.getElementById('hs-s3');
   var l1=document.getElementById('hs-link1'),l2=document.getElementById('hs-link2');
-  var chips=q('.hs-chip'),done=document.querySelector('.hs-done'),rows=q('.hs-row'),fields=q('.hs-field');
-  var items=chips.concat([done,l1,l2],rows,fields),cards=[s1,s2,s3];
+  var pops=q('.hs-pop'),chips=q('.hs-chip'),done=document.querySelector('.hs-done'),rows=q('.hs-row'),fields=q('.hs-field');
+  var items=chips.concat([done,l1,l2],rows,fields,pops),cards=[s1,s2,s3];
   var mqR=window.matchMedia('(prefers-reduced-motion: reduce)'),mqM=window.matchMedia('(max-width: 660px)');
   var T=[];function stop(){T.forEach(clearTimeout);T=[]}function at(ms,f){T.push(setTimeout(f,ms))}
   function scene(n){st.setAttribute('data-scene',n)}
-  function layout(){if(mqM.matches){['height'].forEach(function(){st.style.height=''});[s1,s2,s3,l1,l2].forEach(function(e){e.style.top=''});return}
-    var P=28,G=24,y=P;s1.style.top=y+'px';y+=s1.offsetHeight;l1.style.top=y+'px';y+=G;s2.style.top=y+'px';y+=s2.offsetHeight;l2.style.top=y+'px';y+=G;s3.style.top=y+'px';y+=Math.min(s3.offsetHeight,230);st.style.height=y+'px';
+  function layout(){if(mqM.matches){['height'].forEach(function(){st.style.height=''});[s1,s2,s3,l1,l2].concat(pops).forEach(function(e){e.style.top=''});return}
+    var P=28,G=24,y=P;s1.style.top=y+'px';y+=s1.offsetHeight;l1.style.top=y+'px';y+=G;s2.style.top=y+'px';y+=s2.offsetHeight;l2.style.top=y+'px';y+=G;s3.style.top=y+'px';pops.forEach(function(e,i){e.style.top=(y+44+i*64)+'px'});y+=Math.min(s3.offsetHeight,230);st.style.height=y+'px';
     st.style.setProperty('--hs-cx',((st.clientWidth-s1.offsetWidth)/2-24)+'px');st.style.setProperty('--hs-cy',((y-s1.offsetHeight)/2-P)+'px')}
   layout();window.addEventListener('resize',layout);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
   function act(c){cards.forEach(function(x){x.classList.toggle('active',x===c)})}
@@ -128,6 +130,7 @@
     t+=600;at(t,function(){scene(3);l2.classList.add('on');act(s3)});
     t+=600;fields.forEach(function(f){t+=380;at(t,function(){f.classList.add('on')})});
     t+=300;at(t,function(){s3.classList.add('complete');act(null)});
+    pops.forEach(function(e){t+=450;at(t,function(){e.classList.add('on')})});
     t+=3600;at(t,function(){scene(4)});
     at(t+700,run)}
   [mqR,mqM].forEach(function(m){m.addEventListener?m.addEventListener('change',run):m.addListener(run)});

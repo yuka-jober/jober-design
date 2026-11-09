@@ -758,8 +758,9 @@ function view() {
   var nav = '<nav class="ls-nav" aria-label="설정 바로가기">' + NAV.map(function (n) {
     var cur = state.nav === n[0];
     return '<button type="button" class="ls-navlink" aria-current="' + cur + '" ' + act(function () {
-      var el = document.getElementById('sec-' + n[0]);
       set({ nav: n[0] });
+      // 다시 그린 뒤에 찾는다 — 그리기 전 요소는 화면에서 빠져 스크롤이 안 된다
+      var el = document.getElementById('sec-' + n[0]);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 'nav-' + n[0]) + '>' + n[1] + '</button>';
   }).join('') +

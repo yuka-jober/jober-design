@@ -702,3 +702,5 @@
 .py .py-steps>.py-step:first-child{margin-right:0}
 /* 급여대장 업로드: 단계는 왼쪽 그대로, 업로드 창은 실제 크기(640)로 남은 칸 가운데 */
 .py .py-wz-stage .wz{max-width:640px;margin:0 auto}
+/* 모바일 히어로: 1/.86 비율 상자보다 목업이 길어서, 사파리는 비율 높이로 잘라버림 → 내용 높이로 */
+@media(max-width:640px){.hr .hr-hv{aspect-ratio:auto}}

@@ -139,3 +139,6 @@
   .hs-pi .ji{width:16px;height:16px}
   .hs[data-scene="4"] .hs-pop{opacity:0;transform:translateY(-12px) scale(.98)}
 }
+/* 히어로 영상 (hr-hero-C 일러스트) */
+.hr .hr-hv.hv-video{aspect-ratio:620/560;max-width:620px}
+.hr .hr-hv.hv-video video{display:block;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}

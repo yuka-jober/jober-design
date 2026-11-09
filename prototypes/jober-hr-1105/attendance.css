@@ -384,3 +384,12 @@
 /* 설명글과 아래 목업 판 사이 간격 줄임 (48 → 32) */
 .at2 .at-pair{margin-bottom:32px}
 @media(max-width:900px){.at2 .at-pair{margin-bottom:24px}}
+/* 모바일: 제목1+이미지1, 제목2+이미지2 순서로 */
+@media(max-width:900px){
+.at2 .wrap:has(>.at-pair+.at-grid){display:flex;flex-direction:column}
+.at2 .at-pair,.at2 .at-pair+.at-grid{display:contents}
+.at2 .at-pair>.at-copy:nth-child(1){order:1;margin-bottom:24px}
+.at2 .at-pair+.at-grid>.at-panel:nth-child(1){order:2;margin-bottom:64px}
+.at2 .at-pair>.at-copy:nth-child(2){order:3;margin-bottom:24px}
+.at2 .at-pair+.at-grid>.at-panel:nth-child(2){order:4}
+}

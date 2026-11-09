@@ -192,21 +192,26 @@ button { font-family: inherit; }
 .ls-num { font-variant-numeric: tabular-nums; }
 .ls-empty { padding: 16px; font-size: var(--fs-14); color: var(--color-text-secondary); }
 
-/* 실제 승인 과정 — 첫 칩 너비를 맞춰 화살표가 한 줄로 서게 subgrid 사용 */
+/* 실제 승인 과정 — 첫 칩 너비를 맞춰(--path-first-w, 그린 뒤 JS 가 잼) 화살표가 한 줄로 서게 한다 */
 .ls-path {
   display: grid;
-  grid-template-columns: 176px max-content minmax(0, 1fr);
+  grid-template-columns: 176px minmax(0, 1fr);
   column-gap: 12px;
   padding: 16px 20px;
   border-radius: var(--r-xl);
   background: var(--color-bg-base);
 }
 .ls-path-title { grid-column: 1 / -1; padding-bottom: 4px; font-weight: var(--fw-bold); }
-.ls-path-row { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; padding: 12px 0; }
+.ls-path-row { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: baseline; padding: 12px 0; }
 .ls-path-row + .ls-path-row { border-top: 1px solid var(--color-border-split); }
 .ls-path-who  { color: var(--color-text-secondary); }
-.ls-path-first { justify-content: center; }
-.ls-path-rest { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ls-path-first { justify-content: center; min-width: var(--path-first-w, auto); }
+/* 첫 칩부터 한 묶음으로 줄바꿈 — 넘친 줄은 첫 칩 아래에서 시작한다.
+   라벨·첫 칩은 글자 기준선으로 맞춰 칩이 두 줄이 돼도 첫 줄에 붙는다 */
+.ls-path-rest { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+/* 화살표는 뒤 칩과 한 묶음 — 줄이 넘어가도 화살표만 줄 끝에 남지 않는다 */
+.ls-step { display: inline-flex; align-items: baseline; gap: 8px; }
+.ls-step .ls-arrow { align-self: center; }
 .ls-path-full { grid-column: 2 / -1; }
 .ls-path-span { grid-column: 1 / -1; padding: 12px 0; color: var(--color-text-secondary); }
 .ls-path-more { grid-column: 1 / -1; justify-self: start; padding: 0; }
@@ -217,7 +222,6 @@ button { font-family: inherit; }
   .ls-path { grid-template-columns: minmax(0, 1fr); }
   .ls-path-row { row-gap: 8px; }
   .ls-path-full { grid-column: auto; }
-  .ls-path-first { justify-self: start; }
 }
 
 /* ── 7. 부서별 결재선 ───────────────────── */
@@ -452,8 +456,8 @@ function pathHTML(L, key) {
         ? '<div class="alert alert-warning">' + ic('exclamation-circle-filled', 'alert-icon') + '<span>' + r.note + '</span></div>'
         : '<span class="ls-note">' + r.note + '</span>') + '</div>';
     } else {
-      h += chip(r.steps[0], true) + '<span class="ls-path-rest">' + r.steps.slice(1).map(function (s) {
-        return '<span class="ls-arrow">' + ic('arrow-right-outlined', 'icon-sm') + '</span>' + chip(s);
+      h += '<span class="ls-path-rest">' + chip(r.steps[0], true) + r.steps.slice(1).map(function (s) {
+        return '<span class="ls-step"><span class="ls-arrow">' + ic('arrow-right-outlined', 'icon-sm') + '</span>' + chip(s) + '</span>';
       }).join('') + '</span>';
     }
     h += '</div>';
@@ -693,7 +697,6 @@ function secTypes() {
   var leaves = [['annual', '연차'], ['health', '보건'], ['family', '경조사'], ['disaster', '재난'], ['special', '특별'], ['substitute', '대체'], ['home', '재택 근무'], ['remote', '원격 근무'], ['unpaid', '무급'], ['official', '공가'], ['subwork', '대체 근무'], ['extra', '연차 추가 부여'], ['leave', '휴직'], ['trip', '출장 근무']];
   var hiddenCount = d.hiddenLeave.length;
   var isHidden = function (t) { return d.hiddenLeave.indexOf(t[0]) >= 0; };
-  leaves = leaves.filter(function (t) { return !isHidden(t); }).concat(leaves.filter(isHidden));
 
   return '<section id="sec-types" class="card ls-section">' + sectionHead('tag-outlined', '휴가 유형') +
     '<div class="ls-section-body is-list">' +
@@ -796,11 +799,24 @@ function render() {
   var a = document.activeElement, fid = a && a.dataset ? a.dataset.fid : null;
   H = []; K = [];
   app.innerHTML = view();
+  alignPaths();
   if (fid) {
     var el = app.querySelector('[data-fid="' + fid + '"]');
     if (el) el.focus({ preventScroll: true });
   }
 }
+
+// 승인 과정마다 가장 넓은 첫 칩 너비로 나머지 첫 칩을 맞춘다 — 두 번째 칩 앞 화살표가 세로로 선다
+function alignPaths() {
+  app.querySelectorAll('.ls-path').forEach(function (p) {
+    p.style.removeProperty('--path-first-w');
+    var w = 0;
+    p.querySelectorAll('.ls-path-first').forEach(function (c) { w = Math.max(w, c.offsetWidth); });
+    if (w) p.style.setProperty('--path-first-w', w + 'px');
+  });
+}
+// 웹폰트가 늦게 오면 칩 너비가 바뀌므로 다시 잰다
+if (document.fonts) document.fonts.ready.then(alignPaths);
 
 app.addEventListener('click', function (e) {
   var el = e.target.closest('[data-h]');

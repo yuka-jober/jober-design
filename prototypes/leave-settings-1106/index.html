@@ -119,6 +119,14 @@ button { font-family: inherit; }
 .ls-note-icon { display: flex; }
 
 /* ── 6. 결재선 요약·패널 ────────────────── */
+/* 요약 줄과 펼친 패널은 한 카드 — 펼치면 카드가 늘어나고 구분선 아래로 이어진다 */
+.ls-co {
+  border: 1px solid var(--color-border-split);
+  border-radius: var(--r-xl);
+  background: var(--color-surface-sub);
+  transition: border-color var(--motion-standard) var(--ease-standard);
+}
+.ls-co:has(> .ls-summary:hover) { border-color: var(--color-border); }
 .ls-summary {
   width: 100%;
   min-height: 56px;
@@ -127,15 +135,14 @@ button { font-family: inherit; }
   justify-content: space-between;
   gap: 12px;
   padding: 8px 16px 8px 20px;
-  border: 1px solid var(--color-border-split);
-  border-radius: var(--r-xl);
-  background: var(--color-surface-sub);
+  border: none;
+  border-radius: inherit;
+  background: transparent;
   color: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--motion-standard) var(--ease-standard);
 }
-.ls-summary:hover { border-color: var(--color-border); }
+.ls-summary[aria-expanded="true"] { border-end-start-radius: 0; border-end-end-radius: 0; }
 .ls-summary:focus-visible { outline: none; box-shadow: 0 0 0 var(--outline-w) var(--color-primary-outline); }
 .ls-summary-main { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; }
 .ls-vsep { width: 1px; height: 12px; flex: none; background: var(--color-border); }
@@ -145,10 +152,8 @@ button { font-family: inherit; }
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 20px 24px;
-  border: 1px solid var(--color-border-split);
-  border-radius: var(--r-xl);
-  background: var(--color-surface-sub);
+  padding: 20px;
+  border-top: 1px solid var(--color-border-split);
 }
 
 /* 결재자 추가 드롭다운 */
@@ -633,7 +638,7 @@ function secApproval() {
   h += '<div class="ls-row-title"><h3 class="text-14 font-bold">회사 기본 결재선</h3><p class="ls-desc">우리 회사에 맞는 결재 방식을 선택해 주세요.</p></div>';
   h += methodCards(co, 'co');
 
-  h += '<button type="button" class="ls-summary" aria-expanded="' + state.coOpen + '" ' + act(function () {
+  h += '<div class="ls-co"><button type="button" class="ls-summary" aria-expanded="' + state.coOpen + '" ' + act(function () {
     set({ coOpen: !state.coOpen, menu: null });
   }, 'co-summary') + '><span class="ls-summary-main">' +
     '<span class="text-secondary">' + sumLabel + (isStep ? '' : ' <span class="font-medium">' + n + '명</span>') + '</span>' +
@@ -646,6 +651,7 @@ function secApproval() {
     '</span>' + chev(state.coOpen) + '</button>';
 
   if (state.coOpen) h += '<div class="ls-panel">' + lineHTML(co, 'co') + '</div>';
+  h += '</div>';
 
   h += '<div class="ls-split"></div>';
   h += '<div class="ls-row" style="padding: 0; flex-wrap: wrap"><div class="ls-row-title" style="flex: 1 1 240px"><h3 class="text-14 font-bold">부서별 결재선</h3>' +

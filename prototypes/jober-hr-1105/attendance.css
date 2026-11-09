@@ -394,6 +394,5 @@
 .at2 .at-pair+.at-grid>.at-panel:nth-child(2){order:4}
 }
 @media(max-width:640px){.at2 .at-sec{padding-top:120px}}
-/* 히어로 문서 그림자: iOS 사파리에서 filter 그림자가 화면 밖 부분을 잘라 그려서 box-shadow로 대체 */
-.at .at-hero-doc{filter:none}
-.at .at-hero-doc .doc{box-shadow:0 26px 34px rgba(31,42,90,.24)}
+/* 모바일 히어로: 1/.86 비율 상자보다 문서가 길어서, 사파리는 비율 높이로 잘라버림 → 내용 높이로 */
+@media(max-width:640px){.at .at-hv{aspect-ratio:auto}}

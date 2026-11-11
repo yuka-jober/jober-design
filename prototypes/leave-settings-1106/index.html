@@ -691,7 +691,7 @@ function secView() {
   var r = state.data.rules;
   return '<section id="sec-view" class="card ls-section">' + sectionHead('desktop-outlined', '직원 화면') +
     '<div class="ls-section-body is-list">' + toggleRows([
-      ['전체 일정에서 다른 직원의 연차 숨기기', '연차 결재자는 모든 직원의 연차를 볼 수 있어요.', r.mineOnly, flipRule('mineOnly'), 'v-mine'],
+      ['전체 일정에서 다른 직원의 연차 숨기기', '직원은 본인 연차만 볼 수 있어요. 단, 연차 결재자는 모든 직원의 연차를 볼 수 있어요.', r.mineOnly, flipRule('mineOnly'), 'v-mine'],
       ['직원에게 휴가기록 표시', '연도별 휴가 부여·사용 내역을 보여줘요.', r.history, flipRule('history'), 'v-hist']
     ]) + '</div></section>';
 }

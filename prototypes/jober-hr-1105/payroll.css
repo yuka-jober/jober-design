@@ -717,8 +717,22 @@
 .py .py-fh h3{flex-basis:100%;font-size:26px!important}
 .py .py-fh .py-for{border-right:0;padding:6px 12px;border-radius:999px;background:var(--soft);font-size:14px;line-height:1.2}
 @media(max-width:640px){.py .py-feats{padding:8px;gap:8px;border-radius:24px}.py .py-fh{row-gap:16px}.py .py-fh h3{font-size:22px!important}.py .py-fh .py-for{padding:5px 10px}}
-/* 급여대장 업로드: 창을 오른쪽 끝까지 넓게, 예시 화면 안내는 창 오른쪽 위 */
-.py .py-wz-stage .wz{max-width:none;margin:0}
-.py .py-wz-stage>.py-ex{display:block;margin:0 0 12px;text-align:right}
-/* 인사관리 메인 인건비 카드: 회색 판 안에 조금 작게 가운데 */
-@media(min-width:901px){.hr .hr-cards.one:has(#payroll){background:var(--soft);border-radius:var(--r-card);padding:48px 12%}}
+/* 급여대장 업로드: 창은 640으로 남은 칸 가운데, 예시 화면 안내는 창 오른쪽 위 */
+.py .py-wz-stage .wz{max-width:640px;margin:0 auto}
+.py .py-wz-stage>.py-ex{display:block;max-width:640px;margin:0 auto 12px;text-align:right}
+/* 인사관리 메인 인건비 카드: 회색 판 없이 위 카드 두 칸 폭으로 왼쪽에 (3칸 줄일 때만) */
+@media(min-width:1101px){.hr .hr-cards.one:has(#payroll){padding-right:calc((100% - 44px) / 3 + 22px)}}
+/* 주요 기능: 회색 판(카드 안 카드)과 꼬리표 회색 바탕 빼고, 제목 오른쪽에 카드 두 장을 한 줄로 */
+.py .py-feats{max-width:none;background:none;border-radius:0;padding:0;gap:24px}
+.py .py-feat{border-radius:var(--r-card);padding:28px 28px 24px;box-shadow:0 24px 56px rgba(31,42,90,.09),0 4px 14px rgba(31,42,90,.05)}
+.py .py-fh .py-for{padding:0;border-radius:0;background:none}
+/* 두 기능을 카드 하나로 합치고 가운데 세로 디바이더로 나눔 (좁은 화면에선 가로 디바이더) */
+.py .py-feats{gap:0;background:#fff;border-radius:var(--r-card);box-shadow:0 24px 56px rgba(31,42,90,.09),0 4px 14px rgba(31,42,90,.05)}
+.py .py-feat{background:none;box-shadow:none;border-radius:0;padding:32px}
+.py .py-feat+.py-feat{position:relative}
+.py .py-feat+.py-feat:before{content:'';position:absolute;left:0;top:32px;bottom:32px;width:1px;background:#E6E8EE}
+@media(max-width:900px){.py .py-feat{padding:24px}.py .py-feat+.py-feat:before{top:0;bottom:auto;left:24px;right:24px;width:auto;height:1px}}
+@media(min-width:1240px){
+  .py .wrap:has(>.py-feats){display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;align-items:center}
+  .py .wrap:has(>.py-feats)>.py-head{margin-bottom:0}
+}

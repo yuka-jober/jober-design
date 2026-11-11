@@ -189,7 +189,7 @@
 .hi-char.done .hi-body{animation:hi-jump .75s var(--pop)}
 @keyframes hi-jump{0%{transform:translateY(0) scale(1,1)}25%{transform:translateY(2px) scale(1.06,.94)}55%{transform:translateY(-16px) scale(.97,1.04)}100%{transform:translateY(0) scale(1,1)}}
 .hi-mouth{transition:d .3s}
-.hi-char.done .hi-mouth{d:path("M-9,-60 Q0,-47 9,-60")}   /* 다 입력하면 더 활짝 */
+.hi-char.done .hi-mouth{d:path("M-9,-54 Q0,-41 9,-54")}   /* 다 입력하면 더 활짝 */
 /* 입력 카드 칸: 왼쪽부터 차오름 */
 .hi-fv{transform:scaleX(0);transform-box:fill-box;transform-origin:left center;transition:transform .45s var(--ease)}
 .hi-field.on .hi-fv{transform:scaleX(1)}

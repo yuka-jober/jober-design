@@ -58,8 +58,8 @@
   var html='<nav class="m-menu-nav" aria-label="모바일 메뉴">';
   [].forEach.call(nav.children,function(el){
     if(el.classList.contains('hd-dd')){
-      html+='<p class="m-menu-group">자버 패밀리</p>';
-      el.querySelectorAll('.hd-dd-menu a').forEach(function(a){html+='<a class="m-menu-sub" href="'+a.getAttribute('href')+'"'+(a.target?' target="_blank" rel="noopener noreferrer"':'')+'>'+(/connectia/.test(a.getAttribute('href'))?'커넥티아':/fellows/.test(a.getAttribute('href'))?'펠로우즈':a.querySelector('img').alt)+'</a>';});
+      html+='<p class="m-menu-group">'+(el.dataset.group||'자버 패밀리')+'</p>';
+      el.querySelectorAll('.hd-dd-menu a').forEach(function(a){html+='<a class="m-menu-sub" href="'+a.getAttribute('href')+'"'+(a.target?' target="_blank" rel="noopener noreferrer"':'')+(a.hasAttribute('aria-current')?' aria-current="page"':'')+'>'+(a.dataset.label||(/connectia/.test(a.getAttribute('href'))?'커넥티아':/fellows/.test(a.getAttribute('href'))?'펠로우즈':a.querySelector('img').alt))+'</a>';});
     } else if(el.tagName==='A'){
       html+='<a href="'+el.getAttribute('href')+'"'+(el.target?' target="_blank" rel="noopener noreferrer"':'')+(el.hasAttribute('aria-current')?' aria-current="page"':'')+'>'+el.textContent.trim()+'</a>';
     }

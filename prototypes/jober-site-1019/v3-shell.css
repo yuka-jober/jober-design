@@ -124,3 +124,8 @@ html .rv{transition:opacity .8s ease var(--rd,0s),translate 1s cubic-bezier(.16,
 /* 아주 좁은 화면(360px 이하)에선 어절 묶음이 화면보다 길면 묶음 안에서도 줄을 바꾼다 */
 @media(max-width:360px){.ph{display:inline}}
 @media(max-width:640px){.ft-top{grid-template-columns:1fr 1fr;row-gap:32px;column-gap:24px}.ft-top>div:first-child{grid-column:1/-1}}
+/* 글자형 드롭다운(카카오 알림톡): 로고 대신 서비스 이름 */
+.hd-dd-btn.is-current{color:var(--ink);font-weight:700}
+.hd-nav .hd-dd-menu a[aria-current]{background:var(--soft)}
+.hd-dd-menu b{grid-column:1;font-size:15px;font-weight:600;color:var(--ink)}
+.hd-dd-menu b em{margin-left:4px;font-style:normal;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--blue)}

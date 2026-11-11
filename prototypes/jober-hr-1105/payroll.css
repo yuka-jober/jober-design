@@ -704,3 +704,21 @@
 .py .py-wz-stage .wz{max-width:640px;margin:0 auto}
 /* 모바일 히어로: 1/.86 비율 상자보다 목업이 길어서, 사파리는 비율 높이로 잘라버림 → 내용 높이로 */
 @media(max-width:640px){.hr .hr-hv{aspect-ratio:auto}}
+/* 히어로 제목을 근태 관리와 같은 56px로: 두 줄이 들어가게 글자 칸을 넓히고, 좁은 화면에선 비례해서 줄임 */
+@media(min-width:901px){
+  .py.hr .hr-hero-layout{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+  .py .hr-hero h1{font-size:clamp(36px,4.3vw,56px)!important}
+}
+@media(min-width:641px) and (max-width:900px){.py .hr-hero h1{font-size:clamp(40px,8vw,56px)!important}}
+/* 주요 기능 카드: 회색 판 안에 두 장, 머리줄은 아이콘 + 고객 꼬리표, 기능명은 그 아래 크게. 판 폭은 조금 줄임 */
+.py .py-feats{max-width:1080px;background:var(--soft);border-radius:var(--r-card);padding:12px;gap:12px}
+.py .py-feat{border-radius:24px;box-shadow:0 2px 8px rgba(31,42,90,.04)}
+.py .py-fh{flex-wrap:wrap;gap:12px;row-gap:24px;margin-bottom:12px}
+.py .py-fh h3{flex-basis:100%;font-size:26px!important}
+.py .py-fh .py-for{border-right:0;padding:6px 12px;border-radius:999px;background:var(--soft);font-size:14px;line-height:1.2}
+@media(max-width:640px){.py .py-feats{padding:8px;gap:8px;border-radius:24px}.py .py-fh{row-gap:16px}.py .py-fh h3{font-size:22px!important}.py .py-fh .py-for{padding:5px 10px}}
+/* 급여대장 업로드: 창을 오른쪽 끝까지 넓게, 예시 화면 안내는 창 오른쪽 위 */
+.py .py-wz-stage .wz{max-width:none;margin:0}
+.py .py-wz-stage>.py-ex{display:block;margin:0 0 12px;text-align:right}
+/* 인사관리 메인 인건비 카드: 회색 판 안에 조금 작게 가운데 */
+@media(min-width:901px){.hr .hr-cards.one:has(#payroll){background:var(--soft);border-radius:var(--r-card);padding:48px 12%}}

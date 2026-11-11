@@ -73,7 +73,7 @@
         <button class="tab" role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1"><span class="n">3</span><span><b>직원 연결</b><small>기존 직원 정보 확인</small></span></button>
         <button class="tab" role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1"><span class="n">4</span><span><b>항목 매핑</b><small>수당·공제 항목 연결</small></span></button>
         <button class="tab" role="tab" id="t5" aria-controls="p5" aria-selected="false" tabindex="-1"><span class="n">5</span><span><b>미리보기 · 저장</b><small>등록 전 내용 확인</small></span></button>
-      </div></div>
+      </div><button type="button" class="py-sn py-sn-prev" aria-label="이전 단계" disabled><svg class="ji" aria-hidden="true"><use href="#arrow-left-outlined"></use></svg></button><button type="button" class="py-sn py-sn-next" aria-label="다음 단계"><svg class="ji" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></button></div>
 <div class="at-stage py-wz-stage"><p class="py-ex">예시 화면 · 실제 데이터가 아닙니다</p><div class="stage">
 <!-- step 1 -->
         <div class="panel on" id="p1" role="tabpanel" aria-labelledby="t1">
@@ -321,7 +321,10 @@
 <script>
 (function(){
   var tabs=[].slice.call(document.querySelectorAll('.py [role="tab"]'));
-  function pick(t){tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).classList.toggle('on',on);});}
+  var prev=document.querySelector('.py-sn-prev'),next=document.querySelector('.py-sn-next');
+  function pick(t){tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).classList.toggle('on',on);});var i=tabs.indexOf(t);if(prev){prev.disabled=i===0;next.disabled=i===tabs.length-1}}
+  function step(d){var i=tabs.indexOf(document.querySelector('.py [role="tab"][aria-selected="true"]'))+d;if(tabs[i])pick(tabs[i])}
+  if(prev){prev.addEventListener('click',function(){step(-1)});next.addEventListener('click',function(){step(1)})}
   tabs.forEach(function(t,i){t.addEventListener('click',function(){pick(t)});t.addEventListener('keydown',function(e){var d=e.key==='ArrowDown'||e.key==='ArrowRight'?1:e.key==='ArrowUp'||e.key==='ArrowLeft'?-1:0;if(!d)return;e.preventDefault();var n=tabs[(i+d+tabs.length)%tabs.length];pick(n);n.focus();});});
 })();
 </script>

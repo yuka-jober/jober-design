@@ -736,3 +736,23 @@
   .py .wrap:has(>.py-feats){display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;align-items:center}
   .py .wrap:has(>.py-feats)>.py-head{margin-bottom:0}
 }
+/* 기능 꼬리표가 줄바꿈될 때 줄 맨 앞에 구분선(|)이 남지 않게: 모든 꼬리표 앞에 같은 폭 구분선을 두고, 줄 시작 구분선은 왼쪽으로 밀어 가림 */
+.py .py-feat .hr-tags{margin-left:-21px;clip-path:inset(0 0 0 21px)}
+.py .py-feat .hr-tags span:before{content:"|";display:inline-block;width:21px;padding:0;text-align:center;color:#C3CDEB;font-weight:400}
+.py .py-feat.h .hr-tags span:before{color:#BFE0D9}
+/* 기능 설명: 375px에서 두 줄이 넘지 않게 모바일 글자 15px */
+@media(max-width:640px){.py .py-feat .py-fd{font-size:15px}}
+/* 업로드 단계(모바일): 가로 스크롤 대신 지금 단계 하나만 보이고 양옆 화살표로 이동 */
+.py .py-sn{display:none}
+@media(max-width:900px){
+  .py .py-tabcol{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;gap:8px;align-items:center}
+  .py .py-tabcol .tabs{grid-column:2;grid-row:1;overflow:visible;padding:0;margin:0;border:0;align-self:center}
+  .py .py-tabcol .tab[aria-selected="true"]{margin:0;padding-left:8px;padding-right:20px}
+  .py .py-tabcol .tab{display:none}
+  .py .py-tabcol .tab[aria-selected="true"]{display:grid;flex:1;justify-content:center}
+  .py .py-sn{display:grid;place-items:center;margin:0;width:40px;height:40px;border-radius:50%;border:1px solid #E4E6EB;background:#fff;color:var(--ink);cursor:pointer;padding:0}
+  .py .py-sn .ji{width:16px;height:16px}
+  .py .py-sn:disabled{color:#C9CED6;cursor:default}
+  .py .py-sn-prev{grid-column:1;grid-row:1}
+  .py .py-sn-next{grid-column:3;grid-row:1}
+}

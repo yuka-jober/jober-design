@@ -178,8 +178,6 @@
 .hi-slip{transition:transform .55s var(--pop)}
 .hi-item.filled .hi-slip{transform:translateY(-9px)}
 /* 체크 배지: 톡 튀어나옴 */
-.hi-ok{opacity:0;transform:scale(.3);transform-box:fill-box;transform-origin:center;transition:opacity .2s,transform .5s cubic-bezier(.34,1.9,.64,1)}
-.hi-item.filled .hi-ok,.hi-char.done .hi-ok{opacity:1;transform:none}
 
 /* ── 가운데 친구 ── */
 .hi-head{transform-box:fill-box;transform-origin:50% 92%}

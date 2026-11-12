@@ -40,6 +40,15 @@
 .cx-more{display:none}
 .cx-later{padding-top:0!important;padding-bottom:40px!important}
 .cx-later .cx-smb-hd{margin-top:0}
+/* 하단 놀이 영역 알약 5개(우리의 이야기 추가): 모바일 배치 */
+@media(max-width:640px){
+  .play{height:400px}
+  .play .tag-pill:nth-of-type(1){left:5%!important;top:34px!important;right:auto!important;transform:rotate(-8deg)!important}
+  .play .tag-pill:nth-of-type(2){left:6%!important;top:186px!important;right:auto!important;transform:rotate(6deg)!important}
+  .play .tag-pill:nth-of-type(3){left:10%!important;top:300px!important;right:auto!important;transform:rotate(-4deg)!important}
+  .play .tag-pill:nth-of-type(4){right:5%!important;left:auto!important;top:110px!important;transform:rotate(10deg)!important}
+  .play .tag-pill:nth-of-type(5){right:6%!important;left:auto!important;top:250px!important;transform:rotate(-12deg)!important}
+}
 </style>
 </head>
 <body>
@@ -48,7 +57,7 @@
 <header class="hd"><div class="w">
 <a class="hd-logo" href="index.html" aria-label="자버 홈"><img src="assets/jober-logo.svg" alt="자버 Jober" width="111" height="36"></a>
 <nav class="hd-nav" aria-label="주 메뉴"><div class="hd-dd" data-group="카카오 알림톡"><button class="hd-dd-btn" type="button" aria-haspopup="true" aria-expanded="false">카카오 알림톡 <svg class="ji" aria-hidden="true"><use href="#down-outlined"></use></svg></button><div class="hd-dd-menu hd-dd-text"><a href="services/alimtalk/index.html" data-label="카카오 알림톡"><b>카카오 알림톡</b><span>전화번호만으로 보내는 단체카톡</span><svg class="ji" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a><a href="services/alimtalk-ai/index.html" data-label="알림톡 AI 에이전트"><b>알림톡 AI 에이전트 <em>BETA</em></b><span>한 줄로 만들고 바로 발송, MCP 연결까지</span><svg class="ji" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div></div><a href="services/contract/index.html">전자계약</a><a href="services/hr/index.html">인사관리</a><a href="https://jober-crm-flex.laadt.chatgpt.site/" target="_blank" rel="noopener noreferrer">고객관리(CRM)</a><div class="hd-dd"><button class="hd-dd-btn" type="button" aria-haspopup="true" aria-expanded="false">자버 패밀리 <svg class="ji" aria-hidden="true"><use href="#down-outlined"></use></svg></button><div class="hd-dd-menu"><a href="services/connectia/index.html"><img src="assets/connectia-logo.svg" alt="Connectia" width="120" height="20"><span>대화로 새로운 연결을</span><svg class="ji" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a><a href="services/fellows/index.html"><img src="assets/fellows-logo.svg" alt="Fellows 펠로우즈" width="120" height="28"><span>마주 앉아 이어지는 연결을</span><svg class="ji" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div></div><a href="stories/index.html">활용 사례</a><a href="pricing/index.html">요금제</a><a href="about/index.html">회사 소개</a></nav>
-<div class="hd-act"><a class="pill sm" href="https://jober.io/wall-write-document/7f720549-2d0c-439b-8bfd-8da25e840bfb" target="_blank" rel="noopener noreferrer">도입 문의</a><a class="pill sm dark" href="https://jober.io/" target="_blank" rel="noopener noreferrer">자버 바로가기 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div>
+<div class="hd-act"><a class="pill sm dark" href="https://jober.io/" target="_blank" rel="noopener noreferrer">자버 바로가기 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div>
 </div></header>
 
 <main>
@@ -59,7 +68,7 @@
 <div>
 <h1>사람과 사람을 잇고<br>더 큰 가능성을<br>연결합니다</h1>
 <p class="hero-lead"><span class="ph">메시지부터 계약, 인사관리, AI 대화까지</span><br><span class="ph">자버는 소통이 필요한 곳에</span> <span class="ph">기술을 더합니다</span></p>
-<div class="hero-act"><a class="pill dark" href="#services">자버 서비스 살펴보기 <svg class="ji" aria-hidden="true"><use href="#arrow-down-outlined"></use></svg></a><a class="pill" href="about/index.html">우리의 이야기</a></div>
+<div class="hero-act"><a class="pill dark" href="#services">자버 서비스 살펴보기 <svg class="ji" aria-hidden="true"><use href="#arrow-down-outlined"></use></svg></a><a class="pill" href="https://jll.kr/w/BVYQ3dV" target="_blank" rel="noopener noreferrer">도입 문의 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div>
 </div>
 <div class="hero-art">
 <span class="blob b-wave" aria-hidden="true" style="width:34%;height:34%;background:var(--lilac);right:-4%;top:-2%;z-index:0"></span>
@@ -129,15 +138,16 @@
 <span class="blob b-flower" aria-hidden="true" data-fall style="--d:240ms;--r:30deg;background:var(--peach);left:44%;top:120px"></span>
 <span class="blob b-scallop" aria-hidden="true" data-fall style="--d:320ms;--r:-24deg;background:var(--lilac);left:63%;top:-40px"></span>
 <span class="blob b-wave" aria-hidden="true" data-fall style="--d:400ms;--r:18deg;background:var(--lime);left:78%;top:120px"></span>
-<a class="tag-pill" href="https://jober.io/wall-write-document/7f720549-2d0c-439b-8bfd-8da25e840bfb" target="_blank" rel="noopener noreferrer" data-fall style="--d:480ms;--r:-34deg;left:4%;top:70px;transform:rotate(-14deg)">도입 문의하기 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a>
+<a class="tag-pill" href="https://jll.kr/w/BVYQ3dV" target="_blank" rel="noopener noreferrer" data-fall style="--d:480ms;--r:-34deg;left:4%;top:70px;transform:rotate(-14deg)">도입 문의하기 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a>
 <a class="tag-pill" href="https://jober.io/tour/ai/kakao/sending-helper" target="_blank" rel="noopener noreferrer" data-fall style="--d:560ms;--r:26deg;left:24%;top:120px;transform:rotate(-58deg)">샘플 알림톡 보내보기 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a>
+<a class="tag-pill" href="about/index.html" data-fall style="--d:600ms;--r:18deg;left:46%;top:170px;transform:rotate(10deg)">우리의 이야기 <svg class="ji" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a>
 <a class="tag-pill" href="https://jober.io/sign-up" target="_blank" rel="noopener noreferrer" data-fall style="--d:640ms;--r:-20deg;left:52%;top:46px;transform:rotate(-4deg)">무료로 시작하기 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a>
 <a class="tag-pill" href="https://blog.naver.com/joberteam" target="_blank" rel="noopener noreferrer" data-fall style="--d:720ms;--r:14deg;right:3%;top:90px;transform:rotate(38deg)">자버 블로그 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a>
 </div>
 
 <footer class="ft"><div class="w">
 <div class="ft-top fall-group">
-<div><h2 data-fall style="--d:0ms;--r:-6deg">소통이 더 쉬워지는 순간<br>새로운 가능성이 열립니다</h2><div class="acts"><a class="pill dark" data-fall style="--d:60ms;--r:5deg" href="https://jober.io/wall-write-document/7f720549-2d0c-439b-8bfd-8da25e840bfb" target="_blank" rel="noopener noreferrer">도입 문의하기</a><a class="pill" data-fall style="--d:120ms;--r:-4deg" href="https://jober.io/" target="_blank" rel="noopener noreferrer">자버 바로가기 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div></div>
+<div><h2 data-fall style="--d:0ms;--r:-6deg">소통이 더 쉬워지는 순간<br>새로운 가능성이 열립니다</h2><div class="acts"><a class="pill dark" data-fall style="--d:60ms;--r:5deg" href="https://jll.kr/w/BVYQ3dV" target="_blank" rel="noopener noreferrer">도입 문의하기</a><a class="pill" data-fall style="--d:120ms;--r:-4deg" href="https://jober.io/" target="_blank" rel="noopener noreferrer">자버 바로가기 <svg class="ji ji-ne" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></a></div></div>
 <div class="ft-col"><b data-fall style="--d:180ms;--r:7deg">서비스</b><a data-fall style="--d:240ms;--r:-5deg" href="services/alimtalk/index.html">카카오 알림톡</a><a data-fall style="--d:300ms;--r:4deg" href="services/contract/index.html">전자계약</a><a data-fall style="--d:360ms;--r:-7deg" href="services/hr/index.html">인사관리</a><a data-fall style="--d:390ms;--r:5deg" href="https://jober-crm-flex.laadt.chatgpt.site/" target="_blank" rel="noopener noreferrer">고객관리(CRM)</a><a data-fall style="--d:420ms;--r:6deg" href="services/connectia/index.html">커넥티아</a><a data-fall style="--d:420ms;--r:6deg" href="services/fellows/index.html">펠로우즈</a></div>
 <div class="ft-col"><b data-fall style="--d:480ms;--r:-6deg">자버</b><a data-fall style="--d:540ms;--r:5deg" href="about/index.html">회사소개</a><a data-fall style="--d:600ms;--r:-4deg" href="https://jober-service-guides.neocsv.chatgpt.site/" target="_blank" rel="noopener noreferrer">서비스 소개서</a><a data-fall style="--d:660ms;--r:7deg" href="https://jober.io/wall/recruit" target="_blank" rel="noopener noreferrer">인재채용</a><a data-fall style="--d:720ms;--r:-5deg" href="https://blog.naver.com/joberteam" target="_blank" rel="noopener noreferrer">블로그</a></div>
 </div>

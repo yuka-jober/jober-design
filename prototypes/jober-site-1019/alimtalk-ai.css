@@ -223,3 +223,45 @@
 .aa-pair figure:last-of-type{transform-origin:0 50%;transform:scale(.6);opacity:0;transition:transform .6s cubic-bezier(.22,.61,.36,1),opacity .4s}
 .aa-pair.on figure:last-of-type{transform:none;opacity:1}
 @media(prefers-reduced-motion:reduce){.aa-pair figure:last-of-type{transform:none;opacity:1;transition:none}}
+
+/* 상세페이지 넘겨 보기 (오른쪽 폰): 이벤트 안내 문서 → 쿠폰 페이지 */
+.aa-pg{position:relative}
+.aa-pg-ph{position:relative;aspect-ratio:530/1004;border-radius:32px;overflow:hidden;background:#fff;box-shadow:0 24px 48px -16px rgba(31,42,90,.28),0 4px 12px rgba(31,42,90,.06)}
+.aa-pg-track{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.aa-pg-track::-webkit-scrollbar{display:none}
+.aa-pg-sl{flex:0 0 100%;height:100%;scroll-snap-align:start;scroll-snap-stop:always}
+.aa-pg-sl>img{display:block;width:100%;height:100%;object-fit:cover}
+.aa-pg-nav{position:absolute;top:calc(50% - 20px);z-index:3;display:grid;place-items:center;width:40px;height:40px;margin:-20px 0 0;padding:0;border:1px solid #E4E6EB;border-radius:50%;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 4px 12px rgba(31,42,90,.12);transition:opacity .2s}
+.aa-pg-nav .ji{width:16px;height:16px}
+.aa-pg-nav.prev{left:-20px}.aa-pg-nav.next{right:-20px}
+.aa-pg-nav:disabled{opacity:0;pointer-events:none}
+@media(max-width:640px){.aa-pg-ph{border-radius:24px}.aa-pg-nav{width:36px;height:36px;margin-top:-18px}.aa-pg-nav.prev{left:-12px}.aa-pg-nav.next{right:-12px}}
+/* 이벤트 안내 문서: 375px 폭 기준으로 그리고 폰 폭에 맞춰 축소(zoom은 스크립트) */
+.aa-doc{display:flex;flex-direction:column;width:375px;height:710px;background:#fff;color:#000;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",var(--font,sans-serif)}
+.aa-doc-st{flex:none;display:flex;align-items:center;justify-content:space-between;height:32px;padding:0 24px;font-size:15px}
+.aa-doc-st b{font-weight:600}
+.aa-doc-st i{width:24px;height:12px;border-radius:3px;background:#333}
+.aa-doc-sc{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding:24px 16px 48px;text-align:center}
+.aa-doc-sc::-webkit-scrollbar{display:none}
+.aa-doc-b{margin:0}
+.aa-doc-logo{display:block;width:240px;height:auto;margin:0 auto 4px}
+.aa-doc-t{font-size:18px;font-weight:700;line-height:1.5;margin-bottom:28px}
+.aa-doc-p{font-size:14px;line-height:27px}
+.aa-doc-p em{font-style:normal;color:#F00}
+.aa-doc-ev{height:48px;margin:32px 0;display:grid;place-items:center;background:#DEEAF1;border-radius:4px;font-size:14px;font-weight:700}
+.aa-doc-img{display:block;width:100%;height:auto;margin:-28px 0 8px}
+.aa-doc-cap{margin-bottom:96px}
+.aa-doc-form{padding:0 12px;text-align:left}
+.aa-doc-h{margin:0 0 32px;font-size:24px;font-weight:700;line-height:1.5}
+.aa-doc-l{margin:0 0 16px;font-size:16px;font-weight:700}
+.aa-doc-in{margin:0 0 56px;height:60px;padding:0 12px;display:flex;align-items:center;border:1px solid #D9D9D9;border-radius:12px;font-size:16px;color:#BFBFBF}
+.aa-doc-r{margin:0 0 16px;height:60px;padding:0 12px;display:flex;align-items:center;gap:8px;background:#FAFAFA;border:1px solid #D9D9D9;border-radius:12px;font-size:14px}
+.aa-doc-r i{flex:none;width:16px;height:16px;border:1px solid #D9D9D9;border-radius:50%;background:#fff}
+/* 만들어지는 모습: 글자가 한 자씩 써지며 문서가 채워짐 (스크립트). 아직 안 쓴 글자는 자리만 차지해 레이아웃이 흔들리지 않게 */
+.aa-doc .aa-doc-b{opacity:0;transition:opacity .25s}
+.aa-doc .aa-doc-b.on{opacity:1}
+.aa-doc .aa-doc-ev,.aa-doc .aa-doc-in,.aa-doc .aa-doc-r{transition:opacity .25s}
+.aa-doc .tw-rest{visibility:hidden}
+.aa-doc .tw-caret{display:inline-block;width:2px;height:1.1em;margin:0 -1px;vertical-align:-.15em;background:#457BF7;animation:aaCaret .8s steps(1) infinite}
+@keyframes aaCaret{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.aa-doc .aa-doc-b{opacity:1;transition:none}}

@@ -96,7 +96,7 @@
 <section class="al-sec">
 <div class="wrap aa-page">
 <div>
-<div class="al-head"><h2>메시지에 연결할 상세페이지,<br>3초만에 완성</h2><p class="al-sub"><span class="ph">서식 자동 생성으로</span><br><span class="ph">디자이너가 없어도 사장님 혼자서 완성</span></p></div>
+<div class="al-head"><h2>메시지에 연결할 상세페이지,<br>10초만에 완성</h2><p class="al-sub"><span class="ph">서식 자동 생성으로</span><br><span class="ph">디자이너가 없어도 사장님 혼자서 완성</span></p></div>
 </div>
 <div class="aa-pair" data-beam>
 <figure><div class="aa-ph" role="img" aria-label="럭키피트니스가 보낸 쿠폰 발급 안내 알림톡"><div class="aa-ph-in" aria-hidden="true">
@@ -108,7 +108,22 @@
 </div></div>
 </div></div><figcaption>알림톡</figcaption></figure>
 <svg class="aa-beam" aria-hidden="true"><defs><linearGradient id="aaBeam" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#457BF7" stop-opacity=".5"/><stop offset="1" stop-color="#457BF7" stop-opacity=".26"/></linearGradient></defs><polygon class="aa-beam-fan" fill="url(#aaBeam)"/><rect class="aa-beam-btn" rx="6"/></svg>
-<figure><img class="aa-phone" src="../../assets/alimtalk-ai/coupon.png" alt="PT 할인 쿠폰 페이지" width="265" height="502" loading="lazy"><figcaption>쿠폰 페이지</figcaption></figure>
+<figure class="aa-pg"><div class="aa-pg-ph"><div class="aa-pg-track"><div class="aa-pg-sl" data-name="이벤트 안내 페이지"><div class="aa-doc" role="img" aria-label="럭키피트니스 프로모션 안내와 상담 신청 페이지"><div class="aa-doc-st" aria-hidden="true"><b>14:03</b><i></i></div><div class="aa-doc-sc" aria-hidden="true">
+<img class="aa-doc-b aa-doc-logo" src="../../assets/alimtalk-ai/lucky-logo.png" alt="" width="240" height="160">
+<p class="aa-doc-b aa-doc-t">[럭키피트니스 프로모션 정보 안내]</p>
+<p class="aa-doc-b aa-doc-p">안녕하세요 회원님! 럭키피트니스입니다🍀<br>보내주신 사랑에 보답하고자, 이벤트를 오픈합니다.<br>상담 신청을 원하시는 분은 아래 정보를 남겨주세요!</p>
+<p class="aa-doc-b aa-doc-ev">Event1. 2026 지방 삭제 이벤트</p>
+<p class="aa-doc-b aa-doc-p">5kg/10kg/15kg 감량 목표반 PT <em>10% 할인쿠폰</em></p>
+<p class="aa-doc-b aa-doc-ev">Event2. 회원권 연장 특별 혜택</p>
+<p class="aa-doc-b aa-doc-p">무릎보호대 <em>증정</em></p>
+<p class="aa-doc-b aa-doc-ev">Event3. 럭키 필라테스 오픈 특가</p>
+<img class="aa-doc-b aa-doc-img" src="../../assets/alimtalk-ai/lucky-pilates.png" alt="" width="343" height="198">
+<p class="aa-doc-b aa-doc-p aa-doc-cap">필라테스 100회 <em>350만원-&gt;199만원</em></p>
+<div class="aa-doc-form"><p class="aa-doc-b aa-doc-h">상담 희망 시 아래 내용을 남겨주세요.</p>
+<p class="aa-doc-b aa-doc-l">이름</p><p class="aa-doc-b aa-doc-in">입력해주세요.</p>
+<p class="aa-doc-b aa-doc-l">연락처</p><p class="aa-doc-b aa-doc-in">휴대폰 번호를 입력해주세요.</p>
+<p class="aa-doc-b aa-doc-l">상담 희망 이벤트💡</p><p class="aa-doc-b aa-doc-r"><i></i>Event1. 2026 지방 삭제 이벤트</p><p class="aa-doc-b aa-doc-r"><i></i>Event2. 회원권 연장 특별 혜택</p><p class="aa-doc-b aa-doc-r"><i></i>Event3. 럭키 필라테스 오픈 특가</p></div>
+</div></div></div><div class="aa-pg-sl" data-name="쿠폰 페이지"><img src="../../assets/alimtalk-ai/coupon.png" alt="PT 할인 쿠폰 페이지" width="265" height="502"></div></div></div><button type="button" class="aa-pg-nav prev" aria-label="이전 페이지" disabled><svg class="ji" aria-hidden="true"><use href="#arrow-left-outlined"></use></svg></button><button type="button" class="aa-pg-nav next" aria-label="다음 페이지"><svg class="ji" aria-hidden="true"><use href="#arrow-right-outlined"></use></svg></button><figcaption aria-live="polite">이벤트 안내 페이지</figcaption></figure>
 </div>
 </div>
 </section>
@@ -334,7 +349,7 @@ document.querySelectorAll('.aa-copy').forEach(function(b){b.addEventListener('cl
   var svg=pair.querySelector('.aa-beam'),fan=svg.querySelector('.aa-beam-fan'),rb=svg.querySelector('.aa-beam-btn'),grad=svg.querySelector('linearGradient');
   var btn=pair.querySelector('.aa-open'),cp=pair.querySelectorAll('figure')[1];
   var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches,raf=0;
-  function geo(){var s=pair.getBoundingClientRect(),b=btn.getBoundingClientRect(),im=cp.querySelector('img'),ql=0,qt=0;for(var n=im;n&&n!==pair;n=n.offsetParent){ql+=n.offsetLeft;qt+=n.offsetTop}var qb=qt+im.offsetHeight;
+  function geo(){var s=pair.getBoundingClientRect(),b=btn.getBoundingClientRect(),im=cp.querySelector('.aa-pg-ph'),ql=0,qt=0;for(var n=im;n&&n!==pair;n=n.offsetParent){ql+=n.offsetLeft;qt+=n.offsetTop}var qb=qt+im.offsetHeight;
     return {b:{l:b.left-s.left,r:b.right-s.left,t:b.top-s.top,bt:b.bottom-s.top},from:[[b.right-s.left,b.top-s.top],[b.right-s.left,b.bottom-s.top]],to:[[ql,qb],[ql,qt]]}}
   function draw(k){var g=geo(),A=g.from,B=g.to,e=1-Math.pow(1-k,3);
     var far=B.map(function(pt,i){var o=A[1-i];return [o[0]+(pt[0]-o[0])*e,o[1]+(pt[1]-o[1])*e]});
@@ -346,6 +361,44 @@ document.querySelectorAll('.aa-copy').forEach(function(b){b.addEventListener('cl
   draw(0);
   if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){setTimeout(open,300);io.disconnect()}},{threshold:.4});io.observe(pair)}else open();
   window.addEventListener('resize',function(){draw(pair.classList.contains('on')?1:0)});
+})();
+</script>
+<script>
+/* 상세페이지 넘겨 보기: 첫 장은 이벤트 안내 문서(글자가 써지며 채워지고 그 뒤 스크롤), 화살표·옆으로 밀기로 쿠폰 페이지 */
+(function(){
+  var fig=document.querySelector('.aa-pg');if(!fig)return;
+  var ph=fig.querySelector('.aa-pg-ph'),tr=fig.querySelector('.aa-pg-track'),sl=tr.children,doc=fig.querySelector('.aa-doc'),cap=fig.querySelector('figcaption'),
+      prev=fig.querySelector('.prev'),next=fig.querySelector('.next'),cur=0;
+  function fit(){doc.style.zoom=ph.clientWidth/375}
+  function idx(){return Math.round(tr.scrollLeft/tr.clientWidth)}
+  function sync(){var i=idx();if(i===cur)return;cur=i;prev.disabled=i===0;next.disabled=i===sl.length-1;cap.textContent=sl[i].getAttribute('data-name')}
+  function go(d){tr.scrollTo({left:(cur+d)*tr.clientWidth,behavior:'smooth'})}
+  prev.addEventListener('click',function(){go(-1)});next.addEventListener('click',function(){go(1)});
+  tr.addEventListener('scroll',function(){clearTimeout(tr._t);tr._t=setTimeout(function(){cur=-1;sync()},60)});
+  fit();window.addEventListener('resize',function(){fit();tr.scrollLeft=cur*tr.clientWidth});
+  var pair=fig.closest('[data-beam]');
+  /* 글자 쓰기: 블록 순서대로 나타나고, 글자는 한 자씩. 쓰는 줄을 따라 내려가다 다 쓰면 맨 위로 */
+  var sc=doc.querySelector('.aa-doc-sc'),blocks=[].slice.call(doc.querySelectorAll('.aa-doc-b')),touched=false,caret=document.createElement('span');caret.className='tw-caret';
+  ['wheel','touchstart','pointerdown'].forEach(function(ev){sc.addEventListener(ev,function(){touched=true},{passive:true})});
+  var jobs=[];
+  blocks.forEach(function(b){var ts=[],w=document.createTreeWalker(b,NodeFilter.SHOW_TEXT,null),n;while((n=w.nextNode()))if(n.nodeValue.trim())ts.push(n);
+    var parts=ts.map(function(n){var on=document.createElement('span'),rest=document.createElement('span');rest.className='tw-rest';var full=Array.from(n.nodeValue);rest.textContent=n.nodeValue;n.parentNode.replaceChild(rest,n);rest.parentNode.insertBefore(on,rest);return {on:on,rest:rest,full:full}});
+    jobs.push({b:b,parts:parts})});
+  function follow(el){if(touched)return;var r=el.getBoundingClientRect(),v=sc.getBoundingClientRect(),z=parseFloat(doc.style.zoom)||1,over=r.bottom-v.bottom+24*z;if(over>0)sc.scrollTop+=over/z}
+  function build(){
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){jobs.forEach(function(j){j.b.classList.add('on');j.parts.forEach(function(p){p.on.textContent=p.full.join('');p.rest.textContent=''})});return}
+    var ji=0,pi=0,ci=0;
+    function tick(){
+      if(ji>=jobs.length){caret.remove();setTimeout(function(){if(!touched)sc.scrollTo({top:0,behavior:'smooth'})},900);return}
+      var j=jobs[ji];
+      if(!j.b.classList.contains('on')){j.b.classList.add('on');follow(j.b);return setTimeout(tick,j.parts.length?60:220)}
+      var p=j.parts[pi];
+      if(!p){ji++;pi=0;ci=0;return setTimeout(tick,90)}
+      ci+=2;p.on.textContent=p.full.slice(0,ci).join('');p.rest.textContent=p.full.slice(ci).join('');p.on.after(caret);follow(caret);
+      if(ci>=p.full.length){pi++;ci=0}
+      setTimeout(tick,22)}
+    tick()}
+  if(pair&&'MutationObserver' in window){if(pair.classList.contains('on'))build();else new MutationObserver(function(m,o){if(pair.classList.contains('on')){setTimeout(build,300);o.disconnect()}}).observe(pair,{attributes:true,attributeFilter:['class']})}else build();
 })();
 </script>
 </body></html>

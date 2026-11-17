@@ -189,15 +189,14 @@
 .py .fc-vis .win .dl{font-size:11px;padding:5px 10px}
 .py .fc-vis .win .mtbl td:last-child{text-align:center}
 .py .fc-vis .win .mtbl{table-layout:fixed;width:100%}
-.py .fc-vis .win .mtbl th:nth-child(1){width:15%}
+.py .fc-vis .win .mtbl th:nth-child(1){width:11%}
 .py .fc-vis .win .mtbl th:nth-child(2){width:18%}
 .py .fc-vis .win .mtbl th:nth-child(3){width:14%}
 .py .fc-vis .win .mtbl th:nth-child(4){width:11%}
-.py .fc-vis .win .mtbl th:nth-child(5){width:12%}
-.py .fc-vis .win .mtbl th:nth-child(6){width:14%}
+.py .fc-vis .win .mtbl th:nth-child(5){width:15%}
+.py .fc-vis .win .mtbl th:nth-child(6){width:15%}
 .py .fc-vis .win .mtbl th:nth-child(1),.py .fc-vis .win .mtbl td:nth-child(1){text-align:left;padding-left:10px}
-.py .fc-vis .win .mtbl th:nth-child(2),.py .fc-vis .win .mtbl td:nth-child(2){text-align:center}
-.py .fc-vis .win .mtbl th:nth-child(n+3):nth-child(-n+6),.py .fc-vis .win .mtbl td:nth-child(n+3):nth-child(-n+6){text-align:right;padding-right:10px}
+.py .fc-vis .win .mtbl th:nth-child(n+2):nth-child(-n+6),.py .fc-vis .win .mtbl td:nth-child(n+2):nth-child(-n+6){text-align:left;padding-left:8px;padding-right:4px}
 .py .fc-vis .win .mtbl th:last-child{text-align:center}
 .py .dual{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;align-items:center}
 .py .dl2{background:#fff;border:1px solid var(--line-2);border-radius:8px;padding:6px 8px;display:flex;flex-direction:column;gap:4px;min-width:0}
@@ -292,9 +291,6 @@
 /* ---- 주요 기능: 인사관리 카드와 같은 흰 카드 두 장 ---- */
 .py .py-feats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .py .py-feat{display:flex;flex-direction:column;background:#fff;border-radius:var(--r-card);padding:32px 32px 28px;box-shadow:0 24px 56px rgba(31,42,90,.09),0 4px 14px rgba(31,42,90,.05)}
-.py .py-ico{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;background:var(--peri)}
-.py .py-ico svg{width:24px;height:24px}
-.py .py-hana{width:48px;height:48px;border-radius:13px;display:block}
 .py .py-for{margin:24px 0 8px;font-size:15px;font-weight:600;color:var(--blue)}
 .py .py-feat.h .py-for{color:var(--hana)}
 .py .py-feat h3{font-size:24px!important;margin:0 0 12px}
@@ -348,8 +344,6 @@
 .py .py-step li+li{margin-top:4px}
 .py .py-step li:before{content:"";position:absolute;left:2px;top:.75em;width:5px;height:5px;border-radius:50%;background:#b8bfcc}
 .py .py-step .hbtn,.py .py-step .uib{font-size:14px}
-.py .py-note{margin:32px 0 0;font-size:16px;line-height:1.7;color:var(--sub)}
-.py .py-note b{color:var(--ink);font-weight:600}
 
 /* ---- 이용 전 확인: 항목 네 개 ---- */
 .py .at-note p b{display:inline-block;margin-bottom:2px}
@@ -375,26 +369,11 @@
   .py .py-feat{padding:24px}
   .py .py-wz-stage,.py .at-grid .at-stage{padding:16px}
   .py .py-mini-stage{padding:16px}
-  .py .py-step li,.py .py-note{font-size:15px}
+  .py .py-step li{font-size:15px}
   .py .py-hero-win .app-tabs{flex-wrap:wrap}
   .py .py-hero-win .app-tabs .tr{margin-left:0}
 }
 
-/* ---- 인사관리 페이지: 인건비 관리 카드 (두 기능을 한 카드에 나눠 담음) ---- */
-.hr .hr-card-split .hr-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;margin:4px 0 8px}
-.hr .hr-card-split .hr-pane{min-width:0;padding-right:40px}
-.hr .hr-card-split .hr-pane.h{padding:0 0 0 40px;border-left:1px solid #E6E8EE}
-.hr .hr-card-split .hr-for{margin:0 0 6px;font-size:14px;font-weight:600;color:#3F5BC4}
-.hr .hr-card-split .hr-pane.h .hr-for,.hr .hr-card-split .hr-pane.h .hr-tags span{color:#0b7d6b}
-.hr .hr-card-split .hr-pane.h .hr-tags span+span:before{color:#BFE0D9}
-.hr .hr-card-split h4{margin:0 0 8px;font-size:19px;font-weight:600;letter-spacing:-.03em}
-.hr .hr-card-split .hr-pane>p:not(.hr-for){font-size:16px;color:#535954;line-height:1.75;margin:0 0 16px}
-.hr .hr-card-split .hr-tags{margin-bottom:0}
-@media(max-width:760px){
-  .hr .hr-card-split .hr-split{grid-template-columns:1fr}
-  .hr .hr-card-split .hr-pane{padding:0}
-  .hr .hr-card-split .hr-pane.h{padding:24px 0 0;margin-top:24px;border-left:0;border-top:1px solid #E6E8EE}
-}
 /* 모바일: 단계 판이 화면 밖으로 밀리지 않게, 목업은 축소해 한눈에 */
 @media(max-width:900px){
   .py .py-stepper{grid-template-columns:minmax(0,1fr)}
@@ -448,8 +427,6 @@
 .py .py-wz-stage{display:flex;flex-direction:column}
 .py .py-ex{margin:16px 0 0;font-size:12px;font-weight:500;color:#A8AEBB;text-align:center}
 /* 하나은행 안내: 앞에 i 아이콘 (개선안과 같이 초록 테두리 원) */
-.py .py-note{display:flex;align-items:flex-start;gap:8px}
-.py .py-ni{flex:none;box-sizing:border-box;width:18px;height:18px;margin-top:4px;border-radius:50%;border:1.5px solid var(--hana);color:var(--hana);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;line-height:1;padding-top:1px}
 /* 하나은행 단계: 설명을 회색 판 안에 넣고, 미니 화면은 판 아래쪽에 맞춰 세 장이 같은 높이 */
 .py .py-step{display:flex;flex-direction:column;background:var(--soft);border-radius:var(--r-card);padding:32px 28px 28px}
 .py .py-step .py-sn{margin-top:0}
@@ -601,9 +578,6 @@
 @media(max-width:640px){.py .py-head{margin-bottom:24px}}
 
 /* 인사관리 메인 인건비 카드: 제목을 아이콘 오른쪽으로 올려 위쪽 빈 공간을 줄임 */
-.hr .hr-card-split .hr-card-top{justify-content:flex-start;gap:16px}
-.hr .hr-card-split .hr-card-top h3{margin:0!important}
-.hr .hr-card-split .hr-card-top .hr-num{margin-left:auto}
 /* 인건비 상세 주요 기능 카드: 아이콘 | 고객 | 기능명 한 줄 */
 .py .py-fh{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .py .py-fh .py-for{margin:0;padding-right:12px;border-right:1px solid #E4E6EB;line-height:1.2}
@@ -710,32 +684,20 @@
   .py .hr-hero h1{font-size:clamp(36px,4.3vw,56px)!important}
 }
 @media(min-width:641px) and (max-width:900px){.py .hr-hero h1{font-size:clamp(40px,8vw,56px)!important}}
-/* 주요 기능 카드: 회색 판 안에 두 장, 머리줄은 아이콘 + 고객 꼬리표, 기능명은 그 아래 크게. 판 폭은 조금 줄임 */
-.py .py-feats{max-width:1080px;background:var(--soft);border-radius:var(--r-card);padding:12px;gap:12px}
-.py .py-feat{border-radius:24px;box-shadow:0 2px 8px rgba(31,42,90,.04)}
-.py .py-fh{flex-wrap:wrap;gap:12px;row-gap:24px;margin-bottom:12px}
-.py .py-fh h3{flex-basis:100%;font-size:26px!important}
-.py .py-fh .py-for{border-right:0;padding:6px 12px;border-radius:999px;background:var(--soft);font-size:14px;line-height:1.2}
-@media(max-width:640px){.py .py-feats{padding:8px;gap:8px;border-radius:24px}.py .py-fh{row-gap:16px}.py .py-fh h3{font-size:22px!important}.py .py-fh .py-for{padding:5px 10px}}
 /* 급여대장 업로드: 창은 640으로 남은 칸 가운데, 예시 화면 안내는 창 오른쪽 위 */
 .py .py-wz-stage .wz{max-width:640px;margin:0 auto}
 .py .py-wz-stage>.py-ex{display:block;max-width:640px;margin:0 auto 12px;text-align:right}
-/* 인사관리 메인 인건비 카드: 회색 판 없이 위 카드 두 칸 폭으로 왼쪽에 (3칸 줄일 때만) */
-@media(min-width:1101px){.hr .hr-cards.one:has(#payroll){padding-right:calc((100% - 44px) / 3 + 22px)}}
-/* 주요 기능: 회색 판(카드 안 카드)과 꼬리표 회색 바탕 빼고, 제목 오른쪽에 카드 두 장을 한 줄로 */
-.py .py-feats{max-width:none;background:none;border-radius:0;padding:0;gap:24px}
-.py .py-feat{border-radius:var(--r-card);padding:28px 28px 24px;box-shadow:0 24px 56px rgba(31,42,90,.09),0 4px 14px rgba(31,42,90,.05)}
-.py .py-fh .py-for{padding:0;border-radius:0;background:none}
-/* 두 기능을 카드 하나로 합치고 가운데 세로 디바이더로 나눔 (좁은 화면에선 가로 디바이더) */
-.py .py-feats{gap:0;background:#fff;border-radius:var(--r-card);box-shadow:0 24px 56px rgba(31,42,90,.09),0 4px 14px rgba(31,42,90,.05)}
-.py .py-feat{background:none;box-shadow:none;border-radius:0;padding:32px}
-.py .py-feat+.py-feat{position:relative}
-.py .py-feat+.py-feat:before{content:'';position:absolute;left:0;top:32px;bottom:32px;width:1px;background:#E6E8EE}
-@media(max-width:900px){.py .py-feat{padding:24px}.py .py-feat+.py-feat:before{top:0;bottom:auto;left:24px;right:24px;width:auto;height:1px}}
-@media(min-width:1240px){
-  .py .wrap:has(>.py-feats){display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;align-items:center}
-  .py .wrap:has(>.py-feats)>.py-head{margin-bottom:0}
-}
+/* 주요 기능: 제목·설명 아래 카드 두 장을 나란히, 가운데 + 동그라미. 머리줄은 "고객 | 기능명" 한 줄, 설명 아래 구분선 뒤 꼬리표 */
+.py .py-feats{position:relative;gap:24px}
+.py .py-feat{border-radius:var(--r-card);padding:36px 36px 32px;box-shadow:0 24px 56px rgba(31,42,90,.09),0 4px 14px rgba(31,42,90,.05)}
+.py .py-fh{flex-wrap:nowrap;gap:16px;margin-bottom:16px}
+.py .py-fh .py-for{margin:0;padding:0 16px 0 0;border-right:1px solid #E4E6EB;font-size:24px;font-weight:600;line-height:1.2;letter-spacing:-.03em}
+.py .py-fh h3{flex-basis:auto;font-size:24px!important;line-height:1.2}
+.py .py-feat .py-fd{margin:0 0 24px}
+.py .py-feat .hr-tags{padding-top:24px;border-top:1px solid #EEF0F3}
+.py .py-feats:after{content:"+";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#fff;box-shadow:0 8px 24px rgba(31,42,90,.12);display:grid;place-items:center;font-size:24px;font-weight:400;line-height:1;color:var(--blue)}
+@media(max-width:900px){.py .py-feat{padding:28px 24px 24px}}
+@media(max-width:640px){.py .py-fh{gap:12px}.py .py-fh .py-for{padding-right:12px;font-size:20px}.py .py-fh h3{font-size:20px!important}.py .py-feats:after{width:40px;height:40px;font-size:20px}}
 /* 기능 꼬리표가 줄바꿈될 때 줄 맨 앞에 구분선(|)이 남지 않게: 모든 꼬리표 앞에 같은 폭 구분선을 두고, 줄 시작 구분선은 왼쪽으로 밀어 가림 */
 .py .py-feat .hr-tags{margin-left:-21px;clip-path:inset(0 0 0 21px)}
 .py .py-feat .hr-tags span:before{content:"|";display:inline-block;width:21px;padding:0;text-align:center;color:#C3CDEB;font-weight:400}
@@ -756,3 +718,10 @@
   .py .py-sn-prev{grid-column:1;grid-row:1}
   .py .py-sn-next{grid-column:3;grid-row:1}
 }
+
+/* 인사관리 페이지 인건비 카드: 3줄에 안 들어가는 폭(모바일)에선 짧은 문구 */
+.hr #payroll .pay-m{display:none}
+@media(max-width:640px){.hr #payroll .pay-d{display:none}.hr #payroll .pay-m{display:block}}
+/* 급여명세서 발송 | 사업소득 관리: 두 판이 나란히 서는 폭(901~1239)에선 표가 겹치지 않게 모바일처럼 축소 */
+@media(min-width:901px) and (max-width:1099px){.py .at-pair+.at-grid .fc-vis{zoom:.66}}
+@media(min-width:1100px) and (max-width:1239px){.py .at-pair+.at-grid .fc-vis{zoom:.85}}

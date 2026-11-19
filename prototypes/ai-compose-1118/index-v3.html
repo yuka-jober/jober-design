@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 알림톡 작성 · 자버</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../../tokens.css?v=1120b">
+<link rel="stylesheet" href="../../components.css?v=1120b">
+<link rel="stylesheet" href="../jober-site-1019/v3-shell.css?v=1120b">
+<style>
+/* ai-agent-1021 에서 가져온 첫 화면 · 말풍선 · 팝업 스타일 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font-base);
+  background: var(--color-surface);
+  color: var(--color-text);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+button { font-family: inherit; }
+[hidden] { display: none !important; }
+
+.app { display: flex; flex-direction: column; height: 100vh; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--color-border-split);
+  flex-shrink: 0;
+}
+.topbar-title { display: flex; align-items: center; gap: 8px; }
+.topbar-title .icon { color: var(--color-primary); }
+.topbar-right { display: flex; align-items: center; gap: 4px; position: relative; }
+
+/* ── 2. HOME — 첫 화면은 입력창 하나에만 집중 ── */
+.home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 48px 24px 96px;
+}
+.home-title { font-size: var(--fs-30); font-weight: var(--fw-bold); line-height: var(--lh-tight); letter-spacing: var(--ls-tighter); text-align: center; }
+.home-box {
+  width: 720px;
+  max-width: 100%;
+  padding: 20px 20px 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-3xl);
+  box-shadow: var(--shadow-2);
+  transition: border-color var(--motion-standard), box-shadow var(--motion-standard);
+}
+.home-box:focus-within { border-color: var(--color-primary); box-shadow: var(--shadow-3); }
+.home-box textarea {
+  display: block;
+  width: 100%;
+  min-height: 96px;
+  max-height: 320px;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+  font-family: var(--font-base);
+  font-size: var(--fs-16);
+  line-height: var(--lh-base);
+  letter-spacing: var(--ls-base);
+  color: var(--color-text);
+}
+.home-box textarea::placeholder { color: var(--color-disabled); }
+.home-bar { display: flex; justify-content: flex-end; margin-top: 8px; }
+.round { border-radius: var(--r-full); }
+
+/* 무엇을 해주는지 — 설명 대신 전후를 보여준다 */
+.demo { display: flex; align-items: center; justify-content: center; gap: 16px; width: 720px; max-width: 100%; }
+.demo-side { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 260px; min-width: 0; }
+.demo-sms {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--r-2xl);
+  background: var(--color-bg-base);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  color: var(--color-text-secondary);
+}
+/* 말로 한 요청 ↔ 붙여넣은 문자가 번갈아 보인다 */
+.demo-sms { display: grid; }
+.demo-ex { grid-area: 1 / 1; opacity: 0; transition: opacity var(--motion-slow) var(--ease-standard); }
+.demo-ex.is-on { opacity: 1; }
+.demo .bubble { width: 100%; }
+.demo .bubble-body { padding: 12px 16px; }
+.demo .var { cursor: default; }
+.demo-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: var(--r-full);
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+}
+/* 왼쪽 → 화살표 → 오른쪽 순서로 한 번만 나타난다 */
+.demo > * { opacity: 0; animation: demo-in var(--motion-slow) var(--ease-enter) forwards; }
+.demo > :nth-child(2) { animation-delay: 300ms; }
+.demo > :nth-child(3) { animation-delay: 600ms; }
+@keyframes demo-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.shortcuts { display: flex; gap: 32px; }
+.shortcut {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  border: 0; background: none;
+  font-size: var(--fs-12); color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.shortcut-tile {
+  display: flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px;
+  border-radius: var(--r-xl);
+  transition: transform var(--motion-standard) var(--ease-standard);
+}
+.shortcut:hover .shortcut-tile { transform: translateY(-2px); }
+.shortcut:hover { color: var(--color-text); }
+.tile-blue   { background: var(--color-accent-blue-bg);   color: var(--color-accent-blue-fg); }
+.tile-cyan   { background: var(--color-accent-cyan-bg);   color: var(--color-accent-cyan-fg); }
+.tile-orange { background: var(--color-accent-orange-bg); color: var(--color-accent-orange-fg); }
+
+/* 진행 상태 — 지금 하는 단계 + 경과 시간 */
+.progress { display: flex; align-items: center; gap: 8px; color: var(--color-text-secondary); }
+.typing { display: inline-flex; gap: 4px; }
+.typing span { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--color-primary); animation: blink 1s infinite; }
+.typing span:nth-child(2) { animation-delay: .2s; }
+.typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 50% { opacity: .3; } }
+.ai-mark {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--icon-xl); height: var(--icon-xl);
+  border-radius: var(--r-full);
+  background: var(--color-accent-blue-bg);
+  color: var(--color-accent-blue-fg);
+}
+.bubble { border-radius: var(--r-xl); overflow: hidden; background: var(--color-surface); box-shadow: var(--shadow-2); }
+.bubble-head { padding: 8px 16px; background: var(--color-kakao); color: var(--color-on-kakao); font-size: var(--fs-12); font-weight: var(--fw-medium); }
+.bubble-body { padding: 16px; font-size: var(--fs-14); line-height: var(--lh-base); white-space: pre-wrap; }
+.fixed { cursor: text; }
+.var.has-flag { text-decoration: underline wavy var(--color-warning); text-decoration-thickness: 1px; text-underline-offset: 4px; }   /* 입력을 멈췄을 때 — 광고·못 쓰는 말이 든 칸 */
+.lock-del { display: inline-flex; vertical-align: middle; margin-left: 4px; padding: 2px; border: 0; border-radius: var(--r-full); background: none; color: var(--color-text-secondary); cursor: pointer; }
+.lock-del:hover { background: var(--color-bg-base); color: var(--color-error); }
+.sec-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.link-under { height: auto; padding: 0; text-decoration: underline; text-underline-offset: 3px; color: var(--color-text-secondary); }
+.link-under:hover { color: var(--color-text); }
+.dialog.dialog-tpls { display: flex; flex-direction: column; gap: 16px; width: calc(100vw - 64px); max-width: 1120px; max-height: 88vh; overflow-y: auto; }
+.tpls-head { display: flex; align-items: center; justify-content: space-between; }
+/* 자버 템플릿 목록 틀 — 탭·검색줄 + 카드 자리 (회색 빈 모양) */
+.tpls-frame { display: flex; flex-direction: column; gap: 16px; padding: 20px; border-radius: var(--r-xl); background: var(--color-bg-base); }
+.tpls-bar { display: flex; align-items: center; gap: 8px; }
+.tpls-tab { padding: 4px 12px; border-radius: var(--r-full); background: var(--color-surface); font-size: var(--fs-12); color: var(--color-text-secondary); }
+.tpls-tab.is-on { background: var(--color-primary); color: var(--color-on-primary); }
+.tpls-search { margin-left: auto; width: 200px; padding: 4px 12px; border-radius: var(--r-md); background: var(--color-surface); font-size: var(--fs-12); color: var(--color-disabled); }
+.tpls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.tpls-card { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: var(--r-lg); background: var(--color-surface); }
+.tpls-card i { height: 72px; border-radius: var(--r-md); background: var(--color-bg-base); }
+.tpls-card b { height: 8px; border-radius: var(--r-full); background: var(--color-bg-base); }
+.tpls-card b:last-child { width: 60%; }
+.fixed.is-locked { cursor: not-allowed; color: var(--color-text-secondary); }   /* 수신거부 링크 — 고칠 수 없는 줄 */
+.var {
+  padding: 0 2px;
+  border-radius: var(--r-xs);
+  background: var(--color-warning-bg);
+  outline: none;
+  cursor: text;
+  transition: background var(--motion-slow);
+}
+.var:focus { background: var(--color-primary-bg); box-shadow: 0 0 0 1px var(--color-primary); }
+.var:empty::before { content: attr(data-name); color: var(--color-disabled); }
+.var-recipient { background: var(--color-primary-bg); cursor: default; }
+/* 방금 바뀐 칸 */
+.var.is-changed { animation: changed 2s var(--ease-standard); }
+@keyframes changed { 0%, 60% { background: var(--color-primary-border); } }
+/* 확인이 필요한 칸 */
+.var.is-check { box-shadow: inset 0 -2px 0 var(--color-warning); }
+.bubble-btn {
+  display: block; width: calc(100% - 32px); margin: 0 16px 16px;
+  height: var(--control-h);
+  border: 1px solid var(--color-border-split); border-radius: var(--r-sm);
+  background: var(--color-surface-sub);
+  font-size: var(--fs-12);
+}
+.dialog.dialog-tpls { display: flex; flex-direction: column; gap: 16px; width: calc(100vw - 64px); max-width: 1120px; max-height: 88vh; overflow-y: auto; }
+.tpls-head { display: flex; align-items: center; justify-content: space-between; }
+/* 자버 템플릿 목록 틀 — 탭·검색줄 + 카드 자리 (회색 빈 모양) */
+.tpls-frame { display: flex; flex-direction: column; gap: 16px; padding: 20px; border-radius: var(--r-xl); background: var(--color-bg-base); }
+.tpls-bar { display: flex; align-items: center; gap: 8px; }
+.tpls-tab { padding: 4px 12px; border-radius: var(--r-full); background: var(--color-surface); font-size: var(--fs-12); color: var(--color-text-secondary); }
+.tpls-tab.is-on { background: var(--color-primary); color: var(--color-on-primary); }
+.tpls-search { margin-left: auto; width: 200px; padding: 4px 12px; border-radius: var(--r-md); background: var(--color-surface); font-size: var(--fs-12); color: var(--color-disabled); }
+.tpls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.tpls-card { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: var(--r-lg); background: var(--color-surface); }
+.tpls-card i { height: 72px; border-radius: var(--r-md); background: var(--color-bg-base); }
+.tpls-card b { height: 8px; border-radius: var(--r-full); background: var(--color-bg-base); }
+.tpls-card b:last-child { width: 60%; }
+/* 생성 중 뼈대 */
+.skeleton { display: flex; flex-direction: column; gap: 12px; padding: 16px; }
+.skeleton span {
+  height: 12px; border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--color-bg-base), var(--color-bg-light), var(--color-bg-base));
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite linear;
+}
+.skeleton span:nth-child(2) { width: 70%; }
+.skeleton span:nth-child(4) { width: 50%; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+/* 팝업 — 좁은 화면에서 대화 위를 덮는 캔버스보다 위에 뜬다 */
+.dialog-overlay { z-index: 30; }
+.toast-container { z-index: 40; }
+.dialog-body { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+/* 상세 문서 초안 — 자버 서식과 같은 틀: 로고 → 안내 본문([소제목]) → 구분선 → 응답 칸 → 작성 완료 */
+.doc-phone { margin-top: 16px; max-height: 60vh; overflow-y: auto; border: 1px solid var(--color-border-split); border-radius: var(--r-xl); }
+.doc-page { display: flex; flex-direction: column; gap: 20px; padding: 24px 20px; font-size: var(--fs-14); line-height: var(--lh-base); }
+.dp-logo { align-self: center; padding: 8px 16px; border-radius: var(--r-md); background: var(--color-bg-base); font-weight: var(--fw-bold); }
+.dp-intro { white-space: pre-line; text-align: center; }
+.dp-sec { display: flex; flex-direction: column; gap: 4px; }
+.dp-sec b { font-weight: var(--fw-bold); }
+.dp-line { height: 1px; background: var(--color-border-split); }
+.dp-head { font-weight: var(--fw-bold); padding-left: 8px; border-left: 2px solid var(--color-primary); }
+.dp-field { display: flex; flex-direction: column; gap: 8px; }
+.dp-q { font-weight: var(--fw-medium); }
+.dp-input { padding: 8px 12px; border-radius: var(--r-md); background: var(--color-bg-base); color: var(--color-disabled); }
+.dp-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.dp-opt { padding: 4px 12px; border: 1px solid var(--color-border); border-radius: var(--r-full); }
+.dp-done { height: var(--control-h-lg); border: 0; border-radius: var(--r-md); background: var(--color-primary); color: var(--color-on-primary); font-weight: var(--fw-medium); }
+/* 상세 문서 수정 — 자버 서식 수정 화면(document-frame/edit)의 틀만 옮겼다.
+   머리줄(제목 · 작성/엔딩/설정 · 수정 취소/완료) | 왼쪽 블록 영역 | 오른쪽 폰 미리보기 + 작성모드 · 색상.
+   왼쪽 블록 영역은 개발할 때 기존 서식 편집기를 그대로 넣는 자리 */
+.dialog.dialog-doc-edit { display: flex; flex-direction: column; width: calc(100vw - 64px); max-width: 1400px; height: 90vh; padding: 0; overflow: hidden; }
+.fe-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; height: 56px; padding: 0 16px; border-bottom: 1px solid var(--color-border-split); background: var(--color-surface); }
+.fe-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: var(--fs-16); font-weight: var(--fw-bold); }
+.fe-name .icon { flex-shrink: 0; color: var(--color-accent-purple-fg); }
+.fe-name span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.fe-tabs { display: flex; align-self: stretch; }
+.fe-tab { padding: 0 16px; border: 0; border-bottom: 2px solid transparent; background: none; font: inherit; font-size: var(--fs-14); color: var(--color-text-secondary); cursor: default; }
+.fe-tab.is-on { border-bottom-color: var(--color-primary); color: var(--color-primary); }
+.fe-acts { display: flex; justify-content: flex-end; gap: 8px; }
+.fe-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 560px) 340px; justify-content: center; gap: 24px; padding: 24px; overflow-y: auto; background: var(--color-bg-base); }
+.fe-slot { display: flex; flex-direction: column; gap: 8px; }
+.fe-note { display: flex; align-items: flex-start; gap: 8px; padding: 12px 16px; border: 1px dashed var(--color-primary-border); border-radius: var(--r-lg); background: var(--color-primary-bg); font-size: var(--fs-14); color: var(--color-primary); }
+.fe-note .icon { flex-shrink: 0; margin-top: 4px; }
+.fe-block { display: flex; flex-direction: column; gap: 8px; padding: 20px 16px; background: var(--color-surface); font-size: var(--fs-12); }
+.fe-block.is-content { align-items: center; text-align: center; white-space: pre-line; }
+.fe-badge { align-self: flex-end; margin: -20px -16px 0 0; padding: 4px 8px; border-radius: 0 0 0 var(--r-sm); background: var(--color-primary); color: var(--color-on-primary); font-size: var(--fs-11); }
+.fe-opt { display: flex; align-items: center; gap: 8px; height: var(--control-h); padding: 0 12px; border: 1px solid var(--color-border-split); border-radius: var(--r-sm); background: var(--color-bg-light); color: var(--color-disabled); }
+.fe-dot { width: 12px; height: 12px; border: 1px solid var(--color-border); border-radius: var(--r-full); }
+.fe-area { height: 64px; padding: 8px 12px; border: 1px solid var(--color-border-split); border-radius: var(--r-sm); background: var(--color-bg-light); color: var(--color-disabled); }
+.fe-side { align-self: start; position: sticky; top: 0; display: flex; flex-direction: column; background: var(--color-surface); }
+.fe-side .doc-phone { height: 520px; max-height: none; margin: 20px; border: 4px solid var(--color-border); border-radius: 28px; }
+.fe-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--color-border-split); font-size: var(--fs-12); }
+.fe-row .segmented-item { cursor: default; }
+.fe-colors { display: flex; align-items: center; gap: 12px; }
+.fe-swatch { display: inline-flex; align-items: center; gap: 8px; color: var(--color-text-secondary); }
+.fe-swatch i { width: 24px; height: 24px; border: 1px solid var(--color-border); border-radius: var(--r-xs); }
+.dp-title { font-size: var(--fs-16); font-weight: var(--fw-bold); text-align: center; }
+@media (max-width: 760px) {
+  .dialog.dialog-doc-edit { width: calc(100vw - 32px); height: 92vh; }
+  .fe-head { grid-template-columns: 1fr auto; height: auto; padding: 12px 16px; }
+  .fe-tabs { grid-row: 2; grid-column: 1 / -1; height: 40px; }
+  .fe-body { grid-template-columns: 1fr; padding: 16px; }
+  .fe-side { display: none; }   /* 폰에선 블록 영역만 */
+}
+</style>
+<link rel="stylesheet" href="v3-agent.css?v=1120b">
+<link rel="stylesheet" href="compose-v3.css?v=1120b">
+</head>
+<body>
+<script src="../../assets/icons.js?v=1120b"></script>
+
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-title">
+      <img class="topbar-logo" src="../jober-site-1019/assets/jober-logo.svg" alt="자버">
+      <span class="topbar-name">AI 알림톡</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-md btn-text" id="newChat" hidden><svg class="icon"><use href="#plus-outlined"></use></svg>새 알림톡 만들기</button>
+    </div>
+  </header>
+
+  <!-- 첫 화면 — 입력창 + 상황 바로가기 (빈 입력창 앞에서 막히지 않게) -->
+  <main class="home" id="home">
+    <h1 class="home-title">보낼 내용만 알려주세요<br>알림톡으로 만들어드려요</h1>
+    <div class="demo" aria-hidden="true">
+      <div class="demo-side">
+        <div class="demo-sms">
+          <span class="demo-ex is-on">“리쥬란 시술 받으신 고객님께 리쥬란 힐러 20% 할인 쿠폰 보내줘. 11월 30일까지 쓸 수 있어”</span>
+          <span class="demo-ex">[예쁨피부과] 고객님 안녕하세요. 리쥬란 힐러 20% 할인 쿠폰을 드려요. 11월 30일까지 사용 가능하며, 내원 시 이 문자를 보여주세요. 예약 문의 02-512-3456</span>
+        </div>
+      </div>
+      <span class="demo-arrow" aria-hidden="true"></span>
+      <div class="demo-side">
+        <div class="bubble">
+          <div class="bubble-head">알림톡 도착</div>
+          <img class="bubble-img" src="https://mud-kage.kakao.com/dn/bykoJ3/btsQ3BWDOTJ/DCPnIC17OeNfihHuXUmcBK/img_l.jpg" alt="">
+          <div class="bubble-body">안녕하세요, <span class="var var-recipient">홍길동</span>님!
+예쁨피부과입니다.
+<span class="var var-recipient">홍길동</span>님께 발급된 쿠폰을 안내드립니다.
+▶ 쿠폰명 : <span class="var">리쥬란 힐러 20% 할인</span>
+▶ 사용기한 : <span class="var">11월 30일까지</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="home-box">
+      <textarea id="pasteBox" rows="3" placeholder="예: 다음주 목요일 휴강한다고 학부모님께 알려줘" autofocus></textarea>
+      <div class="home-bar">
+        <button class="icon-btn icon-btn-lg icon-btn-fill round" id="analyzeBtn" aria-label="알림톡으로 바꾸기" disabled>
+          <svg class="icon icon-lg"><use href="#arrow-up-outlined"></use></svg>
+        </button>
+      </div>
+    </div>
+    <div class="shortcuts" id="samples"></div>
+  </main>
+
+  <!-- 작업 화면 — 왼쪽 대화(카드로 고르기) | 오른쪽 받는 분 화면(폰 두 대) -->
+  <div class="work" id="work" hidden>
+    <div class="stage" id="stage">
+      <!-- 맨 위 — AI의 지금 질문을 크게, 바로 아래에서 답한다 -->
+      <section class="top" id="top" aria-live="polite">
+        <div class="top-in">
+          <div class="q-me" id="qMe" hidden></div>
+          <div class="q">
+            <span class="ai-mark q-mark"><svg class="icon"><use href="#star-filled"></use></svg></span>
+            <div class="q-msg" id="qMsg"></div>
+          </div>
+          <div class="q-act" id="qAct"></div>
+        </div>
+      </section>
+    <!-- 탭 — 알림톡 / 받는 사람 / 보내기 설정 / 대화. 순서 없이 오가고, AI에게 말하면 관련 탭으로 저절로 넘어간다 -->
+    <section class="canvas2" id="canvas2" aria-label="작업 화면">
+      <div class="tabs-bar"><nav class="ftabs" id="tabs" role="tablist" aria-label="작업 화면"></nav></div>
+      <div class="tab-panel" id="panel-msg" role="tabpanel">
+      <!-- 말투를 고르는 동안 — 세 버전을 완성된 알림톡으로 나란히 -->
+      <div class="compare" id="compare" hidden></div>
+      <div class="phones" id="phones">
+        <div class="phone-col">
+          <span class="phone-label">알림톡</span>
+          <div class="phone" id="phone">
+            <div class="phone-status"><span>9:41</span><span class="phone-ind"><svg class="icon icon-sm"><use href="#wifi-outlined"></use></svg></span></div>
+            <div class="phone-head">
+              <svg class="icon"><use href="#left-outlined"></use></svg>
+              <span class="phone-name" id="phoneName">커넥티아</span>
+              <svg class="icon"><use href="#search-outlined"></use></svg>
+              <svg class="icon"><use href="#menu-outlined"></use></svg>
+            </div>
+            <div class="phone-chat">
+              <div class="chat-from"><span class="chat-avatar"><img src="../jober-site-1019/assets/connectia-mark.svg" alt=""></span><span id="chatName">커넥티아</span></div>
+              <div class="bubble">
+                <div class="bubble-head">알림톡 도착</div>
+                <img class="bubble-img" id="bubbleImg" alt="" hidden>
+                <div class="skeleton" id="skeleton"><span></span><span></span><span></span><span></span></div>
+                <div class="bubble-body" id="bubbleBody" hidden></div>
+                <button class="bubble-btn" id="bubbleBtn" hidden>자세히 보기</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 버튼을 단 알림톡이면 — '자세히 보기'를 누르면 열리는 화면을 나란히 (자버와 같은 구성) -->
+        <div class="phone-col" id="webCol" hidden>
+          <span class="phone-label"><span id="webLabel">자세히 보기를 누르면</span>
+            <button class="btn btn-link" id="docEdit" hidden><svg class="icon icon-sm"><use href="#edit-outlined"></use></svg>문서 수정</button></span>
+          <div class="phone phone-web" id="phoneWeb">
+            <div class="phone-status"><span>9:41</span><span class="phone-ind"><svg class="icon icon-sm"><use href="#wifi-outlined"></use></svg></span></div>
+            <div class="web-bar"><svg class="icon icon-sm"><use href="#lock-outlined"></use></svg><span class="web-url" id="webUrl"></span></div>
+            <div class="web-page" id="webPage"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="tab-panel" id="panel-who" role="tabpanel" hidden><div class="panel-in" id="whoPanel"></div></div>
+      <div class="tab-panel" id="panel-when" role="tabpanel" hidden><div class="panel-in" id="whenPanel"></div></div>
+      <div class="tab-panel" id="panel-chat" role="tabpanel" hidden><div class="panel-in chat-log" id="log"></div></div>
+    </section>
+    </div>
+    <div class="dock">
+      <div class="dock-in">
+        <div class="next-chips" id="nextChips"></div>
+        <div class="talk-box">
+          <textarea id="talkInput" rows="1" placeholder="바꿀 점을 말하거나, 받는 사람 번호를 붙여넣으세요"></textarea>
+          <button class="icon-btn icon-btn-fill round" id="talkSend" aria-label="보내기"><svg class="icon"><use href="#arrow-up-outlined"></use></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 모든 템플릿 — 자버 카톡 템플릿 선택 화면이 들어갈 자리 -->
+<div class="dialog-overlay" id="tplDialog">
+  <div class="dialog dialog-tpls" role="dialog" aria-modal="true" aria-labelledby="tplDialogTitle">
+    <div class="tpls-head"><h2 class="dialog-title" id="tplDialogTitle">템플릿 선택</h2>
+      <button class="icon-btn" data-close aria-label="닫기"><svg class="icon"><use href="#close-outlined"></use></svg></button></div>
+    <div class="fe-note"><svg class="icon"><use href="#info-circle-outlined"></use></svg>
+      <span>자버 템플릿 선택 화면이 여기 들어가요. 개발할 때 기존 카톡 템플릿 목록을 그대로 연결해요.</span></div>
+    <div class="tpls-frame" aria-hidden="true">
+      <div class="tpls-bar"><span class="tpls-tab is-on">전체</span><span class="tpls-tab">메시지</span><span class="tpls-tab">메시지+버튼</span><span class="tpls-search">템플릿 검색</span></div>
+      <div class="tpls-grid"><span class="tpls-card"><i></i><b></b><b></b><b></b></span><span class="tpls-card"><i></i><b></b><b></b><b></b></span><span class="tpls-card"><i></i><b></b><b></b><b></b></span><span class="tpls-card"><i></i><b></b><b></b><b></b></span><span class="tpls-card"><i></i><b></b><b></b><b></b></span><span class="tpls-card"><i></i><b></b><b></b><b></b></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 상세 문서 — 자버 서식 수정 화면이 들어갈 자리 -->
+<div class="dialog-overlay" id="docDialog">
+  <div class="dialog dialog-doc-edit" role="dialog" aria-modal="true" aria-label="상세 문서 수정">
+    <div class="fe-head">
+      <div class="fe-name"><svg class="icon icon-lg"><use href="#file-text-filled"></use></svg><span id="docTitle"></span></div>
+      <nav class="fe-tabs" aria-label="서식 수정 탭"><button class="fe-tab is-on" tabindex="-1">작성</button><button class="fe-tab" tabindex="-1">엔딩</button><button class="fe-tab" tabindex="-1">설정</button></nav>
+      <div class="fe-acts">
+        <button class="btn btn-md btn-default" data-close>수정 취소</button>
+        <button class="btn btn-md btn-primary" data-close>수정 완료</button>
+      </div>
+    </div>
+    <div class="fe-body">
+      <div class="fe-slot">
+        <div class="fe-note"><svg class="icon"><use href="#info-circle-outlined"></use></svg>
+          <span>자버 서식 수정 화면이 여기 들어가요. 개발할 때 기존 서식 편집기를 그대로 연결해요.</span></div>
+        <div id="docBlocks"></div>
+      </div>
+      <div class="fe-side">
+        <div class="doc-phone"><div class="doc-page" id="docBody"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dialog-overlay" id="confirmDialog">
+  <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <h2 class="dialog-title" id="confirmTitle"></h2>
+    <p class="dialog-desc" id="confirmDesc"></p>
+    <div class="dialog-actions">
+      <button class="btn btn-md btn-default" data-close>취소</button>
+      <button class="btn btn-md btn-primary" id="confirmOk"></button>
+    </div>
+  </div>
+</div>
+
+<span class="lock-tip" id="lockTip" hidden><svg class="icon icon-sm"><use href="#lock-outlined"></use></svg><span>승인받은 템플릿 문구라 바꿀 수 없어요</span></span>
+<div class="toast-container" id="toasts"></div>
+
+<script>
+/* ════════════════════════════════════════════
+   ai-agent-1021 에서 가져온 데이터 · 분석 규칙
+   (실제로는 서버의 LLM + 승인 템플릿 DB가 할 일)
+   ════════════════════════════════════════════ */
+const SAMPLES = [
+  { label: '쿠폰 발송', hot: true, icon: 'gift-outlined', tile: 'tile-orange', text: '[카페모먼트] 고객님 안녕하세요! 10월 한정 이벤트로 아메리카노 1+1 쿠폰을 10월 31일까지 드려요. 신메뉴는 오픈 기념 특가 3,900원! 매장에서 이 문자를 보여주세요.' },
+  { label: '만료 안내', icon: 'calendar-outlined', tile: 'tile-blue', text: '[헬스라이프 강남점] 김민수회원님 안녕하세요~ 회원님 PT 10회권이 11월 15일 만료 예정입니다. 이번달 말까지 재등록하시면 20% 할인 쿠폰 드려요! 문의 02-123-4567' },
+  { label: '휴강 안내', icon: 'read-outlined', tile: 'tile-cyan', text: '다음주 목요일(10/30) 학원 내부 사정으로 휴강한다고 학부모님께 알려줘. 보강은 토요일(11/1) 오후 2시야. 문의는 010-1234-5678' },
+  { label: '참석 확인', icon: 'carry-out-outlined', tile: 'tile-purple', text: '[해법수학학원] 학부모님 안녕하세요. 다음주 목요일(10/30)은 학원 내부 공사로 휴강합니다. 보강은 토요일(11/1) 오후 2시에 진행되며, 평소와 같은 반으로 편성됩니다. 차량은 보강일에도 평소처럼 운행합니다. 교재는 기존 교재를 그대로 가져오시면 됩니다. 보강 참석 여부를 10월 29일까지 회신 부탁드립니다. 문의 010-1234-5678' },
+];
+
+/* body 의 {이름} 이 변수 칸.
+   core   — "템플릿 고정 문구가 대신 말해주는 문장"을 찾는 정규식. 그 문장의 날짜·이용권 등을 칸에 넣는다
+   fields — 나머지 문장 중 칸으로 옮길 수 있는 것 (보강일, 문의처 …). 못 옮긴 문장만 추가메시지로 간다 */
+const PHONE = { name: '연락처', test: /(문의|연락|전화|상담)[^0-9]*0\d{1,2}-?\d{3,4}-?\d{4}/, value: (s) => s.match(/0\d{1,2}-?\d{3,4}-?\d{4}/)[0] };
+// 비어 있으면 그 줄을 통째로 숨기는 칸
+const OPTIONAL = ['연락처', '예약번호', '추가메시지'];
+
+// 실제 자버 카톡 템플릿(이미지형)의 등록 이미지 — 카카오 CDN
+const KIMG = (path) => `https://mud-kage.kakao.com/dn/${path}/img_l.jpg`;
+
+/* 자버 카톡 템플릿 목록의 실제 문구 그대로. dateSlot — 핵심 문장의 날짜가 들어갈 칸 */
+const TEMPLATES = [
+  {
+    id: 'expire-soon', label: '만료 예정 안내', name: '만료 예정 안내 1',
+    img: KIMG('GPrSU/dJMcaiIFzU6/rPYY6TU7b1w2f1o7SsJowK'),
+    body: '안녕하세요, {발신 스페이스}입니다.\n{수신자명}님께서 구매한 이용권이 만료 예정으로 확인되어 안내드립니다.\n\n▶ 만료 예정일 : {만료 예정일}\n\n{추가메시지}',
+    keywords: ['만료', '이용권', '회권', '회원권', '재등록'], want: ['예정'], avoid: ['되었', '됐'],
+    core: /만료/, coreWords: ['만료', '예정입니다', '예정이에요', '예정', '될', '입니다'], dateSlot: '만료 예정일',
+    leftoverFix: (s) => `만료 예정인 이용권은 ${s}입니다.`,
+  },
+  {
+    id: 'expired', label: '만료 안내 (이미 만료된 경우)', name: '(공용) 이용권 만료 알림_이미지형_01',
+    img: KIMG('trZyy/btsMmbAPOgg/7jSkyPwz3CIAKSY9RNykZk'),
+    body: '[이용권 만료 알림]\n안녕하세요, {발신 스페이스}입니다.\n{이용권명} 이용권이 만료되었습니다.\n\n📅 만료 일자 : {만료일자}\n\n{추가메시지}',
+    keywords: ['만료', '이용권', '회권'], want: ['되었', '됐'], avoid: ['예정'],
+    core: /만료/, coreWords: ['만료되었습니다', '만료됐습니다', '만료', '되었습니다', '예정입니다', '예정'], dateSlot: '만료일자',
+    warn: true,
+  },
+  {
+    id: 'closed', label: '휴강 안내', name: '휴강 안내 1',
+    img: KIMG('O5G34/dJMcahpE3rq/4FMuzFbxpr900fxG7kJex0'),
+    body: '안녕하세요 {수신자명}님,\n{발신 스페이스}에서 휴강일 안내드립니다.\n\n▶ 휴강일: {휴강일}\n\n{추가메시지}',
+    keywords: ['휴강', '휴원', '보강', '수업'],
+    core: /휴강|휴원/, coreWords: ['휴강합니다', '휴원합니다', '휴강한다', '휴원한다', '휴강', '휴원', '다음주', '이번주', '다음 주', '이번 주'], dateSlot: '휴강일',
+    leftoverFix: (s) => `${s.replace(/\s?(때문에)$/, '으로')} 휴강합니다.`,
+  },
+  {
+    id: 'schedule', label: '일정 변경 안내', name: '일정 변경 안내 2',
+    img: KIMG('Pzhrp/dJMcahwqgLl/NPFGMHFCDgSUurGjwkGzAK'),
+    body: '안녕하세요 {수신자명}님,\n신청하신 {행사명} 일정 변경 안내드립니다.\n\n▶ 기존 일정 : {기존 일정}\n▶ 변경 일정 : {변경 일정}\n\n{추가메시지}',
+    keywords: ['변경', '일정', '연기', '미뤄', '보강'],
+    core: /변경|연기|미뤄|보강/, coreWords: ['변경됩니다', '연기됩니다', '진행됩니다', '보강은', '보강', '변경', '연기', '일정이', '일정'], dateSlot: '변경 일정',
+  },
+  {
+    id: 'coupon', label: '쿠폰 안내', name: '쿠폰 발급 안내 2',
+    img: KIMG('bykoJ3/btsQ3BWDOTJ/DCPnIC17OeNfihHuXUmcBK'),
+    body: '안녕하세요, {수신자명}님!\n{발신 스페이스}입니다.\n\n{수신자명}님께 발급된 쿠폰을 안내드립니다.\n\n▶ 쿠폰명 : {쿠폰명}\n▶ 사용기한 : {사용기한}\n\n{추가메시지}\n이 메시지는 이용약관(계약서) 동의에 따라 지급된 쿠폰 안내 메시지입니다.',
+    keywords: ['쿠폰', '1+1', '증정'],
+    core: /쿠폰/, coreWords: ['쿠폰을', '쿠폰', '드려요', '드립니다', '지급'], dateSlot: '사용기한',
+    leftoverFix: (s) => `${s} 드리는 쿠폰이에요.`,
+  },
+  {
+    id: 'reserve', label: '예약 안내', name: '예약 정보 안내 1',
+    img: KIMG('k6jPy/btsQAQGgxva/fVXfy1QGhJFcrOvIbax9s0'),
+    body: '안녕하세요. {발신 스페이스}입니다.\n{수신자명}님의 예약정보를 확인해 주세요.\n\n{예약번호}\n{예약내용}\n\n{추가메시지}',
+    keywords: ['예약', '방문'],
+    core: /예약/, coreWords: ['예약이', '예약', '확정되었습니다', '확정', '확인'], dateSlot: '예약내용',
+  },
+  {
+    id: 'holiday', label: '휴무 안내', name: '휴무 안내',
+    img: KIMG('bzp3UD/btsOhHE5bzt/TTZL5QUFJi8MCKDXyYiif1'),
+    body: '안녕하세요 {수신자명}님,\n{발신 스페이스}에서 휴무일 안내드립니다.\n\n▶ 휴무기간: {휴무기간}\n\n{추가메시지}',
+    keywords: ['휴무', '쉽니다', '휴업', '쉬어', '문 닫'],
+    core: /휴무|쉽니다|휴업|쉬어/, coreWords: ['휴무입니다', '쉽니다', '휴업합니다', '휴무', '휴업', '쉬어요', '이번주', '다음주', '이번 주', '다음 주'], dateSlot: '휴무기간',
+    leftoverFix: (s) => `${s} 휴무입니다.`,
+  },
+  {
+    id: 'hours', label: '영업시간 변경 안내', name: '영업시간 변경 안내 (이미지 강조형)',
+    img: KIMG('b5pTZ0/dJMcagtFwYo/WaWLBeSMQcxA5IGhhmbAGk'),
+    body: '안녕하세요 {수신자명}님,\n{발신 스페이스} 이용해주셔서 감사합니다.\n영업시간 변경 안내입니다.\n\n{추가메시지}',
+    keywords: ['영업시간', '오픈 시간', '마감 시간'], want: ['영업시간'], core: null, coreWords: [],
+  },
+  {
+    id: 'notice', label: '이용 감사 안내', name: '서비스 이용 감사 안내 1 (이미지형)',
+    img: KIMG('tZlF0/dJMb9OtWmlO/VoPJUzIwmlJ4SQyVbQaE30'),
+    body: '안녕하세요, {수신자명}님.\n{발신 스페이스} 이용은 만족스러우셨나요?\n{수신자명}님의 소중한 의견을 바탕으로 보다 더 나은 서비스를 제공하겠습니다.\n\n{추가메시지}',
+    keywords: [], core: null, coreWords: [],
+  },
+];
+
+// 광고성으로 보는 표현 → 수신거부 링크 자동 체크 (수정 필요 2)
+const PROMO = ['할인', '1+1', '특가', '이벤트', '증정', '혜택', '세일', '무료', '적립', '최저가', '당첨'];
+// 알림톡에 넣으면 반려되는 표현 — 예시 목록. 실제 기준은 카카오 심사 가이드와 맞춰야 한다 (수정 필요 3)
+const BLOCKED = ['이벤트', '특가', '무료', '세일', '최저가', '당첨', '광고'];
+
+// 김윤정 매니저 지식베이스를 넣었다고 가정한 답변 (논의 2)
+const KB = [
+  { q: /광고|친구톡|브랜드/, a: '알림톡은 정보성 메시지만 보낼 수 있어요. 할인·이벤트 같은 광고 문장은 빼고 보내야 해요. 자버에서는 문자나 광고 메시지(브랜드 메시지·친구톡)는 보낼 수 없어요.' },
+  { q: /수신거부/, a: '알림톡에는 광고를 넣을 수 없어서 수신거부 문구도 따로 필요 없어요. 광고 문장은 빼고 보내요.' },
+  { q: /승인|심사|신청|템플릿/, a: '여기서는 자버가 미리 카카오 승인을 받아둔 템플릿만 써요. 그래서 따로 승인을 기다릴 필요가 없어요. 원하는 형식이 없으면 자버 매니저에게 요청해 주세요.' },
+  { q: /밤|야간|시간|몇 시/, a: '광고성 메시지는 밤 9시부터 다음 날 아침 8시까지 보낼 수 없어요. 정보성 알림톡은 시간 제한이 없지만, 받는 분 입장에서 늦은 시간은 피하는 걸 권해요.' },
+  { q: /요금|비용|가격|포인트|얼마/, a: '알림톡은 미리 충전해 둔 포인트에서 1건마다 차감돼요. 메시지만 보내거나 링크를 붙이면 1건에 50원이에요. 예약 발송도 할 수 있어요.' },
+];
+
+/* 연락처 — 자버 연락처 구조를 따른다 (이름·휴대전화·태그·타입).
+   태그는 '카테고리 > 태그'로 묶이고, 자버의 '그룹'은 태그별 보기다.
+   실제 스페이스 데이터가 아니라, 실제로 자주 보이는 문제(번호 없음, 같은 번호 여러 명)를 재현한 가짜 명단 */
+const TAGS = [
+  { cat: '학부모', name: '초등반' }, { cat: '학부모', name: '중등반' },
+  { cat: '회원', name: 'PT회원' }, { cat: '미분류', name: '단골' },
+];
+/* 그룹 — 자버 연락처의 폴더 모양 그룹. 사람을 넣는 게 아니라 기준 태그 조건(그리고/또는)으로 자동으로 묶인다 */
+const GROUPS = [
+  { name: '초등반 학부모', tags: ['초등반'] },
+  { name: '중등반 학부모', tags: ['중등반'] },
+  { name: '전체 학부모', tags: ['초등반', '중등반'], op: 'or' },
+  { name: 'PT 회원', tags: ['PT회원'] },
+  { name: '단골 손님', tags: ['단골'] },
+];
+const groupIds = (g) => CONTACTS.filter((c) => g.op === 'or' ? g.tags.some((t) => c.tags.includes(t)) : g.tags.every((t) => c.tags.includes(t))).map((c) => c.id);
+// 엑셀 올리기 예시 — 실제로는 파일의 이름·번호 열을 읽는다. 128줄 중 번호 오류 3줄, 같은 번호 2줄
+function sampleSheet() {
+  const sur = '김이박최정강조윤장임한오서신권황안송류홍'.split(''), giv = ['민준', '서연', '도윤', '하은', '지호', '수아', '예준', '지민', '시우', '채원', '주원', '다은', '건우', '윤서', '현우', '지유'];
+  let seed = 7; const rnd = (n) => (seed = (seed * 9301 + 49297) % 233280) % n;
+  const rows = Array.from({ length: 128 }, (_, i) => ({
+    name: sur[rnd(sur.length)] + giv[rnd(giv.length)],
+    phone: `010-${String(2000 + rnd(7999)).padStart(4, '0')}-${String(rnd(10000)).padStart(4, '0')}`,
+  }));
+  [17, 64, 101].forEach((i) => { rows[i].phone = rows[i].phone.slice(0, 10); });   // 자리 모자란 번호
+  rows[90].phone = rows[12].phone; rows[115].phone = rows[40].phone;                // 같은 번호
+  return rows;
+}
+const CONTACTS = [
+  { id: 1,  name: '김지훈', phone: '010-2481-3301', tags: ['초등반'] },
+  { id: 2,  name: '이서연', phone: '010-7720-1184', tags: ['초등반'] },
+  { id: 3,  name: '박서윤', phone: '010-5531-2290', tags: ['초등반'] },
+  { id: 4,  name: '박서윤 아버님', phone: '010-5531-2290', tags: ['초등반'] },
+  { id: 5,  name: '최민준', phone: '', tags: ['초등반'] },
+  { id: 6,  name: '정하은', phone: '010-3349-8812', tags: ['중등반'] },
+  { id: 7,  name: '강도현', phone: '010-9102-4477', tags: ['중등반'] },
+  { id: 8,  name: '윤지아', phone: '010-6683-0051', tags: ['중등반', '단골'], optout: true },   // 수신거부한 사람 (예시)
+  { id: 9,  name: '임수빈', phone: '010-4410-7793', tags: ['PT회원'] },
+  { id: 10, name: '한예준', phone: '010-8827-3316', tags: ['PT회원', '단골'] },
+  { id: 11, name: '오채원', phone: '', tags: ['PT회원'] },
+  { id: 12, name: '서지호', phone: '010-2276-5508', tags: [] },
+  { id: 13, name: '조유나', phone: '010-7415-9930', tags: ['단골'], optout: true },
+  { id: 14, name: '신우성', phone: '010-3058-6624', tags: [] },
+  { id: 15, name: '커넥티아', phone: '', tags: [], org: true },
+];
+/* 보낸 문서 폴더 — 자버는 발송할 때마다 '날짜-시각_[카카오 메시지]' 폴더를 만들고 전달 결과를 남긴다 */
+const SENT_FOLDERS = [
+  { id: 'f1', label: '10월 15일 · 온라인 강의 접속 안내', ids: [6, 7, 8], failed: [6, 7, 8] },
+  { id: 'f2', label: '10월 8일 · 중간고사 일정 안내', ids: [1, 2, 3, 4, 6, 7, 8] },
+];
+
+/* ════════════════════════════════════════════
+   분석 — 원문 → 템플릿 + 변수
+   ════════════════════════════════════════════ */
+function splitSentences(text) {
+  return text.split(/(?<=[.!?~])\s+|\n+/).map((s) => s.trim()).filter(Boolean);
+}
+
+const DATE_RE = /(\d{1,2})월\s?(\d{1,2})일|(\d{1,2})\/(\d{1,2})/;
+// "오늘·내일·모레"는 오늘 날짜 기준으로 바꾼다 (프로토타입 기준일 2026-10-22)
+const TODAY = new Date(2026, 9, 22);
+function findRelativeDate(s) {
+  const r = s.match(/오늘|내일|모레/);
+  if (!r) return null;
+  const d = new Date(TODAY);
+  d.setDate(d.getDate() + { 오늘: 0, 내일: 1, 모레: 2 }[r[0]]);
+  const time = s.match(/(오전|오후)?\s?\d{1,2}시(\s?\d{1,2}분|\s?반)?/);
+  let out = `${d.getMonth() + 1}월 ${d.getDate()}일 (${'일월화수목금토'[d.getDay()]})`;
+  if (time) out += ` ${time[0].trim()}`;
+  return { text: out, raw: [r[0], time && time[0]].filter(Boolean) };
+}
+function findDate(s) {
+  const m = s.match(DATE_RE);
+  if (!m) return findRelativeDate(s);
+  const mo = m[1] || m[3], d = m[2] || m[4];
+  const wd = s.match(/([월화수목금토일])요일/);
+  const time = s.match(/(오전|오후)\s?\d{1,2}시(\s?\d{1,2}분)?/);
+  const until = new RegExp(`${m[0].replace(/[/]/g, '\\/')}\\)?\\s?까지`).test(s);
+  let out = `${mo}월 ${d}일`;
+  if (wd) out += ` (${wd[1]})`;
+  if (time) out += ` ${time[0]}`;
+  if (until) out += '까지';
+  return { text: out, raw: [m[0], wd && wd[0], time && time[0]].filter(Boolean) };
+}
+
+function rankTemplates(text) {
+  return TEMPLATES.map((t) => {
+    const hits = t.keywords.filter((k) => text.includes(k)).length;
+    let score = hits * 2;
+    (t.want || []).forEach((k) => { if (text.includes(k)) score += 3; });
+    (t.avoid || []).forEach((k) => { if (text.includes(k)) score -= 4; });
+    if (t.id === 'notice') score = 0.5; // 아무것도 안 맞을 때의 기본값
+    return { t, score, ok: hits > 0 || t.id === 'notice' };
+  }).sort((a, b) => b.score - a.score);
+}
+
+function analyze(text, forcedId) {
+  state.original = text;
+  let body = text.trim();
+  const br = body.match(/^\[(.+?)\]\s*/);
+  state.sender = br ? br[1] : '커넥티아';
+  if (br) body = body.slice(br[0].length);
+
+  // 말로 한 요청("~한다고 학부모님께 알려줘")이면 보낼 내용만 남긴다
+  const reqWho = (body.match(/(학부모|회원|고객)님(께|에게)/) || [])[1];
+  const isRequest = /(알려|보내|안내해|전해|공지해)\s*(줘|주세요|줄래)/.test(body);
+  body = body
+    .replace(/(학부모|회원|고객)님(께|에게)\s*/g, '')
+    .replace(/\s*(이?라고|고)?\s*(알려|보내|안내해|전해|공지해)\s*(줘|주세요|줄래)(요)?/g, '.')
+    .replace(/(이)?야(?=[.!]|$)/g, '')
+    .replace(/\.{2,}/g, '.');
+
+  state.ranked = rankTemplates(text);
+  const t = forcedId ? TEMPLATES.find((x) => x.id === forcedId) : state.ranked[0].t;
+  state.template = t;
+
+  const vars = { '발신 스페이스': state.sender };
+  const trace = [];
+  if (br) trace.push({ src: br[0].trim(), kind: 'slot', note: '발신 스페이스 칸' });
+
+  state.honorific = reqWho || ''; state.exampleName = '';
+  const extra = [];
+  let coreUsed = false;
+
+  splitSentences(body).forEach((raw) => {
+    let s = raw;
+    // 인사말 — 이름·호칭을 뽑고, 템플릿 인사말로 대체
+    const greet = /안녕하세요|안녕하십니까/.test(s) && s.length < 30;
+    const who = s.match(/^([가-힣]{2,4}?)\s?(회원|고객|학부모|어머님|아버님)?님[,\s~!]*/) ||
+                s.match(/^(회원|고객|학부모)님[,\s~!]*/);
+    if (who) {
+      if (who[2] || ['회원', '고객', '학부모'].includes(who[1])) {
+        state.honorific = who[2] || who[1];
+        if (who[2]) state.exampleName = who[1];
+      }
+    }
+    if (greet) {
+      const base = t.body.includes('안녕하세요') ? '템플릿 인사말로 대체' : '템플릿이 이름으로 시작해서 인사말은 생략';
+      trace.push({ src: raw, kind: 'greet', note: state.exampleName
+        ? `${base} · "${state.exampleName}"은 받는 사람마다 바뀌는 #{수신자명}으로`
+        : base + (state.honorific ? ` · "${state.honorific}님"은 받는 사람 이름(#{수신자명})으로` : '') });
+      return;
+    }
+    // 문장 앞 호칭 떼기 ("회원님 PT 10회권이…")
+    s = s.replace(/^(회원|고객|학부모)님\s*/, '');
+
+    if (!coreUsed && t.core && t.core.test(s)) {
+      coreUsed = true;
+      const filled = fillCore(t, s, vars);
+      const left = leftover(t, s, filled.removed);
+      if (left) extra.push(t.leftoverFix ? t.leftoverFix(left) : left);
+      trace.push({ src: raw, kind: 'slot' });
+      return;
+    }
+    // 칸으로 옮길 수 있는 문장 (보강일, 문의처 …)
+    const slots = templateVars(t);
+    const f = (t.fields || []).find((x) => slots.includes(x.name) && !vars[x.name] && x.test.test(s));
+    if (f) { vars[f.name] = f.value(s); trace.push({ src: raw, kind: 'slot' }); return; }
+    extra.push(isRequest ? politely(s) : s);
+    trace.push({ src: raw, kind: 'extra', note: '추가메시지 칸' });
+  });
+
+  // 템플릿이 요구하는데 못 채운 칸
+  templateVars(t).forEach((n) => { if (!(n in vars) && n !== '수신자명' && n !== '추가메시지') vars[n] = ''; });
+  // 알림톡 본문엔 광고를 못 넣으므로, 광고 문장은 버튼을 누르면 열리는 안내 페이지로 옮긴다 (페이지는 '(광고)' 표시)
+  state.pageAds = extra.filter(isAd);
+  vars['추가메시지'] = extra.filter((l) => !isAd(l)).join('\n');
+
+  state.vars = vars;
+  state.trace = trace;
+  const url = text.match(URL_RE);
+  if (url) {
+    state.foundLink = url[0];
+    // 링크가 든 문장("자세한 안내는 ○○에서 확인")은 버튼이 대신하므로 뺀다
+    vars['추가메시지'] = vars['추가메시지'].split('\n').filter((l) => !l.includes(url[0])).join('\n');
+  } else state.foundLink = '';
+
+}
+
+// "휴강한다." → "휴강합니다.", "오후 2시." → "오후 2시입니다."
+function politely(s) {
+  const t = s.replace(/[.!]+$/, '');
+  if (/한다$/.test(t)) return t.replace(/한다$/, '합니다.');
+  if (/[다요]$/.test(t)) return `${t}.`;
+  return `${t}입니다.`;
+}
+function templateVars(t) { return [...t.body.matchAll(/\{(.+?)\}/g)].map((m) => m[1]); }
+
+function fillCore(t, s, vars) {
+  const names = [], removed = [];
+  const date = findDate(s);
+  const slots = templateVars(t);
+  if (date && t.dateSlot) { vars[t.dateSlot] = date.text; names.push(t.dateSlot); removed.push(...date.raw, '까지', '(', ')'); }
+  if (slots.includes('이용권명')) {
+    const m = s.match(/((?:PT|필라테스|요가|헬스|수영)?\s?\d+\s?(?:회권|개월권|개월 이용권))/);
+    if (m) { vars['이용권명'] = m[1].trim(); names.push('이용권명'); removed.push(m[1]); }
+  }
+  if (slots.includes('쿠폰명')) {
+    const m = s.match(/((?:\S+\s)?\S+?)\s?쿠폰/);
+    if (m) { vars['쿠폰명'] = m[1].trim(); names.push('쿠폰명'); removed.push(m[1]); }
+  }
+  return { names, removed };
+}
+
+// 템플릿 칸·고정 문구로 옮기지 못한 표현 (예: "학원 내부 사정으로")
+function leftover(t, s, removed) {
+  let r = s;
+  [...removed, ...t.coreWords].sort((a, b) => b.length - a.length).forEach((w) => { if (w) r = r.split(w).join(' '); });
+  r = r.replace(/[.!?~,]/g, ' ').split(/\s+/)
+       .map((w) => w.replace(/^(은|는|이|가|을|를|에|의|로)$/, ''))
+       .map((w) => w.replace(/(이|가|은|는|을|를)$/, (m, p, i, all) => all.length > 2 ? '' : m))
+       .filter((w) => w.length >= 2 && !/^[월화수목금토일]요일$/.test(w));
+  return r.length >= 2 ? r.join(' ') : '';
+}
+
+/* ════════════════════════════════════════════
+   검사 — 반려 키워드 / 광고성
+   ════════════════════════════════════════════ */
+// 비어 있는 선택 칸이 든 줄은 숨긴다
+function visibleBody() {
+  return state.template.body.split('\n').filter((line) =>
+    ![...line.matchAll(/\{(.+?)\}/g)].some((m) => OPTIONAL.includes(m[1]) && !state.vars[m[1]] && !(m[1] === '추가메시지' && showOptout()))
+  ).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+function renderedText() {
+  return visibleBody().replace(/\{(.+?)\}/g, (_, n) => n === '수신자명' ? '' :
+    n === '추가메시지' && showOptout() ? [state.vars[n], OPTOUT_LINE].filter(Boolean).join('\n') : (state.vars[n] || ''));
+}
+function blockedHits() {
+  const txt = renderedText();
+  return BLOCKED.filter((k) => txt.includes(k));
+}
+
+/* 날짜와 요일이 안 맞는 칸 찾기 — "10월 30일 (목)" 인데 실제로는 금요일 */
+const WD = ['일', '월', '화', '수', '목', '금', '토'];
+function findChecks() {
+  state.checks = [];
+  Object.entries(state.vars).forEach(([name, v]) => {
+    const m = (v || '').match(/(\d{1,2})월 (\d{1,2})일 \(([월화수목금토일])\)/);
+    if (!m) return;
+    const real = WD[new Date(YEAR, +m[1] - 1, +m[2]).getDay()];
+    if (real === m[3] || state.dismissed.includes(name)) return;
+    state.checks.push({ name, text: `${m[1]}월 ${m[2]}일은 ${real}요일이에요`, fix: v.replace(`(${m[3]})`, `(${real})`) });
+  });
+}
+
+/* 판정 — 알림톡은 광고가 한 줄만 섞여도 못 보낸다 (수신거부를 붙여도 안 됨) */
+const REASON = {
+  'expire-soon': '이용 중인 고객에게 만료일을 알리는 안내예요',
+  expired: '이용 중인 고객에게 만료를 알리는 안내예요',
+  closed: '수강생 보호자에게 수업 일정을 알리는 안내예요',
+  coupon: '신청했거나 수신에 동의한 고객에게 쿠폰을 알려주는 안내예요',
+  reserve: '예약한 고객에게 예약 내용을 알리는 안내예요',
+  schedule: '신청한 고객에게 바뀐 일정을 알리는 안내예요',
+  holiday: '이용 고객에게 쉬는 날을 알리는 안내예요',
+  hours: '이용 고객에게 바뀐 영업시간을 알리는 안내예요',
+  notice: '이용 고객에게 감사 인사와 함께 안내를 전하는 메시지예요',
+};
+const isAd = (line) => PROMO.some((k) => line.includes(k));
+function adLines() { return (state.vars['추가메시지'] || '').split('\n').filter((l) => l && isAd(l)); }
+function verdict() {
+  if (state.template.id === 'coupon' && state.coupon !== 'yes') {
+    return state.coupon === 'no'
+      ? { kind: 'stop', title: '이 쿠폰 안내는 광고예요', reason: '신청하지도, 수신에 동의하지도 않은 고객에게는 쿠폰을 보낼 수 없어요.' }
+      : { kind: 'ask', title: '쿠폰 받기에 동의한 고객인가요?', reason: '고객이 신청했거나 수신 동의를 받았으면 알림톡으로 보낼 수 있어요.' };
+  }
+  const ads = adLines();
+  if (ads.length) {
+    return { kind: 'ask', title: '광고 문장이 섞여 있어요', reason: `${josa(`‘${ads[0]}’`, '은', '는')} 광고라 알림톡에 넣을 수 없어요.` };
+  }
+  return { kind: 'ok', title: '알림톡으로 보낼 수 있어요', reason: REASON[state.template.id] };
+}
+// 판정이 문제없으면 아무것도 안 보인다. 결정이 필요할 때만 '확인 필요' 카드의 한 줄이 된다
+function verdictIssue() {
+  const v = verdict();
+  if (v.kind === 'ok') return null;
+  let acts;
+  if (state.template.id === 'coupon' && !state.coupon) {
+    acts = `<button class="btn btn-link" data-coupon="yes">네, 동의했어요</button><button class="btn btn-link" data-coupon="no">아니요</button>`;
+  } else if (v.kind === 'stop') {
+    acts = '<button class="btn btn-link" data-coupon="">다시 답하기</button>';
+  } else {
+    acts = '<button class="btn btn-link" data-act="dropAds">빼고 보내기</button>';
+  }
+  return { kind: v.kind === 'stop' ? 'stop' : 'warn', text: v.title, sub: v.reason, acts };
+}
+
+const ASK_NOTE = ['text', '궁금한 점이 있으면 적어주세요'];
+const DOC_SPEC = {
+  closed:  { purpose: '휴강 일정을 안내드립니다.', secs: [['휴강 안내', [['휴강일', '휴강일']]]],
+             ask: [['select', '보강 수업에 참석하시나요?', ['참석할게요', '참석이 어려워요']], ['text', '선생님께 전하실 말씀이 있으면 적어주세요']] },
+  schedule: { purpose: '일정 변경을 안내드립니다.', secs: [['변경 일정', [['행사', '행사명'], ['기존 일정', '기존 일정'], ['변경 일정', '변경 일정']]]],
+             ask: [['select', '바뀐 일정에 참석하시나요?', ['참석할게요', '참석이 어려워요']], ASK_NOTE] },
+  'expire-soon': { purpose: '이용권 만료 예정을 안내드립니다.', secs: [['이용권 정보', [['만료 예정일', '만료 예정일']]]],
+             ask: [['select', '재등록 상담을 원하시나요?', ['상담 받을게요', '괜찮아요']], ASK_NOTE] },
+  expired: { purpose: '이용권 만료를 안내드립니다.', secs: [['이용권 정보', [['이용권', '이용권명'], ['만료일', '만료일자']]]],
+             ask: [['select', '재등록 상담을 원하시나요?', ['상담 받을게요', '괜찮아요']], ASK_NOTE] },
+  holiday: { purpose: '휴무일을 안내드립니다.', secs: [['휴무 안내', [['휴무기간', '휴무기간']]]], ask: [ASK_NOTE] },
+  hours:   { purpose: '영업시간 변경을 안내드립니다.', secs: [], ask: [ASK_NOTE] },
+  coupon:  { purpose: '쿠폰이 지급되었어요.', secs: [['쿠폰 정보', [['쿠폰명', '쿠폰명'], ['사용기한', '사용기한']]]],
+             ask: [['select', '쿠폰을 언제 쓰실 예정인가요?', ['이번 주', '다음 주', '아직 몰라요']]] },
+  reserve: { purpose: '예약 내용을 안내드립니다.', secs: [['예약 정보', [['예약번호', '예약번호'], ['예약 내용', '예약내용']]]],
+             ask: [['select', '예약 일정에 오실 수 있나요?', ['갈게요', '일정을 바꾸고 싶어요']], ['text', '요청 사항이 있으면 적어주세요']] },
+  notice:  { purpose: '안내드릴 내용이 있어요.', secs: [], ask: [['select', '내용을 확인하셨나요?', ['확인했어요']], ASK_NOTE] },
+};
+// 문서 제목 — '[보낸 곳 + 무슨 안내]' (예: [예쁨피부과 쿠폰 안내]). 자버 서식 샘플 제목과 같은 꼴
+const DOC_TITLE = {
+  'expire-soon': '이용권 만료 예정 안내', expired: '이용권 만료 안내', closed: '휴강 안내', schedule: '일정 변경 안내',
+  coupon: '쿠폰 안내', reserve: '예약 안내', holiday: '휴무 안내', hours: '영업시간 변경 안내', notice: '안내',
+};
+function docModel() {
+  const t = state.template, spec = DOC_SPEC[t.id] || DOC_SPEC.notice, v = state.vars;
+  const secs = spec.secs.map(([title, rows]) => [title, rows.filter(([, k]) => v[k]).map(([l, k]) => `${l}: ${v[k]}`)]);
+  const extra = (v['추가메시지'] || '').split('\n').filter(Boolean);
+  if (extra.length) secs.push([spec.secs.length ? '추가 안내' : '안내 내용', extra]);
+  if (state.pageAds.length) secs.unshift(['혜택 안내', state.pageAds]);   // 알림톡에서 옮겨 온 광고 문장
+  if (v['연락처']) secs.push(['문의사항', [`연락처: ${v['연락처']}`]]);
+  return {
+    title: state.doc?.title || `${state.pageAds.length ? '(광고) ' : ''}[${state.sender} ${DOC_TITLE[t.id] || '안내'}]`,
+    intro: state.doc?.intro || `안녕하세요, ${state.sender}입니다.\n${spec.purpose}`,
+    secs: state.doc?.secs || secs.filter(([, lines]) => lines.length),
+    ask: state.doc?.ask || spec.ask,
+  };
+}
+/* 상세 문서 수정 — 자버 서식 수정 화면의 틀. 왼쪽은 서식 편집기 블록 모양(콘텐츠 · 질문)만 보여주고,
+   실제 편집은 개발할 때 기존 서식 편집기를 이 자리에 연결한다. 오른쪽은 받는 분 화면 미리보기 */
+function renderDocDialog() {
+  const d = docModel();
+  $('#docTitle').textContent = d.title;
+  const content = (text) => `<div class="fe-block is-content">${esc(text)}</div>`;
+  $('#docBlocks').innerHTML = `
+    <div class="fe-block is-content"><span class="fe-badge">1/1 페이지</span><b class="text-14">${esc(d.title)}</b>${esc(d.intro)}</div>
+    ${d.secs.map(([title, lines]) => content(`[${title}]\n${lines.map((l) => `▶ ${l}`).join('\n')}`)).join('')}
+    ${d.ask.map(([type, q, opts], i) => `<div class="fe-block"><span>Q${i + 1}. ${esc(q)}</span>
+      ${type === 'select' ? opts.map((o) => `<div class="fe-opt"><span class="fe-dot"></span>${esc(o)}</div>`).join('') : '<div class="fe-area">입력해주세요.</div>'}</div>`).join('')}`;
+  $('#docBody').innerHTML = `
+    <div class="dp-logo">${esc(state.sender)}</div>
+    <div class="dp-title">${esc(d.title)}</div>
+    <p class="dp-intro">${esc(d.intro)}</p>
+    ${d.secs.map(([title, lines]) => `<div class="dp-sec"><b>[${esc(title)}]</b>${lines.map((l) => `<span>▶ ${esc(l)}</span>`).join('')}</div>`).join('')}
+    ${d.ask.length ? '<div class="dp-line"></div><div class="dp-head">응답해 주세요</div>' : ''}
+    ${d.ask.map(([type, q, opts]) => `<div class="dp-field"><span class="dp-q">${esc(q)}</span>
+      ${type === 'select' ? `<div class="dp-opts">${opts.map((o) => `<span class="dp-opt">${esc(o)}</span>`).join('')}</div>` : '<div class="dp-input">입력해주세요.</div>'}</div>`).join('')}
+    <button class="dp-done" tabindex="-1">작성 완료</button>`;
+  $('.fe-body').scrollTop = 0; $('.doc-phone').scrollTop = 0;
+}
+
+/* 함께 보낼 것 — AI가 내용을 보고 먼저 정하고, 사용자는 한 번 눌러 바꾼다.
+   문서·링크를 고르면 같은 템플릿의 '메시지+버튼' 형식으로 나간다 (자버 템플릿은 두 형식이 짝으로 있다) */
+const URL_RE = /(https?:\/\/|www\.)[^\s]+/;
+const OPTOUT_LINE = '수신거부: jill.kr/sdjkfs';   // 수신거부 링크 — 프로토타입용 임의 주소
+const NEEDS_REPLY = /참석 여부|참석 가능|회신|답장|설문|응답|신청해\s?주|신청 부탁/;
+/* 템플릿 성격상 답을 받는 게 자연스러운 경우 — 문서를 기본으로 붙인다 (문서의 응답 칸과 같은 질문) */
+const DOC_NEED = {
+  closed: (t) => /보강/.test(t) ? '보강 참석 여부를 받을 수 있게 상세 문서를 연결했어요.' : '',
+  schedule: () => '바뀐 일정에 참석하는지 받을 수 있게 상세 문서를 연결했어요.',
+  'expire-soon': () => '재등록 상담 신청을 받을 수 있게 상세 문서를 연결했어요.',
+  expired: () => '재등록 상담 신청을 받을 수 있게 상세 문서를 연결했어요.',
+  reserve: () => '예약 일정에 오실 수 있는지 받을 수 있게 상세 문서를 연결했어요.',
+};
+function decideAttach() {
+  state.doc = null; state.link = ''; state.attach = 'none'; state.attachWhy = '';
+  if (state.pageAds.length) { state.doc = {}; state.attach = 'doc'; state.attachWhy = '할인 내용은 버튼을 누르면 열리는 페이지로 옮겼어요.'; return; }
+  if (state.foundLink) {
+    state.link = state.foundLink; state.attach = 'link';
+    state.attachWhy = '링크는 ‘자세히 보기’ 버튼으로 바꿨어요.';
+    return;
+  }
+  if (state.docMode === 'off') return;
+  const lines = (state.vars['추가메시지'] || '').split('\n').filter(Boolean).length;
+  const why = state.docMode === 'all' ? '상세 문서도 연결했어요.'
+    : NEEDS_REPLY.test(state.original) ? '답을 받을 수 있게 상세 문서를 연결했어요.'
+    : (DOC_NEED[state.template.id] || (() => ''))(state.original)
+    || ((lines >= 4 || state.original.length >= state.threshold) ? '내용이 길어서 상세 문서로도 정리해 연결했어요.' : '');
+  if (!why) return;
+  state.doc = {};   // 내용은 열 때마다 지금 알림톡 값으로 만든다
+  state.attach = 'doc'; state.attachWhy = why;
+}
+
+/* ════════════════════════════════════════════
+   상태
+   ════════════════════════════════════════════ */
+const state = {
+  original: '', sender: '', honorific: '', exampleName: '',
+  template: null, ranked: [], vars: {}, trace: [],
+  coupon: null, pageAds: [], consent: false, foundLink: '', checks: [], dismissed: [],
+  doc: null, docMode: 'threshold', threshold: 200, attach: 'none', link: '', attachWhy: '',
+  optout: false,
+  base: '', tones: {}, tone: null,            // base — 말투를 입히기 전 추가메시지
+  sources: [], recipients: [], bad: [], dupCount: 0,
+  when: 'now', at: '', sent: false,
+  log: [],                                      // 대화 — 블록 목록
+};
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const josa = (w, a, b) => { const c = String(w).replace(/["'”’)\]\s]+$/, '').slice(-1).charCodeAt(0) - 0xac00; return w + (c >= 0 && c <= 11171 && c % 28 ? a : b); };
+const hasBatchim = (ch) => { const c = ch.charCodeAt(0) - 0xac00; return c >= 0 && c <= 11171 && c % 28 !== 0; };
+const icon = (id, cls = '') => `<svg class="icon ${cls}"><use href="#${id}"></use></svg>`;
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const YEAR = 2026;
+const UNIT = 50;   // 1건 단가 — 실서비스 자버 AI 답변 기준 (메시지 / 메시지+링크 건당 50원, 11/19 확인)
+const SAVE_KEY = 'ai-compose-1118-v3b';
+// 광고성 — 안내 페이지에 광고 문장이 있거나 쿠폰 안내. 수신거부를 자동으로 넣고, 보낼 때 광고 수신 동의를 체크받는다
+const needsOptout = () => !!state.template && (state.pageAds.length > 0 || state.template.id === 'coupon');
+const showOptout = () => needsOptout();
+
+/* ════════════════════════════════════════════
+   말투 세 가지 — 이름·날짜 같은 사실 칸은 그대로, 추가메시지 칸의 말투만 바꾼다
+   (실제로는 LLM이 쓰고, 광고 표현·없는 약속 검사를 거친다)
+   ════════════════════════════════════════════ */
+const EMOJI = { coupon: '🎁', closed: '📚', schedule: '📅', reserve: '📅', 'expire-soon': '⏰', expired: '⏰', holiday: '🌿', hours: '🕘', notice: '😊' };
+const FRIENDLY_END = { coupon: '즐거운 하루 보내세요 😊', closed: '궁금한 점은 편하게 물어봐 주세요 😊', reserve: '그날 반갑게 뵐게요 😊' };
+const politeLine = (l) => l
+  .replace(/해요([.!~]*)$/, '합니다.').replace(/드려요/g, '드립니다').replace(/주세요([.!~]*)$/, '주시기 바랍니다.')
+  .replace(/(\S)(이에요|예요)([.!~]*)$/, '$1입니다.').replace(/!+$/, '.');
+const friendlyLine = (l) => l
+  .replace(/합니다\.?$/, '해요!').replace(/드립니다/g, '드려요').replace(/됩니다/g, '돼요').replace(/주시기 바랍니다\.?$/, '주세요.')
+  .replace(/(\S)입니다\.?$/, (m, c) => `${c}${hasBatchim(c) ? '이에요' : '예요'}.`);
+const stripEmoji = (s) => s.replace(/\s?[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]️?/gu, '').replace(/[ \t]+$/gm, '');
+function makeTones() {
+  const lines = state.base.split('\n').map((l) => l.trim()).filter(Boolean);
+  const id = state.template.id, e = EMOJI[id] || '😊';
+  const polite = lines.map(politeLine);
+  if (!polite.some((l) => /감사/.test(l))) polite.push('감사합니다.');
+  const friendly = lines.map(friendlyLine);
+  if (friendly.length) friendly[0] = `${e} ${friendly[0]}`;
+  friendly.push(FRIENDLY_END[id] || '언제든 편하게 연락 주세요 😊');
+  state.tones = {
+    polite: { label: '정중하게', text: polite.join('\n') },
+    friendly: { label: '친근하게', text: friendly.join('\n') },
+    short: { label: '짧게', text: lines.length ? politeLine(lines[0]) : '' },
+  };
+}
+// 추천 순서 — 쿠폰·감사 안내는 친근하게, 그 밖의 안내는 정중하게를 맨 앞에
+const toneOrder = () => ['coupon', 'notice'].includes(state.template.id) ? ['friendly', 'polite', 'short'] : ['polite', 'friendly', 'short'];
+function applyTone(key) {
+  state.tone = key;
+  state.vars['추가메시지'] = state.tones[key].text;
+}
+
+/* ════════════════════════════════════════════
+   막히는 것만 묻는다
+   ════════════════════════════════════════════ */
+function asks() {
+  const list = [], t = state.template;
+  const ads = adLines();
+  if (ads.length) list.push({ text: `${josa(`‘${ads[0]}’`, '은', '는')} 광고라 알림톡 본문에 넣을 수 없어요`, say: '버튼을 누르면 열리는 페이지로 옮기면 보낼 수 있어요.',
+    acts: [['페이지로 옮기기', 'moveAds', 'primary'], ['빼기', 'dropAds']] });
+  else {
+    const hits = blockedHits();
+    if (hits.length) list.push({ text: `${josa(hits.map((k) => `‘${k}’`).join(', '), '은', '는')} 알림톡에 쓸 수 없어요`, acts: [['빼기', 'dropBlocked', 'primary']] });
+  }
+  state.checks.forEach((c) => list.push({ text: c.text, acts: [['고치기', `fix:${c.name}`, 'primary'], ['맞아요', `keep:${c.name}`]] }));
+  emptySlots().forEach((n) => list.push({ fill: n, text: `${josa(n, '이', '가')} 빠졌어요. 알려주세요` }));
+  return list;
+}
+function emptySlots() { return Object.entries(state.vars).filter(([n, v]) => !v && !OPTIONAL.includes(n)).map(([n]) => n); }
+
+/* ════════════════════════════════════════════
+   오른쪽 — 폰 두 대
+   ════════════════════════════════════════════ */
+function previewName() { const r = state.recipients[0]; return (r && r.name) || state.exampleName || '홍길동'; }
+function renderBubble(changed = []) {
+  const checkNames = state.checks.map((c) => c.name);
+  $('#bubbleBody').innerHTML = visibleBody().split(/(\{.+?\})/).map((p) => {
+    const m = p.match(/^\{(.+)\}$/);
+    if (!m) return p ? `<span class="fixed">${esc(p)}</span>` : '';
+    const n = m[1];
+    if (n === '수신자명') return `<span class="var var-recipient">${esc(previewName())}</span>`;
+    const cls = ['var', changed.includes(n) && 'is-changed', checkNames.includes(n) && 'is-check'].filter(Boolean).join(' ');
+    const lock = n === '추가메시지' && showOptout() ? `<span class="fixed optout-line">${state.vars[n] ? '\n' : ''}${esc(OPTOUT_LINE)}</span>` : '';
+    return `<span class="${cls}" contenteditable="plaintext-only" spellcheck="false" data-name="${esc(n)}">${esc(state.vars[n] || '')}</span>${lock}`;
+  }).join('');
+  $('#skeleton').hidden = true; $('#bubbleBody').hidden = false;
+  $('#bubbleBtn').hidden = state.attach === 'none';
+  const img = $('#bubbleImg'), src = state.template.img || '';
+  if (img.getAttribute('src') !== src) img.src = src;
+  img.hidden = !src;
+  $('#phoneName').textContent = state.sender; $('#chatName').textContent = state.sender;
+  renderWeb();
+}
+function renderWeb() {
+  const has = state.attach !== 'none';
+  $('#webCol').hidden = !has;
+  if (!has) return;
+  $('#webLabel').textContent = state.attach === 'link' ? '자세히 보기를 누르면 · 링크' : '자세히 보기를 누르면 · 상세 문서';
+  $('#docEdit').hidden = state.attach !== 'doc' || !!state.gen;
+  if (state.gen) return;   // 만드는 중 — 타이핑을 덮어쓰지 않게
+  if (state.attach === 'doc') {
+    renderDocDialog();
+    $('#webUrl').textContent = 'jober.io/form';
+    $('#webPage').innerHTML = `<div class="doc-page">${$('#docBody').innerHTML}</div>`;
+  } else {
+    $('#webUrl').textContent = state.link || '주소 없음';
+    $('#webPage').innerHTML = `<div class="web-empty">${icon('link-outlined', 'icon-xl')}<b>${state.link ? esc(state.link) : '연결할 링크를 넣어 주세요'}</b>
+      <span>${state.link ? '이 주소의 페이지가 그대로 열려요' : '왼쪽 입력창에 링크 주소를 붙여넣으면 여기서 열려요'}</span></div>`;
+  }
+}
+
+/* ════════════════════════════════════════════
+   왼쪽 — 대화. 고를 카드는 늘 하나만 (맨 아래).
+   고르면 카드는 사라지고 고른 것이 내 말풍선으로 남는다.
+   ════════════════════════════════════════════ */
+const say = (html, extra = {}) => { state.log.push({ type: 'ai', html, ...extra }); if (!extra.q) state.ack = state.log.length - 1; };
+const me = (text, clip) => state.log.push({ type: 'user', text, clip });
+const has = (type) => state.log.some((b) => b.type === type);
+const PICKS = ['ask', 'tone', 'tpl', 'btn', 'docok'];   // 고르면 사라지는 카드 (docok — 만든 상세 페이지 확인)
+const dropPicks = () => { state.log = state.log.filter((b) => !PICKS.includes(b.type)); };
+let showBad = false;
+
+// 지금 고르는 것 — 대화에 쌓인 표시 중 마지막
+function current() {
+  if (state.sent) return 'done';
+  if (state.gen) return 'gen';
+  const p = state.log.find((b) => PICKS.includes(b.type));
+  if (p) return p.type;
+  if (has('send') && state.recipients.length) return 'send';
+  if (has('who')) return 'who';
+  return state.template ? null : 'loading';
+}
+// 위 — 방금 한 일(작게) + 지금 질문(크게) + 답하는 자리
+function renderTop() {
+  const c = current(), a = state.template ? asks()[0] : null, n = state.recipients.length;
+  // [AI가 먼저 하는 말, 질문] — 꼭 알아야 할 것은 작은 설명 대신 AI 말로
+  const [say, Q] = {
+    loading: ['', '승인받은 템플릿 중에서 맞는 걸 찾고 있어요'],
+    gen: ['', state.gen],
+    docok: ['받는 분이 ‘자세히 보기’를 누르면 이 페이지가 열려요.', '이대로 쓸까요?'],
+    ask: ['', ''],   // 확인 질문은 아래 박스에서 따로 강조
+    tone: ['이름·날짜 같은 정보는 그대로 두고, 덧붙이는 말만 세 가지로 바꿔 봤어요.', '말투를 골라 주세요'],
+    tpl: ['', '어떤 템플릿으로 바꿀까요?'],
+    btn: [state.aiWhy, '받는 분이 ‘자세히 보기’를 누르면 무엇을 보여줄까요?'],
+    who: ['명단은 AI에 보내지 않아요. 아래 받는 사람에서 엑셀을 올리거나 번호를 붙여넣어 주세요.', '누구에게 보낼까요?'],
+    send: ['', `${n}명에게 보낼 준비가 됐어요`],
+    done: ['', state.sent === 'now' ? `${n}명에게 보냈어요` : `${whenText()}에 ${n}명에게 보낼게요`],
+  }[c] || ['', ''];
+  // 내가 방금 한 말 — 무엇에 대한 답인지 보이게
+  const mine = [...state.log].reverse().find((b) => b.type === 'user');
+  $('#qMe').innerHTML = mine ? `<span>${esc(mine.text)}</span>` : ''; $('#qMe').hidden = !mine;
+  // 방금 한 일 + 꼭 알아야 할 말 + 질문을 AI 말 한 덩어리로
+  const ack = c === 'loading' ? null : state.log[state.ack];
+  $('#qMsg').innerHTML = c === 'loading' || c === 'gen' ? `<p><span class="typing"><span></span><span></span><span></span></span> ${esc(Q)}</p>`
+    : [...(ack ? ack.html.split('<br>') : []), say && esc(say), Q && esc(Q)].filter(Boolean).map((x) => `<p>${x}</p>`).join('');   // 줄마다 같은 간격
+  $('#qAct').innerHTML = { ask: askHTML, tpl: tplHTML, btn: btnHTML, docok: docokHTML, send: sendHTML, done: doneHTML }[c]?.() || '';
+}
+function renderHistory() {
+  $('#log').innerHTML = state.log.map((b) => b.type === 'user' ? `<div class="b-user${b.clip ? ' is-clip' : ''}">${esc(b.text)}</div>`
+    : b.type === 'ai' ? `<div class="b-ai"><span class="ai-mark">${icon('star-filled', 'icon-sm')}</span><div class="b-ai-body"><span>${b.html}</span></div></div>` : '').join('');
+}
+function renderChat() {
+  renderTop(); renderHistory();
+  if (!state.template) return;
+  renderNext(); renderCompare(); renderTabs();
+  $('#whoPanel').innerHTML = whoHTML();
+  $('#whenPanel').innerHTML = whenHTML();
+}
+
+/* ── 탭 — 순서 없이 오간다. 다 된 탭은 ✓ ─── */
+const TABS = [['msg', '알림톡'], ['who', '받는 사람'], ['when', '보내기 설정'], ['chat', '대화']];
+const STAGE_TAB = { ask: 'msg', tone: 'msg', tpl: 'msg', btn: 'msg', gen: 'msg', docok: 'msg', who: 'who' };
+let tab = 'msg', flashTab = null, pendingTab = null;
+function tabDone(k) {
+  if (k === 'msg') return !!(state.tone && state.attachChosen && !asks().length);
+  if (k === 'who') return state.recipients.length > 0;
+  return null;
+}
+function renderTabs() {
+  $('#tabs').innerHTML = TABS.map(([k, l]) => {
+    const d = tabDone(k);
+    return `<button class="ftab${tab === k ? ' is-on' : ''}${flashTab === k ? ' is-flash' : ''}" role="tab" aria-selected="${tab === k}" data-tab="${k}">${l}${d === true ? icon('check-outlined', 'icon-sm tab-done')  : ''}</button>`;
+  }).join('');
+  flashTab = null;
+  TABS.forEach(([k]) => { $(`#panel-${k}`).hidden = tab !== k; });
+  if (tab === 'chat') { const l = $('#log'); l.scrollTop = l.scrollHeight; }   // 대화는 최근 것부터 보이게
+}
+// AI가 넘긴 탭은 잠깐 반짝여서 화면이 바뀐 걸 알린다
+function goTab(k) { if (!k || k === tab) return; tab = k; flashTab = k; }
+// 말한 내용이 어느 탭 일인지
+function talkTab(text) {
+  if (PHONE_RE.test(text) || /엑셀|명단|받는 사람|번호|지난번/.test(text)) return 'who';
+  if (/예약|지금 보낼|나에게|먼저 보내|언제/.test(text)) return 'when';
+  if (/되돌려|원래대로/.test(text)) return null;
+  if (URL_RE.test(text) || findDate(text) || /다른 템플릿|말투|짧게|줄여|이모지|정중|친근|부드럽|문서|링크/.test(text)) return 'msg';
+  if (KB.some((k) => k.q.test(text))) return 'chat';
+  if (/빼|지워|없애/.test(text)) return 'msg';
+  return 'chat';
+}
+function doneHTML() {
+  return state.sent === 'now' ? `<div class="done-nums"><div><b>${state.recipients.length}</b>받음</div><div><b>0</b>못 받음</div></div>` : '';
+}
+
+// 확인할 것 — 여러 개여도 한 번에 하나씩
+function askHTML() {
+  const a = asks()[0]; if (!a) return '';
+  return `<div class="alert alert-${a.stop ? 'error' : 'info'} ask-box">${icon('exclamation-circle-filled', 'alert-icon ask-icon')}
+  <div class="ask-body">
+    <p class="ask-q">${esc(a.text)}</p>${a.say ? `<p>${esc(a.say)}</p>` : ''}
+  <div class="ask-row">
+    ${a.fill ? `<div class="ask-fill"><input class="input input-lg" data-fill="${esc(a.fill)}" placeholder="${esc(a.fill)}"><button class="btn btn-lg btn-primary" data-act="fill:${esc(a.fill)}">넣기</button></div>` : ''}
+    ${a.acts ? `<div class="ask-acts">${a.acts.map(([l, act, kind]) => `<button class="btn btn-lg btn-${kind || 'default'}" data-act="${esc(act)}" data-label="${esc(l)}">${l}</button>`).join('')}</div>` : ''}
+  </div></div></div>`;
+}
+// 말투 하나를 입힌 완성 알림톡 (읽기 전용) — 말투로 바뀐 칸은 노란색으로
+function toneBubble(k) {
+  const saved = state.vars;
+  state.vars = { ...saved, 추가메시지: state.tones[k].text };
+  const body = visibleBody().split(/(\{.+?\})/).map((p) => {
+    const m = p.match(/^\{(.+)\}$/);
+    if (!m) return esc(p);
+    if (m[1] === '수신자명') return `<span class="var var-recipient">${esc(previewName())}</span>`;
+    const opt = m[1] === '추가메시지' && showOptout() ? `${state.vars[m[1]] ? '\n' : ''}<span class="optout-line">${esc(OPTOUT_LINE)}</span>` : '';
+    return `<span class="${m[1] === '추가메시지' ? 'var' : 'cmp-var'}">${esc(state.vars[m[1]] || '')}</span>${opt}`;
+  }).join('');
+  state.vars = saved;
+  return `<div class="bubble"><div class="bubble-head">알림톡 도착</div>
+    ${state.template.img ? `<img class="bubble-img" src="${state.template.img}" alt="">` : ''}
+    <div class="bubble-body">${body}</div>${state.attach !== 'none' ? '<span class="bubble-btn">자세히 보기</span>' : ''}</div>`;
+}
+const toneChoosing = () => current() === 'tone';
+// 말투 카드 셋 — 대화에선 이름·설명만 (넓은 화면은 오른쪽에서 완성본을 비교), 좁은 화면은 완성본까지
+function toneHTML() {
+  return `<div class="card-box">${toneOrder().map((k, idx) => {
+    const v = state.tones[k];
+    return `<button class="pick-card${state.tone === k ? ' is-on' : ''}" data-tone="${k}">
+      <span class="pick-top">${v.label}${idx === 0 ? '<span class="pick-tag">추천</span>' : ''}${icon('check-circle-filled')}</span>
+      <span class="tone-full">${toneBubble(k)}</span>
+    </button>`;
+  }).join('')}</div>`;
+}
+// 오른쪽 비교 — 세 버전을 나란히, 각각 아래에 고르기 버튼
+function renderCompare() {
+  const on = toneChoosing();
+  $('#compare').hidden = !on; $('#phones').hidden = on;
+  if (!on) return;
+  $('#compare').innerHTML = toneOrder().map((k, idx) => {
+    const v = state.tones[k];
+    return `<div class="cmp-col">
+      <span class="cmp-head"><b>${v.label}</b>${idx === 0 ? '<span class="pick-tag">추천</span>' : ''}</span>
+      <div class="cmp-room">${toneBubble(k)}</div>
+      <button class="cmp-pick${idx === 0 ? ' is-rec' : ''}" data-tone="${k}">이걸로 할게요</button>
+    </div>`;
+  }).join('');
+}
+// 자세히 보기 버튼 — 상세 페이지 / 내 링크 / 버튼 없이. AI가 판단한 것을 맨 앞에 추천으로
+const BTN = {
+  doc: { label: '상세 페이지 만들기' },
+  link: { label: '내 링크 연결하기' },
+  none: { label: '버튼 없이 보내기' },
+};
+let linkEditing = false;
+function btnOrder() { const r = state.aiAttach || 'none'; return [r, ...['doc', 'link', 'none'].filter((k) => k !== r)]; }
+function btnHTML() {
+  return `<div class="pick-grid">${btnOrder().map((k, idx) => `<button class="pick-card${linkEditing && k === 'link' ? ' is-on' : ''}" data-btn="${k}">
+      <span class="pick-top">${BTN[k].label}${idx === 0 ? '<span class="pick-tag">추천</span>' : ''}${icon('check-circle-filled')}</span></button>
+      ${linkEditing && k === 'link' ? `<div class="ask-fill link-fill"><input class="input input-lg" id="linkInput" placeholder="https://" value="${esc(state.link)}" inputmode="url"><button class="btn btn-lg btn-primary" data-act="linkDone">넣기</button></div>` : ''}`).join('')}</div>`;
+}
+function pickBtn(k) {
+  if (k === 'doc') { makeDoc(); return; }
+  if (k === 'link' && !linkEditing) { linkEditing = true; renderChat(); setTimeout(() => $('#linkInput') && $('#linkInput').focus()); return; }
+  linkEditing = false;
+  state.attach = k; state.attachChosen = true; state.chosenAttach = k;
+  if (k === 'doc') state.doc = state.doc || {};
+  dropPicks(); me(k === 'link' ? state.link : BTN[k].label);
+  say(k === 'doc' ? '상세 페이지를 만들었어요. 아래에서 확인하고, <b>문서 수정</b>으로 고칠 수 있어요.'
+    : k === 'link' ? '‘자세히 보기’ 버튼에 이 링크를 연결했어요.' : '버튼 없이 메시지만 보낼게요.');
+  refresh();
+}
+
+// 상세 페이지 만들기 — 실제로는 30초쯤 걸리므로 만드는 과정을 보여준다 (시안은 15초)
+const GEN_MS = 15000;
+const GEN_STEPS = [[0, '알림톡 내용을 정리하고 있어요'], [0.3, '제목과 안내 문구를 쓰고 있어요'], [0.65, '답을 받을 칸을 넣고 있어요'], [0.9, '마무리하고 있어요']];
+function makeDoc() {
+  linkEditing = false;
+  state.attach = 'doc'; state.attachChosen = true; state.chosenAttach = 'doc'; state.doc = state.doc || {};
+  dropPicks(); me(BTN.doc.label);
+  renderBubble([]);                                   // 완성본을 먼저 만들어 두고
+  const page = $('#webPage'), html = page.innerHTML;
+  state.gen = GEN_STEPS[0][1]; goTab('msg'); renderChat();
+  $('#docEdit').hidden = true;                         // 다 만들 때까지 고치기 숨김
+  if (matchMedia('(max-width: 860px)').matches) $('#webCol').scrollIntoView({ block: 'nearest', behavior: 'smooth' });   // 폰이 세로로 쌓일 때만
+  typeInto(page, html, GEN_MS, (p) => {               // 한 글자씩 채운다
+    const step = GEN_STEPS.filter(([at]) => p >= at).pop()[1];
+    if (step !== state.gen) { state.gen = step; renderTop(); }
+  }, () => {
+    state.gen = null; $('#docEdit').hidden = false;
+    say('상세 페이지를 다 만들었어요. 알림톡 옆 화면에서 확인해 보세요.');
+    state.log.push({ type: 'docok' });
+    refresh();
+  });
+}
+// 글자를 앞에서부터 채운다. 아직 글자가 닿지 않은 칸(빈 입력칸·버튼)은 숨겨 둔다
+function typeInto(el, html, ms, onTick, onDone) {
+  el.innerHTML = html;
+  const root = el.firstElementChild, blocks = [...root.children];
+  const blockOf = (n) => blocks.findIndex((b) => b.contains(n));
+  const nodes = [], walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  while (walk.nextNode()) { const n = walk.currentNode; if (n.data.trim()) { nodes.push([n, n.data, blockOf(n)]); n.data = ''; } }
+  const total = nodes.reduce((sum, [, t]) => sum + t.length, 0), start = performance.now();
+  el.classList.add('is-typing');
+  (function tick() {
+    const p = Math.min(1, (performance.now() - start) / ms);
+    let left = Math.round(total * p), cur = 0;
+    nodes.forEach(([node, text, bi]) => { const n = Math.min(text.length, Math.max(0, left)); node.data = text.slice(0, n); if (n) cur = bi; left -= text.length; });
+    blocks.forEach((b, i) => { b.style.display = i <= cur || p === 1 ? '' : 'none'; b.classList.toggle('is-cur', i === cur && p < 1); });
+    el.scrollTop = el.scrollHeight;
+    onTick(p);
+    if (p < 1) { requestAnimationFrame(tick); return; }
+    el.classList.remove('is-typing'); el.scrollTop = 0; onDone();
+  }());
+}
+// 다 만든 상세 페이지 확인 — 바로 다음으로 넘어가지 않는다
+function docokHTML() {
+  return `<div class="ask-acts"><button class="btn btn-lg btn-primary" data-act="docOk" data-label="이대로 쓸게요">이대로 쓸게요</button><button class="btn btn-lg btn-default" data-act="docFix">문서 고치기</button></div>`;
+}
+
+// 템플릿 — 바꾸고 싶다고 할 때만 나온다
+function tplHTML() {
+  const t = state.template;
+  const picks = state.ranked.filter((r) => r.ok).map((r) => r.t).filter((x) => x !== t).slice(0, 3);
+  if (picks.length < 3) TEMPLATES.filter((x) => x !== t && !picks.includes(x)).slice(0, 3 - picks.length).forEach((x) => picks.push(x));
+  return `<div class="pick-grid">${picks.map((x) => `<button class="pick-card" data-tpl="${x.id}">
+      <span class="pick-top">${esc(x.label)}${icon('check-circle-filled')}</span></button>`).join('')}</div>`;
+}
+const SRC_ICON = { file: 'file-excel-outlined', group: 'team-outlined', paste: 'user-outlined', folder: 'history-outlined' };
+// 받는 사람 — 엑셀 올리기 / 번호 붙여넣기 두 가지만
+let pasteOpen = false;
+function whoHTML() {
+  const n = state.recipients.length, nb = state.bad.length;
+  return `<div class="who-box">
+    <div class="who-ways">
+      <button class="pick-card who-way" data-sheet>${icon('file-excel-outlined', 'icon-xl')}<span class="pick-top">엑셀 파일 올리기</span></button>
+      <button class="pick-card who-way${pasteOpen ? ' is-on' : ''}" data-act="togglePaste">${icon('copy-outlined', 'icon-xl')}<span class="pick-top">번호 붙여넣기</span></button>
+    </div>
+    ${pasteOpen ? `<div class="paste-box"><textarea class="textarea" id="pasteNums" rows="4" placeholder="홍길동 010-1234-5678&#10;김자버 010-2345-6789"></textarea>
+      <button class="btn btn-lg btn-primary" data-act="pasteAdd">넣기</button></div>` : ''}
+    ${state.sources.length ? `<div class="srcs">${state.sources.map((s) => `<div class="src">${icon(SRC_ICON[s.kind])}<span class="src-name">${esc(s.label)}</span>
+      <span class="src-n"><b>${s.rows.length}명</b>${s.bad.length ? ` · <span class="bad">빠짐 ${s.bad.length}</span>` : ''}</span></div>`).join('')}</div>
+      <span class="total">모두 <b>${n}명</b>${state.dupCount ? ` · 같은 번호 ${state.dupCount}명은 한 번만` : ''}${nb ? ` · <span class="bad">${nb}명 빠짐</span> <button class="btn btn-link" data-act="toggleBad">${showBad ? '접기' : '보기'}</button>` : ''}</span>
+      ${nb && showBad ? `<div class="bad-list">${state.bad.map((b) => `<span><span>${esc(b.name || '이름 없음')} ${esc(b.phone)}</span><em>${esc(b.why)}</em></span>`).join('')}</div>` : ''}` : ''}
+  </div>`;
+}
+function whenText() {
+  if (state.when === 'now') return '지금';
+  if (!state.at) return '예약';
+  return new Date(state.at).toLocaleString('ko-KR', { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+const ATTACH_LABEL = { none: '', doc: ' + 상세 문서', link: ' + 링크' };
+// 보내기 — 요약 + 버튼 하나. 예약·먼저 보내보기는 아래 칩이나 말로
+function sendHTML() {
+  const n = state.recipients.length;
+  const ad = needsOptout(), off = !n || (ad && !state.consent);
+  return `<div class="send-row">
+    ${ad ? `<label class="consent"><input type="checkbox" class="checkbox" id="consent"${state.consent ? ' checked' : ''}><span>받는 사람 ${n}명 모두 광고 수신에 동의했어요</span></label>` : ''}
+    <button class="send-btn" data-act="send" ${off ? 'disabled' : ''}>${icon('send-outlined')}${state.when === 'now' ? `${n}명에게 지금 보내기` : `${esc(whenText())}에 ${n}명에게 예약하기`}</button>
+  </div>`;
+}
+// 보내기 설정 탭 — 기본은 지금 보내기. 예약은 켤 때만 시각을 고른다 + 보내기 전 요약
+function whenHTML() {
+  const n = state.recipients.length, later = state.when === 'later';
+  return `<div class="when-box">
+    <div class="when-sum">
+      <label class="when-row"><span>예약해서 보내기</span><input type="checkbox" class="toggle" id="laterToggle"${later ? ' checked' : ''}></label>
+      ${later ? `<div class="when-row is-time"><span>보내는 시각</span><input class="input input-lg when-input" type="datetime-local" id="whenInput" value="${esc(state.at)}"></div>` : ''}
+    </div>
+    <dl class="when-sum">
+      <div><dt>받는 사람</dt><dd>${n ? `${n}명` : '아직 없음'}</dd></div>
+      <div><dt>보내는 것</dt><dd>알림톡${ATTACH_LABEL[state.attach]}</dd></div>
+      ${needsOptout() ? '<div><dt>광고</dt><dd>(광고) 표시 · 수신거부 자동 포함</dd></div>' : ''}
+      <div><dt>예상 비용</dt><dd>${(n * UNIT).toLocaleString()}원</dd></div>
+    </dl>
+    <button class="btn btn-lg btn-default when-me" data-say="나에게 먼저 보내보기">나에게 먼저 보내보기</button>
+  </div>`;
+}
+
+// 다음 행동 칩 — 지금 고를 카드가 있으면 그 카드에만 집중하게 칩을 줄인다
+function renderNext() {
+  const last = { type: current() };
+  const emoji = /[\u{1F300}-\u{1FAFF}]/u.test(Object.values(state.vars).join(''));
+  const doc = state.attach === 'doc' ? '상세 문서 빼줘' : state.attach === 'none' ? '상세 문서 붙여줘' : '';
+  let chips = [];
+  if (state.sent || ['ask', 'tpl', 'btn', 'gen', 'docok'].includes(last.type)) chips = [];
+  else if (last.type === 'tone') chips = ['다른 템플릿 보여줘'];
+  else if (last.type === 'who') chips = [...state.sources.map((s) => ({ label: `${s.label} 빼기`, act: `unsrc:${s.id}` })), '번호는 어떻게 넣어요?', '말투 바꿀래요', '더 짧게'];
+  else chips = [state.when === 'now' ? '내일 아침에 예약할래요' : '지금 보낼래요', '더 짧게', emoji ? '이모지 빼기' : '이모지 넣기', '말투 바꿀래요', doc, '요금이 얼마예요?'].filter(Boolean);
+  // 방금 바꾼 게 있으면 되돌리기를 맨 앞에
+  if (!state.sent && canUndo()) chips.unshift({ label: '방금 바꾼 거 되돌리기', act: 'undo' });
+  $('#nextChips').innerHTML = chips.map((c) => typeof c === 'string' ? `<button class="chip2" data-say="${esc(c)}">${esc(c)}</button>`
+    : `<button class="chip2" data-chip="${esc(c.act)}">${esc(c.label)}</button>`).join('');
+  $('#nextChips').hidden = !chips.length;
+}
+
+// 다음 할 일 하나만 내민다
+function next() {
+  const last = state.log[state.log.length - 1] || {};
+  if (PICKS.includes(last.type)) return;          // 아직 고르는 중
+  if (asks().length) { state.log.push({ type: 'ask' }); return; }
+  if (!state.tone) { say('말투를 골라 주세요.', { q: true }); state.log.push({ type: 'tone' }); return; }
+  if (!state.attachChosen && state.pageAds.length) { state.attachChosen = true; state.chosenAttach = 'doc'; }   // 광고 문장은 페이지에만 넣을 수 있다
+  if (!state.attachChosen) { say('자세히 보기 버튼에 무엇을 연결할까요?', { q: true }); state.log.push({ type: 'btn' }); return; }
+  if (!has('who')) { say('누구에게 보낼까요?', { q: true }); state.log.push({ type: 'who' }); return; }
+  if (state.recipients.length && !has('send')) { say(`${state.recipients.length}명에게 보낼 준비가 됐어요.`, { q: true }); state.log.push({ type: 'send' }); }
+  // 보내기 카드는 늘 맨 아래
+  const si = state.log.findIndex((b) => b.type === 'send');
+  if (si > -1 && si < state.log.length - 1) { state.log.push(...state.log.splice(si, 1)); if (state.ack > si) state.ack -= 1; }
+}
+function refresh(changed = []) {
+  const before = current();
+  findChecks();
+  renderBubble(changed);
+  next();
+  const now = current();
+  if (now !== before) goTab(STAGE_TAB[now]);
+  if (pendingTab) { goTab(pendingTab); pendingTab = null; }
+  renderChat();
+  saveSession();
+}
+
+/* ── 받는 사람 ─────────────────────────────── */
+const PHONE_RE = /01[016789][-.\s]?\d{3,4}[-.\s]?\d{4}/;
+const normPhone = (p) => p.replace(/\D/g, '').replace(/^(\d{3})(\d{3,4})(\d{4})$/, '$1-$2-$3');
+const okPhone = (p) => /^01[016789]-\d{3,4}-\d{4}$/.test(p);
+let srcSeq = 0;
+function addSource(src) {
+  if (src.key && state.sources.some((s) => s.key === src.key)) { toast('이미 넣었어요', 'warning'); return false; }
+  state.sources.push({ id: ++srcSeq, ...src });
+  computeRecipients(); return true;
+}
+function addFromText(text) {
+  const rows = [], bad = [];
+  text.split(/\n+/).map((l) => l.trim()).filter(Boolean).forEach((line) => {
+    const m = line.match(PHONE_RE);
+    if (m) rows.push({ name: line.replace(m[0], '').replace(/[,\t]/g, ' ').trim(), phone: normPhone(m[0]) });
+    else bad.push({ name: line.replace(/[\d-]/g, '').trim(), phone: (line.match(/[\d-]{3,}/) || [''])[0], why: /\d/.test(line) ? '번호 형식 오류' : '번호 없음' });
+  });
+  addSource({ kind: 'paste', label: '붙여넣은 번호', rows, bad });
+  return { rows, bad };
+}
+function addGroup(g) {
+  const people = CONTACTS.filter((c) => groupIds(g).includes(c.id));
+  return addSource({ kind: 'group', key: `g:${g.name}`, label: g.name,
+    rows: people.filter((c) => c.phone).map((c) => ({ name: c.name, phone: c.phone })),
+    bad: people.filter((c) => !c.phone).map((c) => ({ name: c.name, phone: '', why: '번호 없음' })) });
+}
+function addSheet() {
+  const all = sampleSheet();
+  return addSource({ kind: 'file', key: 'file:sample', label: '고객 명단.xlsx',
+    rows: all.filter((r) => okPhone(r.phone)), bad: all.filter((r) => !okPhone(r.phone)).map((r) => ({ ...r, why: '번호 자리 수 오류' })) });
+}
+function addFolder(id) {
+  const f = SENT_FOLDERS.find((x) => x.id === id);
+  return addSource({ kind: 'folder', key: `f:${f.id}`, label: f.label, rows: CONTACTS.filter((c) => f.ids.includes(c.id) && c.phone).map((c) => ({ name: c.name, phone: c.phone })), bad: [] });
+}
+function computeRecipients() {
+  const seen = new Map(); let dup = 0;
+  state.sources.forEach((s) => s.rows.forEach((r) => { if (seen.has(r.phone)) dup++; else seen.set(r.phone, r); }));
+  state.recipients = [...seen.values()];
+  state.bad = state.sources.flatMap((s) => s.bad);
+  state.dupCount = dup;
+}
+function removeSource(id) {
+  const s = state.sources.find((x) => x.id === id); if (!s) return;
+  const go = () => { state.sources = state.sources.filter((x) => x !== s); computeRecipients(); refresh([]); };
+  if (s.rows.length >= 20) askConfirm(`${s.label}을 뺄까요?`, `${s.rows.length}명이 받는 사람에서 빠져요.`, '빼기', go); else go();
+}
+function ensureWho() { if (!has('who')) state.log.push({ type: 'who' }); }
+
+/* ── 고치기 — 칩과 입력창이 같은 길을 쓴다 ─────── */
+const snap = () => JSON.stringify({ t: state.template.id, vars: state.vars, tone: state.tone, tones: state.tones, base: state.base, attach: state.attach });
+function undoable(fn) {
+  const before = snap(); const msg = fn();
+  const did = snap() !== before;
+  say(esc(msg), did ? { undo: before } : {});
+  return did;
+}
+// 되돌리기 — 위 "방금 한 일"이 되돌릴 수 있는 변경일 때만
+function canUndo() { const b = state.log[state.ack]; return !!(b && b.undo && !b.undone); }
+function undoLast() {
+  if (!canUndo()) { say('되돌릴 게 없어요.'); return; }
+  const b = state.log[state.ack], s = JSON.parse(b.undo);
+  state.template = TEMPLATES.find((x) => x.id === s.t); Object.assign(state, { vars: s.vars, tone: s.tone, tones: s.tones, base: s.base, attach: s.attach });
+  b.undone = true;
+  say('방금 바꾼 걸 되돌렸어요.');
+}
+function editExtra(fn) { state.vars['추가메시지'] = fn(state.vars['추가메시지'] || ''); }
+function setLater() {
+  const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(10, 0, 0, 0);
+  const p = (x) => String(x).padStart(2, '0');
+  state.when = 'later'; state.at = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T10:00`;
+}
+function talk(text) {
+  const t = state.template;
+  pendingTab = talkTab(text);
+  // 번호가 든 줄이 있으면 받는 사람으로 (명단은 대화에 그대로 남기지 않는다)
+  if (PHONE_RE.test(text) && !/빼|지워/.test(text)) {
+    dropPicks();
+    const { rows, bad } = addFromText(text);
+    me(`연락처 ${rows.length + bad.length}줄을 붙여넣었어요`);
+    say(`${rows.length}명을 받는 사람에 넣었어요.${bad.length ? ` ${bad.length}줄은 번호가 틀려서 뺐어요.` : ''}`);
+    if (!has('who')) state.log.push({ type: 'who' });
+    refresh(); return;
+  }
+  const url = text.match(URL_RE);
+  dropPicks();
+  me(text);
+  if (/되돌려|원래대로/.test(text)) { undoLast(); refresh(['추가메시지']); return; }
+  if (url) { state.attach = 'link'; state.link = url[0]; say('‘자세히 보기’ 버튼에 이 링크를 연결했어요. 아래 미리보기에서 확인해 보세요.'); refresh(); return; }
+  if (/다른 템플릿/.test(text)) { say(`지금은 <b>${esc(t.label)}</b> 템플릿이에요. 이런 것도 있어요.`); state.log.push({ type: 'tpl' }); refresh(); return; }
+  if (/말투/.test(text)) { say('말투를 다시 골라 주세요.'); state.log.push({ type: 'tone' }); refresh(); return; }
+  if (/엑셀/.test(text)) { if (!has('who')) state.log.push({ type: 'who' }); addSheet(); say(`엑셀 명단을 넣었어요. 받는 사람은 모두 ${state.recipients.length}명이에요.`); refresh(); return; }
+  if (/지난번/.test(text)) { if (!has('who')) state.log.push({ type: 'who' }); addFolder('f2'); say('지난번에 받은 사람들을 넣었어요.'); refresh(); return; }
+  if (/어떻게 넣/.test(text)) { say('아래 입력창에 <b>이름과 번호</b>를 한 줄에 한 명씩 붙여넣으면 돼요.<br>예: 홍길동 010-1234-5678'); refresh(); return; }
+  if (/예약/.test(text)) { setLater(); say(`${esc(whenText())}에 보내도록 예약할게요. 시각은 보내기 설정에서 바꿀 수 있어요.`); refresh(); return; }
+  if (/지금 보낼/.test(text)) { state.when = 'now'; say('지금 바로 보내도록 바꿨어요.'); refresh(); return; }
+  if (/나에게|먼저 보내/.test(text)) { say('내 카톡으로 먼저 보냈어요. (프로토타입이라 실제로 가진 않아요)'); refresh(); return; }
+  const did = undoable(() => {
+    if (/문서/.test(text) && /빼|없/.test(text)) { state.attach = 'none'; return '상세 문서를 뺐어요. 메시지만 보내요.'; }
+    if (/문서/.test(text)) { state.attach = 'doc'; state.doc = state.doc || {}; return '‘자세히 보기’ 버튼에 상세 문서를 붙였어요. 아래 미리보기에서 확인해 보세요.'; }
+    if (/짧게|줄여/.test(text)) { editExtra((x) => x.split('\n')[0] || ''); return '덧붙인 말을 한 줄로 줄였어요.'; }
+    if (/이모지/.test(text) && /빼|없/.test(text)) { Object.keys(state.vars).forEach((k) => { state.vars[k] = stripEmoji(state.vars[k] || ''); }); return '이모지를 뺐어요.'; }
+    if (/이모지/.test(text)) { const e = EMOJI[t.id] || '😊'; editExtra((x) => x ? `${e} ${stripEmoji(x)}` : e); return '이모지를 넣었어요.'; }
+    if (/정중/.test(text)) { editExtra((x) => x.split('\n').map(politeLine).join('\n')); return '더 정중한 말투로 바꿨어요.'; }
+    if (/친근|부드럽/.test(text)) { editExtra((x) => x.split('\n').map(friendlyLine).join('\n')); return '더 친근한 말투로 바꿨어요.'; }
+    if (/빼|지워|없애/.test(text)) {
+      const phoneWord = /번호|연락처|문의|전화/.test(text);
+      const before = state.vars['추가메시지'] || '';
+      editExtra((x) => x.split('\n').filter((l) => !(phoneWord && /\d{2,3}-\d{3,4}-\d{4}|문의/.test(l))).join('\n'));
+      return state.vars['추가메시지'] !== before ? '그 문장을 뺐어요.' : '뺄 문장을 찾지 못했어요. 미리보기의 노란 칸에서 직접 지워도 돼요.';
+    }
+    const date = findDate(text);
+    if (date && t.dateSlot) { state.vars[t.dateSlot] = date.text; return `${josa(t.dateSlot, '을', '를')} ${date.text}로 바꿨어요.`; }
+    const kb = KB.find((k) => k.q.test(text));
+    return kb ? kb.a : '미리보기의 노란 칸을 눌러 직접 고칠 수 있어요. 아래 버튼을 눌러도 돼요.';
+  });
+  refresh(did ? ['추가메시지'] : []);
+}
+
+/* ── 보내기 ─────────────────────────────── */
+function doSend() {
+  const n = state.recipients.length;
+  if (needsOptout() && !state.consent) return;
+  if (state.when === 'later') { finish('later'); return; }
+  let left = 5;
+  const el = document.createElement('div');
+  el.className = 'toast toast-info toast-with-action';
+  el.innerHTML = `${icon('clock-circle-filled', 'toast-icon')}<span class="t"></span><button class="btn btn-sm btn-link toast-action">취소</button>`;
+  const tick = () => { el.querySelector('.t').textContent = `${left}초 뒤에 ${n}명에게 보내요`; };
+  tick(); $('#toasts').appendChild(el);
+  document.querySelector('[data-act="send"]').disabled = true;
+  const timer = setInterval(() => { left -= 1; tick(); if (left > 0) return; clearInterval(timer); el.remove(); finish('now'); }, 1000);
+  el.querySelector('button').onclick = () => { clearInterval(timer); el.remove(); say('보내기를 취소했어요. 아무에게도 나가지 않았어요.'); refresh(); };
+}
+function finish(kind) {
+  const n = state.recipients.length;
+  state.sent = kind;
+  try { sessionStorage.removeItem(SAVE_KEY); } catch (e) { /* 저장 못 해도 괜찮다 */ }
+  $('#work').classList.add('is-sent');
+  state.log = state.log.filter((b) => b.type !== 'send' && b.type !== 'who');
+  me(kind === 'now' ? `${n}명에게 지금 보내기` : `${n}명에게 예약하기`);
+  say(kind === 'now' ? `${n}명에게 보냈어요.` : `${esc(whenText())}에 ${n}명에게 보낼게요.`, { q: true });
+  state.ack = -1;
+  renderChat();
+  $('#talkInput').disabled = true;
+}
+
+/* ── 시작 — AI가 템플릿·버튼을 정하고, 고를 것은 하나씩 ─── */
+async function start(text) {
+  $('#home').hidden = true; $('#work').hidden = false; $('#newChat').hidden = false;
+  me(text, text.length > 120);
+  say('승인받은 템플릿 중에서 맞는 걸 찾고 있어요', { q: true });
+  renderChat();
+  await wait(900);
+  state.log.pop();
+  setup(text);
+  const notes = [];
+  if (state.pageAds.length) notes.push(`할인 같은 광고 문장 ${state.pageAds.length}개는 알림톡 본문에 넣을 수 없어서, 버튼을 누르면 열리는 페이지로 옮겼어요.`);
+  say(`<b>${esc(state.template.label)}</b> 템플릿으로 만들었어요. 아래 미리보기를 확인해 보세요.${notes.length ? `<br><span class="b-sub">${notes.map(esc).join(' ')}</span>` : ''}`);
+  findChecks();
+  if (asks().length) say(`보내기 전에 ${asks().length}가지만 확인할게요.`, { q: true });
+  refresh();
+}
+function setup(text, forcedId) {
+  analyze(text, forcedId);
+  decideAttach();
+  state.aiAttach = state.attach;
+  state.aiWhy = state.attach === 'doc' ? state.attachWhy.replace('상세 문서를 연결했어요', '상세 페이지를 붙이는 게 좋아요').replace('상세 문서로도 정리해 연결했어요', '상세 페이지로 정리하는 게 좋아요')
+    : state.attach === 'link' ? '보내던 문자에 있던 링크예요. 그대로 연결해요.' : '';
+  if (state.attachChosen) state.attach = state.chosenAttach || state.attach;
+  state.base = state.vars['추가메시지'] || '';
+  makeTones();
+  if (state.tone) applyTone(state.tone);
+}
+/* ── 팝업 · 알림 ─────────────────────────── */
+function openDialog(id) { $(id).classList.add('is-open'); }
+function closeDialogs() { document.querySelectorAll('.dialog-overlay.is-open').forEach((d) => d.classList.remove('is-open')); }
+let confirmFn = null;
+function askConfirm(title, desc, okLabel, fn) { $('#confirmTitle').textContent = title; $('#confirmDesc').textContent = desc; $('#confirmOk').textContent = okLabel; confirmFn = fn; openDialog('#confirmDialog'); }
+function toast(text, kind = 'success') {
+  const el = document.createElement('div');
+  el.className = `toast toast-${kind}`;
+  el.innerHTML = `${icon(kind === 'warning' ? 'exclamation-circle-filled' : 'check-circle-filled', 'toast-icon')}<span>${text}</span>`;
+  $('#toasts').appendChild(el); setTimeout(() => el.remove(), 3000);
+}
+
+/* ════════════════════════════════════════════
+   이벤트
+   ════════════════════════════════════════════ */
+$('#samples').innerHTML = SAMPLES.map((s, i) => `
+  <button class="shortcut" data-sample="${i}"><span class="shortcut-tile ${s.tile}">${icon(s.icon, 'icon-xl')}${s.hot ? '<span class="shortcut-hot">HOT</span>' : ''}</span>${esc(s.label)}</button>`).join('');
+let demoAt = 0;
+setInterval(() => {
+  if ($('#home').hidden) return;
+  demoAt = 1 - demoAt;
+  document.querySelectorAll('.demo-ex').forEach((el, i) => el.classList.toggle('is-on', i === demoAt));
+}, 3000);
+const paste = $('#pasteBox');
+function fitPaste() { paste.style.height = 'auto'; paste.style.height = `${paste.scrollHeight}px`; $('#analyzeBtn').disabled = !paste.value.trim(); }
+$('#samples').addEventListener('click', (e) => { const b = e.target.closest('[data-sample]'); if (!b) return; paste.value = SAMPLES[b.dataset.sample].text; fitPaste(); paste.focus(); });
+paste.addEventListener('input', fitPaste);
+paste.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && paste.value.trim()) { e.preventDefault(); start(paste.value.trim()); } });
+$('#analyzeBtn').addEventListener('click', () => start(paste.value.trim()));
+
+// 대화 속 카드 — 고르면 카드는 사라지고 고른 것이 내 말로 남는다
+const log = $('#work');
+const ACK = { moveAds: '광고 문장을 버튼을 누르면 열리는 페이지로 옮겼어요.', dropAds: '광고 문장을 뺐어요.', dropBlocked: '그 말을 뺐어요.' };
+log.addEventListener('click', (e) => {
+  const tpl = e.target.closest('[data-tpl]');
+  if (tpl) {
+    const keep = { coupon: state.coupon };
+    setup(state.original, tpl.dataset.tpl); state.coupon = keep.coupon;
+    dropPicks(); me(`${state.template.label}로 할게요`);
+    say(`<b>${esc(state.template.label)}</b> 템플릿으로 바꿨어요.`);
+    refresh(Object.keys(state.vars)); return;
+  }
+  const tone = e.target.closest('[data-tone]');
+  if (tone) { pickTone(tone.dataset.tone); return; }
+  if (e.target.closest('[data-sheet]')) { me('엑셀 파일 올리기'); if (addSheet()) say(`엑셀 명단을 넣었어요. 받는 사람은 모두 ${state.recipients.length}명이에요.`); refresh(); return; }
+  const g = e.target.closest('[data-group]'); if (g) { addGroup(GROUPS.find((x) => x.name === g.dataset.group)); refresh(); return; }
+  const f = e.target.closest('[data-folder]'); if (f) { addFolder(f.dataset.folder); refresh(); return; }
+  const tb = e.target.closest('[data-tab]');
+  if (tb) { tab = tb.dataset.tab; renderTabs(); return; }
+  const sy = e.target.closest('[data-say]');
+  if (sy && !sy.closest('#nextChips')) { talk(sy.dataset.say); return; }
+  const a = e.target.closest('[data-act]'); if (!a) return;
+  const act = a.dataset.act;
+  if (act === 'toggleBad') { showBad = !showBad; renderChat(); return; }
+  if (act === 'togglePaste') { pasteOpen = !pasteOpen; renderChat(); if (pasteOpen) setTimeout(() => $('#pasteNums').focus()); return; }
+  if (act === 'pasteAdd') {
+    const v = $('#pasteNums').value.trim(); if (!v) { $('#pasteNums').focus(); return; }
+    const { rows, bad } = addFromText(v); pasteOpen = false;
+    me(`번호 ${rows.length + bad.length}줄 붙여넣기`);
+    say(`${rows.length}명을 넣었어요.${bad.length ? ` ${bad.length}줄은 번호가 틀려서 뺐어요.` : ''}`);
+    refresh(); return;
+  }
+  if (act === 'send') { doSend(); return; }
+  if (act === 'docFix') { renderDocDialog(); openDialog('#docDialog'); return; }
+  if (act === 'docOk') { dropPicks(); me('이대로 쓸게요'); say('좋아요. 상세 페이지를 붙여서 보낼게요.'); refresh(); return; }
+  // 확인 카드의 답 — 내 말풍선으로 남기고 다음 것으로
+  let changed = [];
+  if (act === 'dropAds' || act === 'moveAds') {
+    if (act === 'moveAds') { state.pageAds.push(...adLines()); state.attach = 'doc'; state.doc = state.doc || {}; changed = ['추가메시지']; }
+    state.vars['추가메시지'] = (state.vars['추가메시지'] || '').split('\n').filter((l) => !isAd(l)).join('\n');
+    state.base = state.base.split('\n').filter((l) => !isAd(l)).join('\n'); makeTones(); if (state.tone) applyTone(state.tone);
+  } else if (act === 'dropBlocked') {
+    const hits = blockedHits();
+    Object.keys(state.vars).forEach((k) => { hits.forEach((x) => { state.vars[k] = (state.vars[k] || '').split(x).join('').replace(/\s{2,}/g, ' '); }); });
+  } else if (act.startsWith('fix:')) { const c = state.checks.find((x) => x.name === act.slice(4)); if (c) { state.vars[c.name] = c.fix; changed = [c.name]; } }
+  else if (act.startsWith('keep:')) state.dismissed.push(act.slice(5));
+  else if (act.startsWith('fill:')) {
+    const n = act.slice(5), inp = log.querySelector(`[data-fill="${CSS.escape(n)}"]`);
+    if (!inp.value.trim()) { inp.focus(); return; }
+    state.vars[n] = inp.value.trim(); changed = [n];
+  } else return;
+  dropPicks();
+  me(act.startsWith('fill:') ? state.vars[changed[0]] : (a.dataset.label || a.textContent.trim()));
+  say(ACK[act] || (act.startsWith('fix:') ? `${esc(state.vars[changed[0]])}로 고쳤어요.` : '알겠어요.'));
+  refresh(changed);
+});
+$('#top').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-btn]'); if (b) { pickBtn(b.dataset.btn); return; }
+  if (e.target.closest('[data-act="linkDone"]')) {
+    const v = ($('#linkInput').value || '').trim();
+    if (!v) { $('#linkInput').focus(); return; }
+    state.link = v; pickBtn('link');
+  }
+});
+$('#top').addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.id === 'linkInput' && !e.isComposing) { e.preventDefault(); $('[data-act="linkDone"]').click(); } });
+function pickTone(k) {
+  applyTone(k);
+  dropPicks(); me(`${state.tones[k].label} 할게요`);
+  say('넣었어요. 문구는 미리보기의 <b>노란 칸</b>을 눌러 바로 고칠 수 있어요.');
+  $('#canvas2').classList.remove('is-open');
+  refresh(['추가메시지']);
+}
+log.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches('[data-fill]') && !e.isComposing) log.querySelector(`[data-act="fill:${CSS.escape(e.target.dataset.fill)}"]`).click(); });
+log.addEventListener('change', (e) => {
+  if (e.target.id === 'whenInput') { state.at = e.target.value; renderChat(); saveSession(); }
+  if (e.target.id === 'consent') { state.consent = e.target.checked; renderChat(); return; }
+  if (e.target.id === 'laterToggle') { if (e.target.checked) setLater(); else state.when = 'now'; renderChat(); saveSession(); }
+});
+// 다음 행동 칩 — 누르면 그 말을 한 것처럼 대화에 남는다 (채팅을 어떻게 쓰는지 자연스럽게 배운다)
+$('#nextChips').addEventListener('click', (e) => {
+  const c = e.target.closest('[data-say]'); if (c) { talk(c.dataset.say); return; }
+  const k = e.target.closest('[data-chip]'); if (!k) return;
+  const act = k.dataset.chip;
+  if (act === 'undo') { dropPicks(); me(k.textContent); undoLast(); refresh(['추가메시지']); return; }
+  if (act.startsWith('unsrc:')) removeSource(+act.slice(6));
+});
+const ti = $('#talkInput');
+function fitTalk() { ti.style.height = 'auto'; ti.style.height = `${ti.scrollHeight}px`; }
+function sendTalk() { const v = ti.value.trim(); if (!v || state.sent || state.gen) return; ti.value = ''; fitTalk(); talk(v); }
+ti.addEventListener('input', fitTalk);
+ti.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendTalk(); } });
+$('#talkSend').addEventListener('click', sendTalk);
+
+// 폰 — 노란 칸 직접 고치기 / 고정 문구는 이유를 보여준다
+const body = $('#bubbleBody');
+let editTimer;
+body.addEventListener('input', (e) => {
+  const v = e.target.closest('.var[data-name]'); if (!v) return;
+  state.vars[v.dataset.name] = v.textContent;
+  clearTimeout(editTimer); editTimer = setTimeout(() => { findChecks(); renderChat(); saveSession(); }, 400);
+});
+body.addEventListener('focusout', (e) => { if (e.target.closest('.var')) refresh([]); });
+body.addEventListener('click', (e) => {
+  const f = e.target.closest('.fixed, .var-recipient'); if (!f || state.sent) return;
+  const tip = $('#lockTip');
+  tip.lastElementChild.textContent = f.classList.contains('var-recipient') ? '받는 분마다 이름이 들어가요' : '승인받은 템플릿 문구라 바꿀 수 없어요';
+  tip.hidden = false;
+  const r = f.getBoundingClientRect();
+  tip.style.left = `${Math.max(8, Math.min(e.clientX - tip.offsetWidth / 2, innerWidth - tip.offsetWidth - 8))}px`;
+  tip.style.top = `${r.top - tip.offsetHeight - 8}px`;
+  clearTimeout(tip._t); tip._t = setTimeout(() => { tip.hidden = true; }, 1600);
+});
+$('#bubbleBtn').addEventListener('click', () => {
+  const w = $('#phoneWeb'); w.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+  w.classList.remove('is-pointed'); void w.offsetWidth; w.classList.add('is-pointed');
+});
+$('#docEdit').addEventListener('click', () => { renderDocDialog(); openDialog('#docDialog'); });
+
+document.addEventListener('click', (e) => { if (e.target.closest('[data-close]') || e.target.classList.contains('dialog-overlay')) closeDialogs(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDialogs(); });
+$('#confirmOk').addEventListener('click', () => { closeDialogs(); if (confirmFn) confirmFn(); confirmFn = null; });
+$('#newChat').addEventListener('click', () => askConfirm('새 알림톡을 만들까요?', '지금 만들던 내용은 지워져요.', '새로 만들기', () => {
+  try { sessionStorage.removeItem(SAVE_KEY); } catch (e) { /* 저장 못 해도 새로 시작은 된다 */ }
+  location.reload();
+}));
+
+/* 새로고침해도 보던 화면 그대로 (이 탭에서만) */
+function saveSession() {
+  if (!state.template || state.sent) return;
+  try {
+    sessionStorage.setItem(SAVE_KEY, JSON.stringify({
+      original: state.original, t: state.template.id, vars: state.vars, coupon: state.coupon, dismissed: state.dismissed,
+      pageAds: state.pageAds, attach: state.attach, link: state.link, attachWhy: state.attachWhy,
+      base: state.base, tones: state.tones, tone: state.tone, attachChosen: state.attachChosen, chosenAttach: state.chosenAttach, aiAttach: state.aiAttach, aiWhy: state.aiWhy, sources: state.sources, when: state.when, at: state.at, log: state.log, ack: state.ack,
+    }));
+  } catch (e) { /* 저장소를 못 쓰면 매번 처음부터 */ }
+}
+function loadSession() {
+  let d;
+  try { d = JSON.parse(sessionStorage.getItem(SAVE_KEY) || 'null'); } catch (e) { return; }
+  if (!d) return;
+  $('#home').hidden = true; $('#work').hidden = false; $('#newChat').hidden = false;
+  analyze(d.original, d.t);
+  Object.assign(state, { vars: d.vars, coupon: d.coupon, dismissed: d.dismissed || [], pageAds: d.pageAds || [],
+    attach: d.attach, link: d.link || '', attachWhy: d.attachWhy || '', doc: d.attach === 'doc' ? {} : null,
+    base: d.base, tones: d.tones, tone: d.tone, attachChosen: d.attachChosen, chosenAttach: d.chosenAttach, aiAttach: d.aiAttach, aiWhy: d.aiWhy || '', sources: d.sources || [], when: d.when || 'now', at: d.at || '', log: d.log || [], ack: d.ack ?? -1 });
+  srcSeq = Math.max(0, ...state.sources.map((s) => s.id));
+  computeRecipients();
+  refresh();
+}
+loadSession();
+</script>
+</body>
+</html>

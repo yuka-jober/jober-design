@@ -21,11 +21,18 @@
 .side-fold .icon { width: var(--icon-lg); height: var(--icon-lg); }
 .side-new { display: flex; align-items: center; gap: 8px; height: var(--control-h-lg); padding: 0 16px; border: 0; border-radius: var(--r-lg); background: var(--color-primary-bg); color: var(--color-primary); font: inherit; font-size: var(--fs-16); font-weight: var(--fw-bold); cursor: pointer; }
 .side-new:hover { background: var(--color-primary-border); }
+.side-hist { display: flex; align-items: center; gap: 8px; height: var(--control-h-lg); margin-top: -8px; padding: 0 16px; border: 0; border-radius: var(--r-lg); background: none; font: inherit; font-size: var(--fs-14); font-weight: var(--fw-medium); color: var(--ink); cursor: pointer; }
+.side-hist:hover { background: var(--color-border-split); }
+.side-hist.is-on { background: var(--color-surface); font-weight: var(--fw-bold); }
 .side-chats { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .side-rail { display: none; }
 .side-list { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 .side-when { padding: 12px 12px 4px; font-size: var(--fs-14); color: var(--sub); }
-.side-item { display: block; width: 100%; padding: 8px 12px; border: 0; border-radius: var(--r-md); background: none; font: inherit; font-size: var(--fs-14); color: var(--ink); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.side-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: 0; border-radius: var(--r-md); background: none; font: inherit; font-size: var(--fs-14); color: var(--ink); text-align: left; cursor: pointer; }
+.side-title { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.side-tag { flex-shrink: 0; padding: 0 8px; border-radius: var(--r-full); background: var(--color-surface); font-size: var(--fs-14); font-weight: var(--fw-medium); line-height: 24px; color: var(--sub); }   /* 보낸 대화 표시 — 회색 바닥 위 흰 알약 */
+.side-tag.is-later { background: var(--color-primary-bg); color: var(--color-primary); }
+.side-item.is-on .side-tag:not(.is-later) { background: var(--soft); }
 .side-item:hover { background: var(--color-border-split); }
 .side-item.is-on { background: var(--color-surface); font-weight: var(--fw-bold); }
 /* 왼쪽 아래 — 스페이스 바꾸기 */
@@ -50,6 +57,7 @@
 .app.is-folded .side-symbol { display: block; }
 .app.is-folded .side-logo { cursor: pointer; }
 .app.is-folded .side-new { width: 44px; height: 44px; padding: 0; justify-content: center; }
+.app.is-folded .side-hist { width: 44px; height: 44px; margin-top: 0; padding: 0; justify-content: center; }
 .app.is-folded .side-chats { flex: none; }
 .app.is-folded .side-rail { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: var(--r-lg); background: none; color: var(--ink); cursor: pointer; }
 .app.is-folded .side-chats:hover .side-rail, .app.is-folded .side-chats:focus-within .side-rail { background: var(--color-border-split); }
@@ -57,6 +65,52 @@
 .app.is-folded .side-list::before { content: ''; position: absolute; top: 0; bottom: 0; left: -16px; width: 16px; }   /* 아이콘→목록으로 마우스가 건너가는 다리 */
 .app.is-folded .side-chats:hover .side-list, .app.is-folded .side-chats:focus-within .side-list { display: flex; }
 .stage { flex: 1; min-width: 0; min-height: 0; overflow-y: auto; }
+
+/* ── 발송 내역 — 자버 사이트(v3) 모양: 회색 바닥 + 흰 카드(라운드 32, 사이트 그림자) 하나, 줄은 구분선, 결과는 알약 ── */
+.app-body > .hist { flex: 1; min-width: 0; overflow-y: auto; padding: 56px 48px 80px; background: var(--soft); }
+.hist-in { max-width: 1040px; margin: 0 auto; }
+.hist-title { margin: 0 0 28px; font-size: 30px; font-weight: 600; letter-spacing: -0.035em; color: var(--ink); }
+.hist-table { display: flex; flex-direction: column; padding: 12px 32px 20px; border-radius: var(--r-card, 32px); background: var(--color-surface); box-shadow: var(--v3-shadow); }
+.hist-row { display: grid; grid-template-columns: 160px minmax(0, 1fr) 80px 232px 104px 88px; gap: 16px; align-items: center; width: 100%; min-height: 64px; padding: 0 12px; border: 0; border-bottom: 1px solid var(--color-border-split); border-radius: 0; background: none; font: inherit; font-size: var(--fs-16); color: var(--ink); text-align: left; cursor: pointer; }
+.hist-row:last-child { border-bottom: 0; }
+.hist-row:hover { background: var(--soft); border-radius: var(--r-lg); }
+.hist-th { min-height: 52px; font-size: var(--fs-14); font-weight: 600; color: var(--sub); cursor: default; }
+.hist-th:hover { background: none; }
+.hist-th span:nth-child(3), .hist-th span:nth-child(5), .h-n, .h-cost { text-align: right; }
+.h-when { font-size: var(--fs-14); color: var(--sub); }
+.h-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
+.h-res { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.h-at { font-size: var(--fs-14); color: var(--body); white-space: nowrap; }   /* 예약 일시 */
+.h-chat { display: flex; justify-content: flex-end; }
+
+/* 발송 내역 창 — 요약 숫자 + 재알림 + 상세(한 사람씩) */
+.dialog-rec { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 1040px; max-height: calc(100vh - 32px); overflow-y: auto; }
+.rec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.rec-head .dialog-title { margin: 0; }
+.rec-head .icon-btn { margin: -4px -8px 0 0; color: var(--sub); }
+.rec-body { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 20px 24px; align-items: start; }   /* 최종 확인 창처럼: 왼쪽 나간 알림톡 | 오른쪽 결과 */
+.rec-left { min-width: 0; }
+.rec-side { display: flex; flex-direction: column; gap: 16px; }
+.rec-more, .rec-list { grid-column: 1 / -1; }
+.rec-meta { margin: 0; font-size: var(--fs-14); color: var(--sub); }
+.rec-nums { display: flex; flex-direction: column; gap: 8px; }
+.rec-nums > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: var(--r-lg); background: var(--soft); }
+.rec-nums span { font-size: var(--fs-14); color: var(--sub); }
+.rec-nums b { font-size: var(--fs-24); font-weight: var(--fw-bold); color: var(--ink); }
+.rec-nums em { margin-left: 4px; font-size: var(--fs-16); font-style: normal; font-weight: var(--fw-regular); color: var(--sub); }
+.rec-acts { display: flex; flex-direction: column; gap: 8px; }
+.rec-acts .btn { width: 100%; }
+.rec-acts .btn { border-radius: var(--r-full); }
+.rec-more { display: flex; align-items: center; gap: 4px; align-self: flex-start; padding: 0; border: 0; background: none; font: inherit; font-size: var(--fs-14); font-weight: var(--fw-medium); color: var(--color-primary); cursor: pointer; }
+.rec-list { display: flex; flex-direction: column; max-height: 360px; overflow-y: auto; border-top: 1px solid var(--color-border); }
+.rl-row { display: grid; grid-template-columns: minmax(0, 1fr) 176px 112px; gap: 12px; align-items: center; min-height: 48px; padding: 8px 4px; border-bottom: 1px solid var(--color-border-split); font-size: var(--fs-14); color: var(--ink); }
+.rec-list.has-doc .rl-row { grid-template-columns: minmax(0, 1fr) 176px 112px 64px; }
+.rec-list.is-plain .rl-row { grid-template-columns: minmax(0, 1fr) 176px; }
+.rl-th { position: sticky; top: 0; min-height: 40px; background: var(--color-surface); font-weight: var(--fw-medium); color: var(--sub); }
+.rl-who { display: flex; gap: 12px; min-width: 0; }
+.rl-who b { font-weight: var(--fw-medium); }
+.rl-who span { color: var(--sub); }
+.rl-bad { color: var(--color-error); }
 
 /* ── 왼쪽 — AI와 대화 (지난 대화 + 지금 질문 + 입력창) ── */
 .chat-col { flex-shrink: 0; display: flex; flex-direction: column; width: 440px; min-height: 0; background: var(--color-surface); box-shadow: 1px 0 0 var(--color-border-split); }
@@ -260,7 +314,7 @@
 .cmp-room .bubble { border-radius: 16px; box-shadow: none; }
 .cmp-room .bubble-body { font-size: 14px; }
 .cmp-var { font-weight: 500; }
-.cmp-room .bubble-btn { display: flex; align-items: center; justify-content: center; }
+.cmp-room .bubble-btn, .sc-room span.bubble-btn { display: flex; align-items: center; justify-content: center; }
 .cmp-room .var { cursor: default; }
 .cmp-pick { height: 52px; border: 0; border-radius: var(--r-full); background: var(--color-surface); color: var(--ink); font: inherit; font-size: 16px; font-weight: 600; box-shadow: inset 0 0 0 1px var(--color-border); cursor: pointer; }
 .cmp-pick:hover { box-shadow: inset 0 0 0 1.5px var(--ink); }
@@ -320,7 +374,11 @@
   .app .app-body .side-name { display: block; }
   .app .app-body .side-logo { cursor: default; }
   .app .app-body .side-new { width: 40px; height: 40px; padding: 0; justify-content: center; }
+  .app .app-body .side-hist { width: 40px; height: 40px; margin-top: 0; padding: 0; justify-content: center; }
   .app .app-body .side-chats { flex: none; }
+  .app-body > .hist { padding: 24px 16px 40px; }
+  .hist-title { margin-bottom: 20px; font-size: 24px; }
+  .hist-table { padding: 4px 16px 8px; border-radius: 24px; }
   .app .app-body .side-rail { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 0; border-radius: var(--r-lg); background: none; color: var(--ink); }
   .app .app-body .side-space { display: none; }   /* 좁은 화면 위쪽 띠에는 스페이스 바꾸기를 넣지 않는다 */
   .app .app-body .side-list { display: none; position: absolute; top: calc(100% + 8px); right: 0; left: auto; flex: none; width: 248px; max-height: 70vh; padding: 8px; border-radius: var(--r-xl); background: var(--color-surface); box-shadow: var(--shadow-3); }
@@ -366,6 +424,25 @@
 }
 @media (max-width: 560px) {
   .demo { display: none; }   /* 첫 화면 — 예시 그림을 빼고 입력창을 바로 보이게 */
+  /* 발송 내역 — 표 대신 세 줄: 내용 + 대화 보기 / 결과 / 일시 | 받는 사람 | 비용 */
+  .hist-th { display: none; }
+  .hist-row { grid-template-columns: auto auto minmax(0, 1fr) auto; grid-template-areas: "title title title chat" "res res res res" "when n cost cost"; column-gap: 0; row-gap: 8px; padding: 16px 4px; }
+  .h-title { grid-area: title; padding-right: 12px; } .h-res { grid-area: res; } .h-chat { grid-area: chat; }
+  .h-when { grid-area: when; } .h-n { grid-area: n; } .h-cost { grid-area: cost; }
+  .h-n, .h-cost { text-align: left; font-size: var(--fs-14); color: var(--sub); }
+  .h-n::before, .h-cost::before { content: '|'; margin: 0 8px; color: var(--color-border); }
+  /* 발송 내역 창 — 화면 전체, 받는 사람은 이름 위 번호 아래 */
+  #recDialog { padding: 0; align-items: stretch; }
+  .dialog-rec { height: 100%; max-height: none; border-radius: 0; }
+  .rec-body { grid-template-columns: minmax(0, 1fr); }
+  .rec-side { order: -1; }   /* 좁으면 결과가 먼저, 나간 알림톡은 그 아래 */
+  .rec-body .sc-page { height: 400px; }   /* 세로로 쌓이면 상세 문서는 정해진 높이에서 스크롤 */
+  .rec-list { max-height: none; overflow: visible; }
+  .rl-row, .rec-list.has-doc .rl-row { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .rec-list.is-plain .rl-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .rl-who { flex-direction: column; gap: 0; }
+  .rl-row > span:nth-child(3) { display: none; }   /* 좁으면 버튼 확인 시각은 빼고 문서 상태만 */
+  .rec-list:not(.has-doc) .rl-row > span:nth-child(3) { display: block; }
   .canvas2 { --folder-w: calc(100% - 24px); padding-top: 16px; }
   .ftab { height: 44px; padding: 0 12px; gap: 4px; font-size: var(--fs-14); }
   .sc-previews.has-doc { grid-template-columns: 1fr; }

@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI 알림톡 작성 · 자버</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="../../tokens.css?v=1123i">
-<link rel="stylesheet" href="../../components.css?v=1123i">
-<link rel="stylesheet" href="../jober-site-1019/v3-shell.css?v=1123i">
+<link rel="stylesheet" href="../../tokens.css?v=1123w">
+<link rel="stylesheet" href="../../components.css?v=1123w">
+<link rel="stylesheet" href="../jober-site-1019/v3-shell.css?v=1123w">
 <style>
 /* ai-agent-1021 에서 가져온 첫 화면 · 말풍선 · 팝업 스타일 */
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -260,11 +260,11 @@ button { font-family: inherit; }
   .fe-side { display: none; }   /* 폰에선 블록 영역만 */
 }
 </style>
-<link rel="stylesheet" href="v3-agent.css?v=1123i">
-<link rel="stylesheet" href="compose.css?v=1123i">
+<link rel="stylesheet" href="v3-agent.css?v=1123w">
+<link rel="stylesheet" href="compose.css?v=1123w">
 </head>
 <body>
-<script src="../../assets/icons.js?v=1123i"></script>
+<script src="../../assets/icons.js?v=1123w"></script>
 
 <div class="app">
   <div class="app-body">
@@ -280,6 +280,7 @@ button { font-family: inherit; }
       <button class="icon-btn side-fold" id="sideFold" aria-label="사이드바 접기"><svg class="icon icon-lg"><use href="#sidebar-outlined"></use></svg></button>
     </div>
     <button class="side-new" id="newChat" data-new aria-label="새 메시지" title="새 메시지"><svg class="icon icon-lg"><use href="#plus-outlined"></use></svg><span class="side-label">새 메시지</span></button>
+    <button class="side-hist" id="histOpen" aria-label="발송 내역" title="발송 내역"><svg class="icon icon-lg"><use href="#history-outlined"></use></svg><span class="side-label">발송 내역</span></button>
     <div class="side-chats">
       <button class="side-rail" aria-label="대화 목록"><svg class="icon icon-lg"><use href="#message-outlined"></use></svg></button>
       <nav class="side-list" id="sideList"></nav>
@@ -327,6 +328,14 @@ button { font-family: inherit; }
       </div>
     </div>
     <div class="shortcuts" id="samples"></div>
+  </main>
+
+  <!-- 발송 내역 — 보낸 것과 예약한 것을 한 표로 -->
+  <main class="hist" id="hist" hidden>
+    <div class="hist-in">
+      <h1 class="hist-title">발송 내역</h1>
+      <div class="hist-table" id="histList"></div>
+    </div>
   </main>
 
   <!-- 작업 화면 — 왼쪽 대화(카드로 고르기) | 오른쪽 받는 분 화면(폰 두 대) -->
@@ -467,6 +476,14 @@ button { font-family: inherit; }
   </div>
 </div>
 
+<!-- 발송 내역 창 — 한 번 보낸 것의 결과와 재알림 -->
+<div class="dialog-overlay" id="recDialog">
+  <div class="dialog dialog-rec" role="dialog" aria-modal="true" aria-labelledby="recTitle">
+    <div class="rec-head"><h2 class="dialog-title" id="recTitle"></h2><button class="icon-btn" data-close aria-label="닫기"><svg class="icon icon-lg"><use href="#close-outlined"></use></svg></button></div>
+    <div class="rec-body" id="recBody"></div>
+  </div>
+</div>
+
 <div class="dialog-overlay" id="confirmDialog">
   <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
     <h2 class="dialog-title" id="confirmTitle"></h2>
@@ -584,7 +601,7 @@ const KB = [
   { q: /수신거부/, a: '알림톡에는 광고를 넣을 수 없어서 수신거부 문구도 따로 필요 없어요. 광고 문장은 빼고 보내요.' },
   { q: /승인|심사|신청|템플릿/, a: '여기서는 자버가 미리 카카오 승인을 받아둔 템플릿만 써요. 그래서 따로 승인을 기다릴 필요가 없어요. 원하는 형식이 없으면 자버 매니저에게 요청해 주세요.' },
   { q: /밤|야간|시간|몇 시/, a: '광고성 메시지는 밤 9시부터 다음 날 아침 8시까지 보낼 수 없어요. 정보성 알림톡은 시간 제한이 없지만, 받는 분 입장에서 늦은 시간은 피하는 걸 권해요.' },
-  { q: /요금|비용|가격|포인트|얼마/, a: '알림톡은 미리 충전해 둔 포인트에서 1건마다 차감돼요. 메시지만 보내거나 링크를 붙이면 1건에 50원이에요. 예약 발송도 할 수 있어요.' },
+  { q: /요금|비용|가격|포인트|얼마/, a: '알림톡은 미리 충전해 둔 포인트에서 1건마다 차감돼요. 메시지만 보내거나 링크를 붙이면 1건에 5P예요. 1P는 10원이에요. 예약 발송도 할 수 있어요.' },
 ];
 
 /* 연락처 — 자버 연락처 구조를 따른다 (이름·휴대전화·태그·타입).
@@ -604,8 +621,8 @@ const GROUPS = [
 ];
 const groupIds = (g) => CONTACTS.filter((c) => g.op === 'or' ? g.tags.some((t) => c.tags.includes(t)) : g.tags.every((t) => c.tags.includes(t))).map((c) => c.id);
 // 엑셀 올리기 예시 — 실제로는 파일의 이름·번호 열을 읽는다. 128줄 중 번호 오류 3줄, 같은 번호 2줄
+const sur = '김이박최정강조윤장임한오서신권황안송류홍'.split(''), giv = ['민준', '서연', '도윤', '하은', '지호', '수아', '예준', '지민', '시우', '채원', '주원', '다은', '건우', '윤서', '현우', '지유'];   // 시안용 이름
 function sampleSheet() {
-  const sur = '김이박최정강조윤장임한오서신권황안송류홍'.split(''), giv = ['민준', '서연', '도윤', '하은', '지호', '수아', '예준', '지민', '시우', '채원', '주원', '다은', '건우', '윤서', '현우', '지유'];
   let seed = 7; const rnd = (n) => (seed = (seed * 9301 + 49297) % 233280) % n;
   const rows = Array.from({ length: 128 }, (_, i) => ({
     name: sur[rnd(sur.length)] + giv[rnd(giv.length)],
@@ -1003,6 +1020,7 @@ const state = {
   base: '', tones: {}, tone: null,            // base — 말투를 입히기 전 추가메시지
   sources: [], recipients: [], bad: [], dups: [], dupCount: 0,
   when: 'now', at: '', sent: false,
+  sendId: 0, fails: [],   // 보낸 기록(발송 내역) | 못 받은 사람과 이유
   log: [],                                      // 대화 — 블록 목록
 };
 const $ = (s) => document.querySelector(s);
@@ -1013,6 +1031,7 @@ const icon = (id, cls = '') => `<svg class="icon ${cls}"><use href="#${id}"></us
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const YEAR = 2026;
 const UNIT = 50;   // 1건 단가 — 실서비스 자버 AI 답변 기준 (메시지 / 메시지+링크 건당 50원, 11/19 확인)
+const pt = (n) => `${(n * UNIT / 10).toLocaleString()}P`;   // 비용은 포인트로 — 10원 = 1P
 const SAVE_KEY = 'ai-compose-1118-v3c';
 // 광고성 — 안내 페이지에 광고 문장이 있거나 쿠폰 안내. 수신거부를 자동으로 넣고, 보낼 때 광고 수신 동의를 체크받는다
 const needsOptout = () => !!state.template && ((state.attach === 'doc' && state.pageAds.length > 0) || state.template.id === 'coupon');
@@ -1162,7 +1181,8 @@ function renderTop() {
     btn: [tooLong() ? longWhy() : state.overflow.length ? `알림톡에 다 넣지 못한 ${state.overflow.length}문장이 있어요. 상세 페이지를 만들면 그 문장까지 모두 담을 수 있어요.` : state.aiWhy, '받는 분이 ‘자세히 보기’를 누르면 무엇을 보여줄까요?'],
     who: ['', '누구에게 보낼까요? 엑셀 파일을 올리거나, 이름과 번호를 아래 입력창에 붙여넣어 주세요.'],
     send: ['', `${n}명에게 보낼 준비가 됐어요. 바꾸고 싶은 게 있으면 알려 주세요.`],
-    done: ['', state.sent === 'now' ? `${n}명에게 보냈어요` : `${whenText()}에 ${n}명에게 보낼게요`],
+    done: state.sent === 'now' && state.fails.length ? [`${n}명에게 보냈어요.`, `${n - state.fails.length}명이 받았고 ${state.fails.length}명은 못 받았어요. 못 받은 이유는 ${where()} 볼 수 있어요.`]
+      : ['', state.sent === 'now' ? `${n}명에게 보냈어요` : `${whenText()}에 ${n}명에게 보낼게요`],
   }[c] || ['', ''];
   // 지금 질문 카드 — 방금 한 일은 위 대화에 있으므로, 여기엔 꼭 알아야 할 말 + 질문만
   $('#qMsg').innerHTML = c === 'loading' || c === 'gen' ? `<p><span class="typing"><span></span><span></span><span></span></span> ${esc(Q)}</p>`
@@ -1212,15 +1232,153 @@ function renderChat() {
   $('#whoPanel').innerHTML = whoHTML();
 }
 
-/* ── 왼쪽 대화 목록 — 지금 대화는 '오늘' 맨 위. 지난 대화는 시안용 예시라 열리지 않는다 ─── */
-const PAST_CHATS = [['어제', ['12월 보강 수업 참석 확인', '이용권 만료 안내']], ['지난 30일', ['연말 영업시간 변경 안내', '11월 휴무일 안내', '신규 회원 환영 인사']]];
+/* ── 왼쪽 대화 목록 + 발송 내역 — 대화 하나가 발송 하나. 보낸 대화에는 결과(보냄 | 예약 | 못 받음)를 붙인다.
+   지난 대화는 시안용 예시라 열리지 않는다. 이 탭에서 보낸 건 새로 만들어도 남는다(sessionStorage) ─── */
+const atDay = (d, h, m) => { const x = new Date(); x.setDate(x.getDate() + d); x.setHours(h, m, 0, 0); return x.toISOString(); };
+const PAST_CHATS = [
+  { id: 'p1', title: '12월 보강 수업 참석 확인', day: '어제', sentAt: atDay(-1, 16, 20), kind: 'later', at: atDay(1, 10, 0), n: 86, ok: 0, fail: 0, btn: 'doc' },
+  { id: 'p2', title: '이용권 만료 안내', day: '어제', sentAt: atDay(-1, 11, 5), kind: 'now', n: 42, ok: 41, fail: 1, btn: 'link' },
+  { id: 'p3', title: '연말 영업시간 변경 안내', day: '지난 30일', sentAt: atDay(-6, 9, 30), kind: 'now', n: 210, ok: 210, fail: 0, btn: null },
+  { id: 'p4', title: '11월 휴무일 안내', day: '지난 30일', sentAt: atDay(-12, 14, 0), kind: 'now', n: 198, ok: 196, fail: 2, btn: 'doc' },
+  { id: 'p5', title: '신규 회원 환영 인사', day: '지난 30일' },   // 만들기만 하고 보내지 않은 대화
+];
+// 지난 발송의 알림톡·상세 문서 — 시안용 예시
+const PAST_MSG = {
+  p1: { body: '안녕하세요 홍길동님,\n해법수학학원입니다.\n12월 보강 수업 참석 여부를 여쭤봅니다.\n\n▶ 보강일: 12월 6일 (토) 오후 2시\n\n아래 [자세히 보기]에서 참석 여부를 알려 주세요.',
+    page: [['보강 안내', '평소와 같은 반으로 진행합니다. 교재는 기존 교재를 가져오시면 됩니다.']], ask: ['참석하시나요?', ['참석', '불참']] },
+  p2: { body: '안녕하세요 홍길동님,\n헬스라이프 강남점입니다.\n이용권이 곧 끝나서 안내드립니다.\n\n▶ 만료일: 11월 30일\n\n연장은 아래 [자세히 보기]에서 할 수 있어요.', link: 'healthlife.co.kr/renew' },
+  p3: { body: '안녕하세요 홍길동님,\n카페모먼트입니다.\n연말 영업시간이 바뀌어 안내드립니다.\n\n▶ 12월 24일~31일: 오전 10시~오후 6시\n\n늘 찾아 주셔서 감사합니다.' },
+  p4: { body: '안녕하세요 홍길동님,\n해법수학학원입니다.\n11월 휴무일을 안내드립니다.\n\n▶ 휴무일: 11월 14일 (금)\n\n자세한 내용은 아래 [자세히 보기]에서 확인해 주세요.',
+    page: [['휴무 안내', '학원 내부 행사로 하루 쉽니다. 보강은 다음 주에 진행합니다.']], ask: ['안내를 확인하셨나요?', ['확인했어요']] },
+};
+function pastPreview(r) {
+  const m = PAST_MSG[r.id] || { body: '' };
+  const bubble = `<div class="bubble"><div class="bubble-head">알림톡 도착</div><div class="bubble-body"><b>${esc(r.title)}</b>\n\n${esc(m.body)}</div>${r.btn ? '<span class="bubble-btn">자세히 보기</span>' : ''}</div>`;
+  const page = m.page ? `<div class="doc-page"><div class="dp-title">${esc(r.title)}</div>${m.page.map(([h, t]) => `<div class="dp-sec"><span class="dp-head">${esc(h)}</span><span>${esc(t)}</span></div>`).join('')}
+    ${m.ask ? `<div class="dp-field"><span class="dp-q">${esc(m.ask[0])}</span><div class="dp-opts">${m.ask[1].map((o) => `<span class="dp-opt">${esc(o)}</span>`).join('')}</div></div><button class="dp-done" disabled>제출하기</button>` : ''}</div>` : '';
+  const side = page ? `<div class="sc-col"><span class="sc-label">상세 문서</span><div class="sc-page">${page}</div></div>`
+    : m.link ? `<div class="sc-col"><span class="sc-label">자세히 보기 링크</span><div class="sc-page sc-linkbox">${icon('link-outlined', 'icon-xl')}<b class="sc-url">${esc(m.link)}</b></div></div>` : '';
+  return `<div class="sc-wrap"><div class="sc-previews${side ? ' has-doc' : ''}"><div class="sc-col"><span class="sc-label">알림톡</span><div class="sc-room">${bubble}</div></div>${side}</div></div>`;
+}
+const SENT_KEY = 'ai-compose-1118-sent';
+let sentLog = [];
+try { sentLog = JSON.parse(sessionStorage.getItem(SENT_KEY) || '[]'); } catch (e) { /* 못 읽으면 빈 내역 */ }
+const saveSent = () => { try { sessionStorage.setItem(SENT_KEY, JSON.stringify(sentLog)); } catch (e) { /* 저장 못 해도 화면은 그대로 */ } };
+const myRec = () => state.sendId && sentLog.find((r) => r.id === state.sendId);
+const fmtAt = (iso) => new Date(iso).toLocaleString('ko-KR', { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+// 보낸 대화엔 '발송완료', 예약한 대화엔 '예약'만 붙인다 (결과는 발송 내역에서)
+const sideTag = (r) => !r.kind ? '' : r.kind === 'later' ? '<span class="side-tag is-later">예약</span>' : '<span class="side-tag">발송완료</span>';
+const sideItem = (r, attrs) => `<button class="side-item" ${attrs}><span class="side-title">${esc(r.title)}</span>${sideTag(r)}</button>`;
 function renderSide() {
   const mine = state.log.find((b) => b.type === 'user');
   const title = state.template ? state.template.label : mine && mine.text.split('\n')[0];   // 무슨 안내인지 — 만들기 전엔 처음 한 말
-  const now = mine ? `<div class="side-when">오늘</div><button class="side-item is-on" aria-current="true">${esc(title)}</button>` : '';
-  $('#sideList').innerHTML = now + PAST_CHATS.map(([when, list]) => `<div class="side-when">${when}</div>${list.map((t) => `<button class="side-item" data-past>${esc(t)}</button>`).join('')}`).join('');
+  const cur = mine ? sideItem({ ...(myRec() || {}), title }, `data-cur${$('#hist').hidden ? ' aria-current="true"' : ''}`) : '';
+  const today = cur + sentLog.filter((r) => r.id !== state.sendId).reverse().map((r) => sideItem(r, 'data-past')).join('');
+  const groups = [['오늘', today], ...['어제', '지난 30일'].map((d) => [d, PAST_CHATS.filter((r) => r.day === d).map((r) => sideItem(r, 'data-past')).join('')])];
+  $('#sideList').innerHTML = groups.filter(([, h]) => h).map(([d, h]) => `<div class="side-when">${d}</div>${h}`).join('');
 }
-$('#sideList').addEventListener('click', (e) => { if (e.target.closest('[data-past]')) toast('시안에서는 지난 대화를 열 수 없어요', 'warning'); });
+$('#sideList').addEventListener('click', (e) => {
+  if (e.target.closest('[data-past]')) toast('시안에서는 지난 대화를 열 수 없어요', 'warning');
+  else if (e.target.closest('[data-cur]') && !$('#hist').hidden) closeSends();
+});
+// 발송 내역 — 보낸 것과 예약한 것을 한 표로. 지금 대화를 누르면 그 대화로 돌아간다
+let sendsFrom = 'home';
+function openSends() {
+  if (!$('#hist').hidden) return;
+  sendsFrom = $('#home').hidden ? 'work' : 'home';
+  $('#home').hidden = true; $('#work').hidden = true; $('#hist').hidden = false;
+  $('#histOpen').classList.add('is-on');
+  renderSends(); renderSide();
+}
+function closeSends() {
+  $('#hist').hidden = true; $(`#${sendsFrom}`).hidden = false;
+  $('#histOpen').classList.remove('is-on');
+  renderSide(); if (sendsFrom === 'work') padSheet();
+}
+function renderSends() {
+  const rows = [...sentLog, ...PAST_CHATS.filter((r) => r.kind)].sort((a, b) => b.sentAt.localeCompare(a.sentAt));   // 대화한 일시 순
+  const res = (r) => r.kind === 'later' ? `<span class="badge badge-md badge-pill badge-weak-primary">예약</span><span class="h-at">${esc(fmtAt(r.at))}</span>`
+    : r.fail ? `<span class="badge badge-md badge-pill badge-weak-warning">${r.fail}명 못 받음</span>` : '<span class="badge badge-md badge-pill badge-weak-success">모두 받음</span>';
+  $('#histList').innerHTML = `<div class="hist-row hist-th"><span>일시</span><span>내용</span><span>받는 사람</span><span>결과</span><span>비용</span><span></span></div>`
+    + (rows.length ? rows.map((r) => `<div class="hist-row" role="button" tabindex="0" data-rec="${esc(r.id)}">
+      <span class="h-when">${esc(fmtAt(r.sentAt))}</span><span class="h-title">${esc(r.title)}</span>
+      <span class="h-n">${r.n}명</span><span class="h-res">${res(r)}</span>
+      <span class="h-cost">${r.kind === 'later' ? `${pt(r.n)} 예정` : pt(r.ok)}</span>
+      <span class="h-chat"><button class="btn btn-sm btn-default" data-chat="${esc(r.id)}">대화 보기</button></span></div>`).join('') : '');
+}
+// 대화 열기 — 지금 대화만 열 수 있다 (지난 대화는 시안용 예시)
+function openChat(id) {
+  if (String(id) !== String(state.sendId)) { toast('시안에서는 지난 대화를 열 수 없어요', 'warning'); return; }
+  closeDialogs(); closeSends();
+}
+$('#histList').addEventListener('click', (e) => {
+  const c = e.target.closest('[data-chat]'); if (c) { openChat(c.dataset.chat); return; }
+  const r = e.target.closest('[data-rec]'); if (r) openRec(r.dataset.rec);
+});
+$('#histList').addEventListener('keydown', (e) => { const r = e.target.closest('[data-rec]'); if (r && e.key === 'Enter') openRec(r.dataset.rec); });
+
+/* ── 발송 내역 창 — 한 번 보낸 것의 결과. 요약(받음 | 버튼 확인 | 문서 완료) + 재알림, 상세를 열면 한 사람씩.
+   버튼 확인·문서 완료는 시안용으로 정해진 비율에 맞춰 만든다 ─── */
+const findRec = (id) => [...sentLog, ...PAST_CHATS].find((r) => String(r.id) === String(id));
+const peopleCache = {};
+function recPeople(r) {
+  if (peopleCache[r.id]) return peopleCache[r.id];
+  let seed = [...String(r.id)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 233280, 7);
+  const rnd = (n) => (seed = (seed * 9301 + 49297) % 233280) % n;
+  const base = r.people || Array.from({ length: r.n }, (_, i) => ({ name: sur[rnd(sur.length)] + giv[rnd(giv.length)], phone: `010-${String(2000 + rnd(7999)).padStart(4, '0')}-${String(rnd(10000)).padStart(4, '0')}`, why: i >= r.n - r.fail ? '카카오톡을 쓰지 않는 번호' : '' }));
+  const fresh = r.id === state.sendId || sentLog.some((x) => x.id === r.id);   // 방금 보낸 건 아직 누른 사람이 적다
+  const t0 = new Date(r.sentAt).getTime(), span = Math.max(1, Math.min(600, Math.floor((Date.now() - t0) / 60000)));   // 누른 시각은 지금을 넘지 않게
+  peopleCache[r.id] = base.map((p) => {
+    if (p.why || r.kind !== 'now' || !r.btn) return { ...p };
+    const clicked = rnd(100) < (fresh ? 45 : 72), done = r.btn === 'doc' && clicked && rnd(100) < 70;
+    return { ...p, clickedAt: clicked ? new Date(t0 + rnd(span) * 60000).toISOString() : '', done };
+  });
+  return peopleCache[r.id];
+}
+const shortAt = (iso) => new Date(iso).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+let recOpen = null;
+function openRec(id) { recOpen = id; renderRec(false); openDialog('#recDialog'); fitRecPage(); }
+// 최종 확인 창처럼 상세 문서는 알림톡 높이에 맞춰 스크롤
+const fitRecPage = () => requestAnimationFrame(() => { if (matchMedia('(max-width: 560px)').matches) return; const room = $('#recBody .sc-room'), page = $('#recBody .sc-page'); if (room && page) page.style.height = `${room.offsetHeight}px`; });
+function renderRec(more) {
+  const r = findRec(recOpen); if (!r) return;
+  const ps = recPeople(r), got = ps.filter((p) => !p.why), clicked = got.filter((p) => p.clickedAt).length, done = got.filter((p) => p.done).length;
+  const late = r.kind === 'later';
+  const left = r.btn === 'doc' ? got.length - done : got.length - clicked;   // 재알림 받을 사람 — 문서면 아직 안 낸 사람, 링크면 버튼 안 누른 사람
+  const tile = (label, v, of) => `<div><span>${label}</span><b>${v}${of != null ? `<em>/${of}명</em>` : ''}</b></div>`;
+  $('#recTitle').textContent = r.title;
+  $('#recBody').innerHTML = `<div class="rec-left">${r.preview || pastPreview(r)}</div>
+    <div class="rec-side">
+    <p class="rec-meta">${esc(fmtAt(r.sentAt))} | 받는 사람 ${r.n}명 | ${late ? `${pt(r.n)} 예정` : pt(r.ok)}</p>
+    <div class="rec-nums">${late ? tile('보낼 일시', esc(fmtAt(r.at)))
+      : tile('받음', got.length, r.n) + (r.btn ? tile('버튼 확인', clicked, got.length) : '') + (r.btn === 'doc' ? tile('문서 완료', done, got.length) : '')}</div>
+    <div class="rec-acts">
+      ${!late && r.btn && left ? (r.remindedAt ? `<button class="btn btn-lg btn-default" disabled>재알림 보냄 | ${esc(fmtAt(r.remindedAt))}</button>`
+        : `<button class="btn btn-lg btn-primary" data-remind>${icon('bell-outlined')}${r.btn === 'doc' ? '문서를 안 낸' : '버튼을 안 누른'} ${left}명에게 재알림</button>`) : ''}
+      <button class="btn btn-lg btn-default" data-chat="${esc(r.id)}">${icon('message-outlined')}대화 보기</button>
+    </div>
+    </div>
+    ${late ? '' : `<button class="rec-more" data-more aria-expanded="${more}">상세 보기${icon(more ? 'up-outlined' : 'down-outlined')}</button>
+    <div class="rec-list${r.btn ? '' : ' is-plain'}${r.btn === 'doc' ? ' has-doc' : ''}"${more ? '' : ' hidden'}>
+      <div class="rl-row rl-th"><span>받는 사람</span><span>전달</span>${r.btn ? '<span>버튼 확인</span>' : ''}${r.btn === 'doc' ? '<span>문서</span>' : ''}</div>
+      ${ps.map((p) => `<div class="rl-row"><span class="rl-who"><b>${esc(p.name)}</b><span>${esc(p.phone)}</span></span>
+        <span class="${p.why ? 'rl-bad' : ''}">${p.why ? esc(p.why) : '성공'}</span>
+        ${r.btn ? `<span>${p.clickedAt ? esc(shortAt(p.clickedAt)) : '-'}</span>` : ''}
+        ${r.btn === 'doc' ? `<span>${p.done ? '<span class="badge badge-md badge-pill badge-weak-success">완료</span>' : '-'}</span>` : ''}</div>`).join('')}
+    </div>`}`;
+}
+$('#recBody').addEventListener('click', (e) => {
+  const c = e.target.closest('[data-chat]'); if (c) { openChat(c.dataset.chat); return; }
+  const m = e.target.closest('[data-more]'); if (m) { renderRec(m.getAttribute('aria-expanded') !== 'true'); fitRecPage(); return; }
+  if (e.target.closest('[data-remind]')) {
+    const r = findRec(recOpen), ps = recPeople(r).filter((p) => !p.why), n = r.btn === 'doc' ? ps.filter((p) => !p.done).length : ps.filter((p) => !p.clickedAt).length;
+    const more = !$('#recBody .rec-list').hidden;
+    askConfirm(`${n}명에게 재알림을 보낼까요?`, `같은 알림톡을 한 번 더 보내요. ${pt(n)}가 차감돼요.`, '재알림 보내기', () => {
+      r.remindedAt = new Date().toISOString(); saveSent(); renderRec(more); fitRecPage(); toast(`${n}명에게 재알림을 보냈어요`);
+    });
+  }
+});
+$('#histOpen').addEventListener('click', () => ($('#hist').hidden ? openSends() : closeSends()));
 // 스페이스 — 보내는 곳(알림톡 발신 프로필). 시안용 예시라 다른 스페이스로는 바뀌지 않는다
 const SPACES = ['카페모먼트', '헬스라이프 강남점', '해법수학학원', '바른치과'];
 let space = SPACES[0];
@@ -1302,8 +1460,12 @@ function talkTab(text) {
   if (/빼|지워|없애/.test(text)) return 'msg';
   return null;
 }
+// 보낸 뒤 — 결과 숫자 + 다시 보내기(일시적 오류만). 예약이면 시각 바꾸기 | 예약 취소
 function doneHTML() {
-  return state.sent === 'now' ? `<div class="done-nums"><div><b>${state.recipients.length}</b>받음</div><div><b>0</b>못 받음</div></div>` : '';
+  if (state.sent === 'later') return `<div class="ask-acts"><button class="btn btn-lg btn-default" data-act="reWhen">${icon('clock-circle-outlined')}보내는 시각 바꾸기</button><button class="btn btn-lg btn-default is-danger" data-act="reCancel">예약 취소</button></div>`;
+  const f = state.fails.length, k = state.fails.filter((x) => x.retry).length;
+  return `<div class="done-nums"><div><b>${state.recipients.length - f}</b>받음</div><div><b>${f}</b>못 받음</div></div>
+    ${k ? `<div class="ask-acts"><button class="btn btn-lg btn-primary" data-act="retry">${icon('redo-outlined')}${k}명에게 다시 보내기</button></div>` : ''}`;
 }
 
 // 확인할 것 — 여러 개여도 한 번에 하나씩
@@ -1504,6 +1666,11 @@ const SRC_ICON = { file: 'file-excel-outlined', group: 'team-outlined', paste: '
 function whoHTML() {
   const n = state.recipients.length, nb = state.bad.length;
   return `<div class="who-box">
+    ${state.sent === 'now' && state.fails.length ? `<div class="who-sum">
+      <div class="who-total"><span>보낸 결과</span><b>${n - state.fails.length}명 받음</b></div>
+      <div class="who-row is-bad">${icon('exclamation-circle-outlined')}<span class="who-text">못 받음 ${state.fails.length}명</span></div>
+      <div class="who-list is-bad">${state.fails.map((f) => `<div><span>${esc(f.name || '이름 없음')}</span><span>${esc(f.phone)}</span><em>${esc(f.why)}</em></div>`).join('')}</div>
+    </div>` : ''}
     ${state.sources.length ? '' : '<div class="who-empty">아직 받는 사람이 없어요</div>'}
     ${state.sources.length ? `<div class="who-sum">
       <div class="who-total"><span>보낼 사람</span><b>${n}명</b></div>
@@ -1537,8 +1704,8 @@ function sendHTML() {
 }
 // 최종 확인 — 보내기 전에 알림톡 + 상세 문서(있으면) + 보내기 요약을 한눈에 (중간에 바뀐 게 있을 수 있으므로). 광고 동의도 여기서
 const clean = (el) => { el.querySelectorAll('[id]').forEach((e) => e.removeAttribute('id')); el.querySelectorAll('[contenteditable]').forEach((e) => e.removeAttribute('contenteditable')); el.removeAttribute('id'); return el.outerHTML; };
-function renderSendCheck() {
-  const n = state.recipients.length, ad = needsOptout();
+// 나갈 알림톡 + 상세 문서(또는 링크) — 최종 확인 창과 발송 내역 창이 같이 쓴다
+function previewsHTML(nav) {
   const bubble = clean($('#phone .bubble').cloneNode(true));
   const page = state.attach === 'doc' && $('#webPage .doc-page') ? clean($('#webPage .doc-page').cloneNode(true)) : '';
   // 링크면 — 주소를 다 보여주고 새 창에서 열어 맞는지 확인
@@ -1547,15 +1714,18 @@ function renderSendCheck() {
   const side = page ? `<div class="sc-col"><span class="sc-label">상세 문서</span><div class="sc-page">${page}</div></div>`
     : url ? `<div class="sc-col"><span class="sc-label">자세히 보기 링크</span><div class="sc-page sc-linkbox">${icon('link-outlined', 'icon-xl')}<b class="sc-url">${esc(url)}</b>
         <a class="btn btn-lg btn-default" href="${esc(href)}" target="_blank" rel="noopener">${icon('export-outlined')}새 창에서 열어 보기</a></div></div>` : '';
-  $('#sendCheck').innerHTML = `
-    <div class="sc-wrap"><div class="sc-previews${side ? ' has-doc' : ''}">
+  return `<div class="sc-wrap"><div class="sc-previews${side ? ' has-doc' : ''}">
       <div class="sc-col"><span class="sc-label">알림톡</span><div class="sc-room">${bubble}</div></div>
       ${side}
-    </div>${side ? `<button class="sc-nav is-prev" data-scnav="-1" aria-label="이전" hidden>${icon('left-outlined')}</button><button class="sc-nav is-next" data-scnav="1" aria-label="다음">${icon('right-outlined')}</button>` : ''}</div>
+    </div>${side && nav ? `<button class="sc-nav is-prev" data-scnav="-1" aria-label="이전" hidden>${icon('left-outlined')}</button><button class="sc-nav is-next" data-scnav="1" aria-label="다음">${icon('right-outlined')}</button>` : ''}</div>`;
+}
+function renderSendCheck() {
+  const n = state.recipients.length, ad = needsOptout();
+  $('#sendCheck').innerHTML = `${previewsHTML(true)}
     <div class="sc-sum">
       <div><span>받는 사람</span><b>${n}명</b></div>
       <div><span>보내는 시각</span><b>${esc(whenText())}</b></div>
-      <div><span>예상 비용</span><b>${(n * UNIT).toLocaleString()}원</b></div>
+      <div><span>예상 비용</span><b>${pt(n)}</b></div>
     </div>
     ${ad ? `<label class="consent"><input type="checkbox" class="checkbox" id="consent"${state.consent ? ' checked' : ''}><span>받는 사람 ${n}명 모두 광고 수신에 동의했어요</span></label>` : ''}`;
   // 좁은 화면 — 알림톡과 상세 페이지를 한 장씩 넘겨 본다. 처음엔 다음 버튼만, 끝에선 이전 버튼만
@@ -1580,7 +1750,8 @@ function renderNext() {
   // 바꾸기를 권하는 말(더 짧게·이모지·말투·예약 등)은 넣지 않는다 — 바꾸고 싶으면 사용자가 말한다
   if (last.type === 'docok') chips = ['설문 문항을 추가해줘', '다른 말투로 보여줘', '인사말을 짧게 해줘'];   // 상세 문서도 말로 고칠 수 있다는 걸 보여준다
   else if (['ask', 'btn'].includes(last.type) && !state.attachChosen) chips = ['다른 템플릿 추천해줘', '다른 말투로 보여줘'];   // 처음 만든 직후 — 템플릿·말투는 단계로 묻지 않고, 바꾸고 싶을 때 고른다
-  else if (state.sent || ['ask', 'tpl', 'btn', 'gen', 'tone', 'whenask', 'askq'].includes(last.type)) chips = [];
+  else if (state.sent) chips = [{ label: '발송 내역 보기', act: 'sends' }];
+  else if (['ask', 'tpl', 'btn', 'gen', 'tone', 'whenask', 'askq'].includes(last.type)) chips = [];
   else if (last.type === 'who') chips = [...state.sources.map((s) => ({ label: `${s.label} 빼기`, act: `unsrc:${s.id}` })), '번호는 어떻게 넣어요?'];
   else chips = ['나에게 먼저 보내보기', '요금이 얼마예요?'];
   // 방금 바꾼 게 있으면 되돌리기를 맨 앞에
@@ -1828,14 +1999,29 @@ function doSend() {
 function finish(kind) {
   const n = state.recipients.length;
   state.sent = kind;
+  // 시안용 결과 — 10명 이상이면 2명은 못 받는다 (카카오톡 미사용 1, 일시적 오류 1 → 다시 보내기 가능)
+  const R = state.recipients;
+  state.fails = kind === 'now' && n >= 10 ? [{ ...R[3], why: '카카오톡을 쓰지 않는 번호' }, { ...R[7], why: '일시적 오류', retry: true }] : [];
+  const rec = { id: state.sendId || Date.now(), title: state.template.label, day: '오늘', sentAt: new Date().toISOString(), kind, at: state.at && new Date(state.at).toISOString(), n, ok: kind === 'now' ? n - state.fails.length : 0, fail: state.fails.length,
+    btn: state.attach === 'none' ? null : state.attach, preview: previewsHTML(false), people: R.map((p) => ({ name: p.name, phone: p.phone, why: (state.fails.find((f) => f.phone === p.phone) || {}).why || '' })) };
+  sentLog = [...sentLog.filter((r) => r.id !== rec.id), rec]; state.sendId = rec.id; saveSent();   // 시각을 바꿨으면 같은 기록을 고친다
+  if (state.fails.length) pendingTab = 'who';
   try { sessionStorage.removeItem(SAVE_KEY); } catch (e) { /* 저장 못 해도 괜찮다 */ }
   $('#work').classList.add('is-sent');
   state.log = state.log.filter((b) => b.type !== 'send' && b.type !== 'who');
   me(kind === 'now' ? `${n}명에게 지금 보내기` : `${n}명에게 예약하기`);
   say(kind === 'now' ? `${n}명에게 보냈어요.` : `${esc(whenText())}에 ${n}명에게 보낼게요.`, { q: true });
   state.ack = -1;
+  $('#whoPanel').innerHTML = whoHTML();
+  if (pendingTab) { goTab(pendingTab); pendingTab = null; }
   renderChat();
   $('#talkInput').disabled = true;
+}
+// 예약을 고치거나 취소하려고 보내기 전 단계로 — 바꾼 시각으로 다시 보내기 전까지 원래 예약은 그대로 남는다
+function unsend() {
+  state.sent = false; atPicking = false;
+  $('#work').classList.remove('is-sent'); $('#talkInput').disabled = false;
+  if (!has('send')) state.log.push({ type: 'send' });
 }
 
 /* ── 시작 — AI가 템플릿·버튼을 정하고, 고를 것은 하나씩 ─── */
@@ -1955,6 +2141,25 @@ log.addEventListener('click', (e) => {
   if (act === 'atDone') { const v = $('#atInput').value; const d = v && new Date(v); if (!d || d <= new Date()) { $('#atInput').focus(); return; } setWhen(d, d.toLocaleString('ko-KR', { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' })); return; }
   if (act === 'atNow') { atPicking = false; dropPicks(); me('지금 보내기'); state.when = 'now'; say('지금 바로 보내도록 바꿨어요.'); refresh(); return; }
   if (act === 'send') { openSendCheck(); return; }
+  if (act === 'retry') {
+    const r = state.fails.filter((x) => x.retry);
+    askConfirm(`${r.length}명에게 다시 보낼까요?`, `같은 알림톡을 다시 보내요. ${pt(r.length)}가 차감돼요.`, '다시 보내기', () => {
+      state.fails = state.fails.filter((x) => !x.retry);
+      const rec = myRec(); if (rec) { rec.ok += r.length; rec.fail -= r.length; rec.people.forEach((p) => { if (r.some((x) => x.phone === p.phone)) p.why = ''; }); delete peopleCache[rec.id]; saveSent(); }
+      me(`${r.length}명에게 다시 보내기`); say(`${r.length}명에게 다시 보냈어요. 이번엔 받았어요.`);
+      $('#whoPanel').innerHTML = whoHTML(); renderChat(); renderSide();
+    });
+    return;
+  }
+  if (act === 'reWhen') { unsend(); dropPicks(); me('보내는 시각 바꾸기'); say(`바꾼 시각으로 다시 예약하기 전까지는 ${esc(whenText())}에 보내도록 예약돼 있어요.`); state.log.push({ type: 'whenask' }); refresh(); return; }
+  if (act === 'reCancel') {
+    askConfirm('예약을 취소할까요?', `${whenText()}에 ${state.recipients.length}명에게 보내려던 알림톡이 나가지 않아요.`, '예약 취소', () => {
+      sentLog = sentLog.filter((r) => r.id !== state.sendId); saveSent(); state.sendId = 0;
+      unsend(); state.when = 'now'; state.at = '';
+      me('예약 취소'); say('예약을 취소했어요. 아무에게도 나가지 않아요.'); refresh(); renderSide();
+    });
+    return;
+  }
   if (act === 'docOk') { dropPicks(); me('이대로 쓸게요'); say('좋아요. 상세 페이지를 붙여서 보낼게요.'); refresh(); return; }  // 확인 카드의 답 — 내 말풍선으로 남기고 다음 것으로
   let changed = [];
   if (act === 'dropAds' || act === 'moveAds') {
@@ -2008,6 +2213,7 @@ $('#nextChips').addEventListener('click', (e) => {
   const k = e.target.closest('[data-chip]'); if (!k) return;
   const act = k.dataset.chip;
   if (act === 'undo') { const wasDocok = current() === 'docok'; dropPicks(); me(k.textContent); undoLast(); if (wasDocok) state.log.push({ type: 'docok' }); refresh(['추가메시지']); return; }
+  if (act === 'sends') { openSends(); return; }
   if (act.startsWith('unsrc:')) removeSource(+act.slice(6));
 });
 const ti = $('#talkInput');
@@ -2054,15 +2260,18 @@ $('#webPage').addEventListener('input', (e) => {
   clearTimeout(editTimer); editTimer = setTimeout(saveSession, 400);
 });
 
-document.addEventListener('click', (e) => { if (e.target.closest('[data-close]') || e.target.classList.contains('dialog-overlay')) closeDialogs(); });
+document.addEventListener('click', (e) => { const ov = e.target.classList.contains('dialog-overlay') ? e.target : e.target.closest('[data-close]') && e.target.closest('.dialog-overlay'); if (ov) ov.classList.remove('is-open'); });   // 겹친 창은 맨 위 것만 닫는다
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDialogs(); });
 $('#sendDialog').addEventListener('change', (e) => { if (e.target.id === 'consent') { state.consent = e.target.checked; $('#sendOk').disabled = !state.consent; } });
 $('#sendOk').addEventListener('click', () => { closeDialogs(); doSend(); });
-$('#confirmOk').addEventListener('click', () => { closeDialogs(); if (confirmFn) confirmFn(); confirmFn = null; });
-document.querySelectorAll('[data-new]').forEach((b) => b.addEventListener('click', () => !$('#home').hidden ? $('#pasteBox').focus() : askConfirm('새 알림톡을 만들까요?', '지금 만들던 내용은 지워져요.', '새로 만들기', () => {
-  try { sessionStorage.removeItem(SAVE_KEY); } catch (e) { /* 저장 못 해도 새로 시작은 된다 */ }
-  location.reload();
-})));
+$('#confirmOk').addEventListener('click', () => { $('#confirmDialog').classList.remove('is-open'); if (confirmFn) confirmFn(); confirmFn = null; });
+const startOver = () => { try { sessionStorage.removeItem(SAVE_KEY); } catch (e) { /* 저장 못 해도 새로 시작은 된다 */ } location.reload(); };
+document.querySelectorAll('[data-new]').forEach((b) => b.addEventListener('click', () => {
+  if (!$('#hist').hidden) closeSends();
+  if (!$('#home').hidden) { $('#pasteBox').focus(); return; }
+  if (state.sent) { startOver(); return; }   // 보낸 대화는 발송 내역에 남으므로 묻지 않는다
+  askConfirm('새 알림톡을 만들까요?', '지금 만들던 내용은 지워져요.', '새로 만들기', startOver);
+}));
 
 /* 새로고침해도 보던 화면 그대로 (이 탭에서만) */
 function saveSession() {
@@ -2071,7 +2280,7 @@ function saveSession() {
     sessionStorage.setItem(SAVE_KEY, JSON.stringify({
       original: state.original, t: state.template.id, vars: state.vars, coupon: state.coupon, dismissed: state.dismissed,
       pageAds: state.pageAds, attach: state.attach, link: state.link, attachWhy: state.attachWhy, doc: state.doc, moved: state.moved, overflow: state.overflow,
-      base: state.base, tones: state.tones, tone: state.tone, attachChosen: state.attachChosen, chosenAttach: state.chosenAttach, aiAttach: state.aiAttach, aiWhy: state.aiWhy, sources: state.sources, when: state.when, at: state.at, log: state.log, ack: state.ack,
+      base: state.base, tones: state.tones, tone: state.tone, attachChosen: state.attachChosen, chosenAttach: state.chosenAttach, aiAttach: state.aiAttach, aiWhy: state.aiWhy, sources: state.sources, when: state.when, at: state.at, sendId: state.sendId, log: state.log, ack: state.ack,
     }));
   } catch (e) { /* 저장소를 못 쓰면 매번 처음부터 */ }
 }
@@ -2083,7 +2292,7 @@ function loadSession() {
   analyze(d.original, d.t);
   Object.assign(state, { vars: d.vars, coupon: d.coupon, dismissed: d.dismissed || [], pageAds: d.pageAds || [],
     attach: d.attach, link: d.link || '', attachWhy: d.attachWhy || '', doc: d.doc || (d.attach === 'doc' ? {} : null), moved: d.moved || null, overflow: d.overflow || [],
-    base: d.base, tones: d.tones, tone: d.tone, attachChosen: d.attachChosen, chosenAttach: d.chosenAttach, aiAttach: d.aiAttach, aiWhy: d.aiWhy || '', sources: d.sources || [], when: d.when || 'now', at: d.at || '', log: d.log || [], ack: d.ack ?? -1 });
+    base: d.base, tones: d.tones, tone: d.tone, attachChosen: d.attachChosen, chosenAttach: d.chosenAttach, aiAttach: d.aiAttach, aiWhy: d.aiWhy || '', sources: d.sources || [], when: d.when || 'now', at: d.at || '', sendId: d.sendId || 0, log: d.log || [], ack: d.ack ?? -1 });
   srcSeq = Math.max(0, ...state.sources.map((s) => s.id));
   computeRecipients();
   refresh();

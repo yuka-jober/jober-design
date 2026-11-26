@@ -80,6 +80,10 @@
 .lv-row>span{display:flex;flex-direction:column;gap:4px;min-width:0}
 .lv-row b{font-size:14px;font-weight:600;color:var(--ink)}
 .lv-row small{font-size:12px;color:#6B7684}
+/* 신청 단위: 자리가 모자라면 태그 묶음째 아래 줄로 — 라벨·태그가 낱낱이 접히지 않게 */
+.lv-unit{flex-wrap:wrap}
+.lv-unit b{white-space:nowrap}
+.lv-unit .lv-tags{flex-direction:row;flex-wrap:nowrap}
 .lv-foot{padding:12px 20px;border-top:1px solid var(--line);background:#FAFBFC;font-size:12px;color:#4B5563}
 .lv-foot b{color:var(--ui);font-weight:600}
 
@@ -198,15 +202,16 @@
   .lv-tabs{position:static;flex-direction:row;gap:4px;overflow-x:auto;margin:0 -24px;padding:0 24px;scrollbar-width:none}
   .lv-tabs::-webkit-scrollbar{display:none}
   .lv-tab{flex:none;padding:12px 16px;border-radius:999px;font-size:15px;white-space:nowrap}
-  .lv-tab em,.lv-tab svg{display:none}
-  .lv-tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .lv-tab{gap:8px}
+  .lv-tab em{width:auto}
+  .lv-tab svg{display:none}
   .lv-panel .at-stage{min-height:0}
 }
 @media(max-width:640px){
   .lv-vals{grid-template-columns:1fr;gap:28px}
-  .lv-frame{width:100%}
+  .lv-frame{width:100%;margin-bottom:40px}
   .lv-app{grid-template-columns:1fr}
-  .lv .hr-hv-chip.c2{right:12px;bottom:-20px}
+  .lv .hr-hv-chip.c2{right:12px;bottom:-44px}
   .lv-side{display:none}
   .lv-panel h3{font-size:22px!important}
   .lv-panel>.at-lead{font-size:16px}

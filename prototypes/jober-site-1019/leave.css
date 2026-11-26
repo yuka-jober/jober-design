@@ -1,0 +1,223 @@
+/* 연차 관리 상세 (services/leave) — 근태 관리 상세(attendance.css)와 같은 .hr .at 틀 위에 얹는다.
+   목업 속 UI 파랑은 자버 파랑(#1890FF), 페이지 키워드는 #3F5BC4 (DESIGN-GUIDE 2. 색) */
+.lv{--ui:#1890FF;--ui-bg:#E6F4FF;--kw:#3F5BC4;--line:#ECEDF0}
+
+/* ── 히어로: 사용 현황 화면 ── */
+.lv .lv-hv{display:grid;place-items:center}
+/* 승인 칩은 표 카드의 오른쪽 아래 모서리에 걸쳐 둔다 */
+.lv-frame{position:relative;width:92%}
+.lv-app{position:relative;z-index:1;display:grid;grid-template-columns:112px minmax(0,1fr);
+  background:#fff;border-radius:16px;overflow:hidden;font-size:12px;color:#333D4B;
+  filter:drop-shadow(0 26px 34px rgba(31,42,90,.24))}
+.lv-side{display:flex;flex-direction:column;gap:2px;padding:16px 8px;border-right:1px solid var(--line)}
+.lv-side b{padding:0 8px 8px;font-size:12px;font-weight:700;color:var(--ink)}
+.lv-side span{padding:8px;border-radius:8px;font-size:11px;color:#4E5968}
+.lv-side span.on{background:var(--ui-bg);color:var(--ui);font-weight:700}
+.lv-side i{height:1px;margin:4px;background:var(--line)}
+.lv-main{min-width:0;padding:16px}
+.lv-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lv-top b{font-size:16px;font-weight:700;color:var(--ink);letter-spacing:-.02em;white-space:nowrap}
+.lv-top span{display:flex;gap:4px}
+.lv-top em{font-style:normal;padding:6px 8px;border:1px solid var(--ui);border-radius:6px;font-size:10px;font-weight:600;color:var(--ui);white-space:nowrap}
+.lv-top em.f{background:var(--ui);color:#fff}
+.lv-sub{display:flex;gap:4px;margin:12px 0 8px;font-size:11px;font-weight:600}
+.lv-sub span{padding:4px 8px;border-radius:6px;color:#8B95A1}
+.lv-sub span.on{background:var(--ui-bg);color:var(--ui)}
+.lv-tbl{display:grid;grid-template-columns:.9fr 1.3fr .8fr .9fr .8fr .9fr;border-top:1px solid #E5E8EB;font-size:11px}
+.lv-tbl span{padding:8px 4px;border-bottom:1px solid #F0F1F4;white-space:nowrap}
+.lv-tbl .th{background:#F7F8FA;color:#6B7684;font-weight:600}
+.lv-tbl .d{color:#6B7684}
+.lv-tbl .z{color:#8B95A1}
+.lv-tbl .l{color:var(--ui);font-weight:700}
+.lv-tbl .hl{background:var(--ui-bg)}
+.lv-tbl .hl.p{color:var(--ui);font-weight:700}
+.lv .hr-hv-chip{z-index:2}
+.lv .hr-hv-chip.c2{right:-24px;bottom:-24px}
+.lv .hr-hv-chip.c2 i{background:var(--ui)}
+
+/* ── 핵심 가치 4개: 위 구분선 목록 (카드 아님) ── */
+.lv-vals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 32px;margin:0;padding:0;list-style:none}
+.lv-vals li{display:flex;flex-direction:column;gap:12px;padding-top:28px;border-top:1px solid var(--line);word-break:keep-all}
+.lv-vals .hr-icon{color:#fff;margin-bottom:8px}
+.lv-vals .hr-icon svg{width:24px;height:24px}
+.lv-vals b{font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.lv-vals p{font-size:16px;line-height:1.6;color:var(--body)}
+
+/* ── 섹션 머리 ── */
+.lv-head{display:flex;flex-direction:column;gap:16px;margin-bottom:48px}
+.lv-head .at-ey{margin:0}
+.lv-head h2{margin:0!important}
+.lv-head .at-lead{max-width:720px}
+
+/* ── 연차 설정: 왼쪽 탭 목록 + 오른쪽 설명·화면 ── */
+.lv-set{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:start}
+.lv-tabs{display:flex;flex-direction:column;gap:4px;position:sticky;top:112px}
+.lv-tab{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:16px;
+  font-size:17px;font-weight:600;color:var(--sub);transition:background .15s,color .15s}
+.lv-tab em{font-style:normal;width:20px;font-size:13px;font-weight:600;color:#9AA0AC}
+.lv-tab span{flex:1}
+.lv-tab svg{width:16px;height:16px;opacity:0}
+.lv-tab:hover{color:var(--ink)}
+.lv-tab[aria-selected="true"]{background:var(--soft);color:var(--ink)}
+.lv-tab[aria-selected="true"] em{color:var(--kw)}
+.lv-tab[aria-selected="true"] svg{opacity:1}
+.lv-tab:focus-visible{outline:2px solid var(--kw);outline-offset:2px}
+.lv-panel[hidden]{display:none}
+.lv-panel .at-ey{margin-bottom:8px}
+.lv-panel h3{margin:0!important;font-size:28px!important;line-height:1.4!important;letter-spacing:-.03em!important;font-weight:600!important}
+.lv-panel>.at-lead{margin-top:12px;font-size:17px}
+.lv-panel .at-stage{margin-top:28px;min-height:400px}
+.lv-panel .at-stage>*{max-width:560px}
+
+/* 목업 창 (서비스 화면) — 안쪽 구분은 구분선으로 */
+.lv-win{background:#fff;border-radius:16px;box-shadow:0 12px 28px rgba(31,42,90,.08);font-size:13px;color:#333D4B;overflow:hidden}
+.lv-wh{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.lv-wh b{font-size:15px;font-weight:700;color:var(--ink)}
+.lv-wh small{font-size:12px;color:#8B95A1}
+.lv-wb{padding:16px 20px}
+.lv-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px}
+.lv-row+.lv-row{border-top:1px solid var(--line)}
+.lv-row>span{display:flex;flex-direction:column;gap:4px;min-width:0}
+.lv-row b{font-size:14px;font-weight:600;color:var(--ink)}
+.lv-row small{font-size:12px;color:#6B7684}
+.lv-foot{padding:12px 20px;border-top:1px solid var(--line);background:#FAFBFC;font-size:12px;color:#4B5563}
+.lv-foot b{color:var(--ui);font-weight:600}
+
+/* 산정 방식 라디오 */
+.lv-calc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.lv-calc>div{display:flex;flex-direction:column;gap:8px;padding:20px 16px;min-width:0}
+.lv-calc>div+div{border-left:1px solid var(--line)}
+.lv-calc>div.on{background:#F5FAFF}
+.lv-calc b{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap}
+.lv-calc b i{width:16px;height:16px;flex:none;border-radius:50%;box-sizing:border-box;border:1.5px solid #B0B8C1}
+.lv-calc .on b i{border:5px solid var(--ui)}
+.lv-calc small{font-size:12px;color:#6B7684;word-break:keep-all}
+.lv-calc em{font-style:normal;font-size:12px;font-weight:600;word-break:keep-all}
+.lv-calc em.ok{color:#2E8B2E}
+.lv-calc em.wn{color:#D97706}
+
+/* 결재 방식 세그먼트 (회색 판, 칸 너비 같게) */
+.lv-seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border-radius:12px;background:var(--soft)}
+.lv-seg button{all:unset;cursor:pointer;text-align:center;padding:8px 0;border-radius:8px;font-size:13px;font-weight:600;color:var(--sub)}
+.lv-seg button[aria-checked="true"]{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(31,42,90,.08)}
+.lv-seg button:focus-visible{outline:2px solid var(--kw)}
+.lv-flow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:120px;padding:20px}
+.lv-flow[hidden]{display:none}
+.lv-flow p{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.lv-chip{display:inline-flex;justify-content:center;min-width:96px;padding:8px 12px;border-radius:8px;background:var(--soft);font-size:13px;font-weight:600;color:#333D4B;white-space:nowrap}
+.lv-chip.to{background:var(--ui-bg);color:var(--ui);font-weight:700}
+.lv-arr{color:#8B95A1}
+
+/* 스위치 */
+.lv-sw{all:unset;cursor:pointer;position:relative;flex:none;width:40px;height:24px;border-radius:12px;background:#C9CED6;transition:background .15s}
+.lv-sw:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
+.lv-sw[aria-checked="true"]{background:var(--ui)}
+.lv-sw[aria-checked="true"]:after{left:19px}
+.lv-sw:focus-visible{outline:2px solid var(--kw);outline-offset:2px}
+
+/* 휴가 유형 */
+.lv-tag{display:inline-flex;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
+.lv-tag.b{background:var(--ui-bg);color:var(--ui)}
+.lv-tag em{margin-left:4px;font-style:normal;font-weight:400;opacity:.75}
+.lv-tag.g{background:#E7F6EE;color:#137A47}
+.lv-tag.o{background:#FFF4E5;color:#9A4D00}
+.lv-tags{display:flex;flex-wrap:wrap;gap:4px}
+.lv-types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.lv-types>div{display:flex;flex-direction:column;gap:8px;padding:16px 20px;min-width:0}
+.lv-types>div+div{border-left:1px solid var(--line)}
+
+/* 구글 캘린더 주간 */
+.lv-week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line)}
+.lv-week>div{display:flex;flex-direction:column;gap:4px;min-height:120px;padding:8px 4px;min-width:0}
+.lv-week>div+div{border-left:1px solid var(--line)}
+.lv-week small{padding:0 4px;font-size:12px;font-weight:600;color:#6B7684}
+.lv-week span{padding:4px 6px;border-radius:6px;background:var(--ui-bg);color:var(--ui);font-size:12px;font-weight:600;line-height:1.4;word-break:keep-all;overflow-wrap:anywhere}
+
+/* 조직도 */
+.lv-org{padding:12px 20px}
+.lv-org p{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:13px;color:#333D4B}
+.lv-org p+p{border-top:1px solid #F4F5F7}
+.lv-org p b{font-weight:700;color:var(--ink)}
+.lv-org p small{color:#8B95A1}
+.lv-org .d2{padding-left:20px}
+.lv-org .d3{padding-left:40px}
+.lv-wh-sub{border-top:1px solid var(--line);border-bottom:0;padding-bottom:4px}
+.lv-lines>div{display:flex;flex-direction:column;gap:8px;margin:0 20px;padding:16px 0}
+.lv-lines>div+div{border-top:1px solid #F4F5F7}
+.lv-lines b{font-size:13px;font-weight:700;color:var(--ink)}
+.lv-lines b small{margin-left:4px;font-size:12px;font-weight:600;color:var(--ui)}
+.lv-lines p{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lv-org .av{display:flex;margin-left:auto}
+.lv-av{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;box-shadow:0 0 0 1.5px #fff;font-size:9px;font-weight:700;letter-spacing:-.04em;background:#E3E8FF;color:#3A47C2}
+.lv-av+.lv-av{margin-left:-4px}
+.lv-av.g{background:#E4F5E9;color:#137A47}
+.lv-av.o{background:#FDE8DC;color:#B4501F}
+.lv-av.n{background:#EEF0F3;color:#4E5968}
+
+/* ── 관리자·직원 ── */
+.lv-feats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px;margin:24px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.lv-feats.one{grid-template-columns:1fr}
+.lv-feats li{display:flex;flex-direction:column;gap:4px;padding:16px 0;border-bottom:1px solid var(--line);word-break:keep-all}
+.lv-feats b{font-size:16px;font-weight:600;color:var(--ink)}
+.lv-feats span{font-size:15px;color:var(--body)}
+
+/* 휴대폰 목업 — 직원 글 안, 목록 위 */
+.lv-roles{align-items:stretch;gap:24px;margin-bottom:0}
+.lv-role .at-ey{padding-left:8px;border-left:2px solid currentColor;line-height:1.2}
+.lv-role{display:flex;flex-direction:column;padding:40px;border-radius:var(--r-card);background:#fff;box-shadow:0 10px 32px rgba(31,42,90,.10)}
+.lv-role>.lv-feats{flex:1;grid-auto-rows:1fr;margin-top:24px}
+.lv-role>.lv-feats li{justify-content:center}
+.lv-ph-row{display:flex;flex-wrap:wrap;align-items:center;gap:28px;margin-top:24px}
+.lv-ph-row>.lv-feats{flex:1;min-width:180px;margin:0;border-top:0}
+.lv-ph-row>.lv-feats li:last-child{border-bottom:0}
+.lv-phone{width:240px!important;max-width:240px!important;padding:8px;border-radius:36px;background:var(--ink);box-shadow:0 22px 44px -18px rgba(31,42,90,.45)}
+.lv-ph{display:flex;flex-direction:column;gap:12px;padding:20px 16px 16px;border-radius:28px;background:#fff;font-size:11px;color:#333D4B}
+.lv-ph .t{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.lv-ph .t b{font-size:15px;color:#191F28;letter-spacing:-.03em;white-space:nowrap}
+.lv-ph .t em{font-style:normal;padding:6px 8px;border-radius:6px;background:var(--ui);color:#fff;font-size:10px;font-weight:600;white-space:nowrap}
+.lv-ph strong{font-size:12px;color:#191F28}
+.lv-kv{display:grid;grid-template-columns:1.1fr 1fr;border:1px solid #ECEEF1;border-radius:8px;overflow:hidden}
+.lv-kv span{padding:8px;border-bottom:1px solid #ECEEF1;white-space:nowrap}
+.lv-kv span:nth-child(odd){background:#F7F8FA;font-weight:700;color:#191F28;border-right:1px solid #ECEEF1}
+.lv-kv span:nth-last-child(-n+2){border-bottom:0;color:var(--ui)}
+.lv-rec{display:grid;grid-template-columns:auto 1fr;font-size:10px;border-top:1px solid #ECEEF1}
+.lv-rec span{padding:8px 4px;border-bottom:1px solid #ECEEF1;color:#4E5968;white-space:nowrap}
+.lv-rec span.h{background:#F7F8FA;color:#333D4B}
+
+/* ── 가이드 안내 (테두리 상자, at-note-box와 같은 결) ── */
+.lv-guide{padding-top:24px}
+.lv-guide-box{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:36px 40px;border-radius:var(--r-card);background:#fff;box-shadow:0 10px 32px rgba(31,42,90,.10)}
+.lv-guide-box h2{margin:0 0 8px!important;font-size:24px!important;line-height:1.5!important}
+.lv-guide-box p{font-size:16px;line-height:1.6;color:var(--body)}
+.lv-guide-box .acts{display:flex;gap:8px;flex-wrap:wrap}
+.lv .faq-section{padding-top:128px}
+
+@media(max-width:900px){
+  .lv-vals{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 24px}
+  .lv-set{grid-template-columns:1fr;gap:28px}
+  .lv-tabs{position:static;flex-direction:row;gap:4px;overflow-x:auto;margin:0 -24px;padding:0 24px;scrollbar-width:none}
+  .lv-tabs::-webkit-scrollbar{display:none}
+  .lv-tab{flex:none;padding:12px 16px;border-radius:999px;font-size:15px;white-space:nowrap}
+  .lv-tab em,.lv-tab svg{display:none}
+  .lv-tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .lv-panel .at-stage{min-height:0}
+}
+@media(max-width:640px){
+  .lv-vals{grid-template-columns:1fr;gap:28px}
+  .lv-frame{width:100%}
+  .lv-app{grid-template-columns:1fr}
+  .lv .hr-hv-chip.c2{right:12px;bottom:-20px}
+  .lv-side{display:none}
+  .lv-panel h3{font-size:22px!important}
+  .lv-panel>.at-lead{font-size:16px}
+  .lv-calc,.lv-types{grid-template-columns:1fr}
+  .lv-calc>div+div,.lv-types>div+div{border-left:0;border-top:1px solid var(--line)}
+  .lv-week{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .lv-week span{font-size:10px;padding:4px}
+  .lv-feats{grid-template-columns:1fr}
+  .lv-role{padding:28px 20px;border-radius:24px}
+  .lv-ph-row{justify-content:center}
+  .lv-guide{padding-top:24px}
+  .lv-guide-box{padding:24px 20px;border-radius:24px}
+  .lv .faq-section{padding-top:88px}
+}

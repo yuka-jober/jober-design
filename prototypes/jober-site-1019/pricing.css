@@ -152,6 +152,8 @@
 /* 떠 있는 회원가입 버튼 · 크게 보기 */
 .pr-float{position:fixed;left:50%;bottom:24px;z-index:150;transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;height:56px;padding:0 28px;border-radius:999px;background:var(--ink);color:#fff!important;font-size:16px;font-weight:700;white-space:nowrap;text-decoration:none;box-shadow:0 14px 32px -12px rgba(17,17,17,.45)}
 .pr-float:hover{background:#000}
+.pr-float[hidden]{display:none}
+.pr-dock.calc .dk:has(~ .pr-float[hidden]){margin-bottom:0}
 .pr-lb{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:32px;background:rgba(17,17,17,.7)}
 .pr-lb img{max-width:min(1200px,100%);max-height:calc(100vh - 64px);border-radius:16px;background:#fff}
 .pr-lb button{position:absolute;right:24px;top:24px;width:44px;height:44px;border:0;border-radius:50%;background:#fff;font-size:20px;cursor:pointer}

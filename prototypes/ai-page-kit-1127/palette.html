@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>색 프리셋</title>
+<!-- 미리보기 전용: 로컬에서 Pretendard 를 불러오기 위한 링크 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
+<link rel="stylesheet" href="kit.css?v=22">
+<style>
+  /* 이 갤러리 페이지 전용 배치 — 실서비스 페이지에는 들어가지 않는다 */
+  body { background: #f4f4f6; }
+  .gallery { max-width: 1120px; margin: 0 auto; padding: 48px 24px 80px; }
+  .gallery > h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.035em; }
+  .gallery > p { margin-top: 8px; color: var(--body); }
+  .tones { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 32px; }
+  .tone { padding: 24px; border-radius: 24px; background: #fff; }
+  .tone-head { display: flex; align-items: center; gap: 12px; }
+  .chip { display: flex; overflow: hidden; width: 56px; height: 40px; border-radius: 12px; }
+  .chip::before, .chip::after { content: ""; flex: 1; }
+  .chip::before { background: var(--wash); }
+  .chip::after { background: var(--primary); }
+  .tone-name { font-weight: 600; }
+  .tone-hex { font-size: 13px; color: var(--muted); }
+  .tone-for { margin-top: 12px; font-size: 14px; color: var(--body); }
+  .mini { margin-top: 20px; padding: 20px; border: 1px solid var(--border); border-radius: 20px; background: #fff; text-align: center; }
+  .mini .promo-kicker { font-size: 13px; }
+  .mini h2 { margin-top: 4px; font-size: 22px; font-weight: 600; letter-spacing: -0.04em; line-height: 1.3; }
+  .mini .offer { margin-top: 16px; padding: 16px; }
+  .mini .offer-value { font-size: 40px; }
+  .mini .pill { min-height: 44px; margin-top: 12px; font-size: 15px; }
+  .mini .badges { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+</style>
+</head>
+<body>
+<main class="gallery">
+  <h1>색 프리셋 8개</h1>
+  <p>참고 팔레트 색은 버튼·아이콘에만. 넓은 면은 회색, 글자는 #111.</p>
+
+  <div class="tones">
+    <section class="tone tone-sky">
+      <div class="tone-head"><span class="chip"></span><div><p class="tone-name">Sky</p><p class="tone-hex">자버 메인 파랑 #1890FF</p></div></div>
+      <p class="tone-for">학원 · 교육 · 공공 · IT · 통신 · 휴대폰 · 병원 · 의원 · 치과 · 피트니스</p>
+      <div class="mini"><p class="promo-kicker">11월 한정</p><h2>스케일링 안내</h2><div class="offer"><p class="offer-label">건강보험 적용</p><p class="offer-value">연 1<small>회</small></p></div><span class="pill">예약하기</span><div class="badges"><span class="eyebrow">진료</span><span class="eyebrow is-accent">휴진</span></div></div>
+    </section>
+
+    <section class="tone tone-mint">
+      <div class="tone-head"><span class="chip"></span><div><p class="tone-name">Mint</p><p class="tone-hex">Wendy #63B8B3</p></div></div>
+      <p class="tone-for">약국 · 호텔 · 스파</p>
+      <div class="mini"><p class="promo-kicker">입실 안내</p><h2>루프탑 인피니티풀</h2><div class="offer"><p class="offer-label">운영시간</p><p class="offer-value">09–21<small>시</small></p></div><span class="pill">예약하기</span><div class="badges"><span class="eyebrow">객실</span><span class="eyebrow is-accent">공사</span></div></div>
+    </section>
+
+    <section class="tone tone-green">
+      <div class="tone-head"><span class="chip"></span><div><p class="tone-name">Green</p><p class="tone-hex">Hugo #71B578</p></div></div>
+      <p class="tone-for">요가 · 건강 · 농산물</p>
+      <div class="mini"><p class="promo-kicker">회원님께</p><h2>송년 요가 클래스</h2><div class="offer"><p class="offer-label">참가비</p><p class="offer-value">무료</p></div><span class="pill">참석 회신</span><div class="badges"><span class="eyebrow">모임</span><span class="eyebrow is-accent">마감</span></div></div>
+    </section>
+
+    <section class="tone tone-lilac">
+      <div class="tone-head"><span class="chip"></span><div><p class="tone-name">Lilac</p><p class="tone-hex">Molly #AC90BB</p></div></div>
+      <p class="tone-for">뷰티 · 에스테틱 · 네일</p>
+      <div class="mini"><p class="promo-kicker">이번 달 한정</p><h2>피부 관리 할인</h2><div class="offer"><p class="offer-label">전 프로그램</p><p class="offer-value">10<small>%</small></p></div><span class="pill">예약하기</span><div class="badges"><span class="eyebrow">관리</span><span class="eyebrow is-accent">연말 휴무</span></div></div>
+    </section>
+
+    <section class="tone tone-pink">
+      <div class="tone-head"><span class="chip"></span><div><p class="tone-name">Pink</p><p class="tone-hex">Mary #F19195</p></div></div>
+      <p class="tone-for">꽃 · 선물 · 키즈 · 웨딩</p>
+      <div class="mini"><p class="promo-kicker">크리스마스</p><h2>꽃다발 사전 예약</h2><div class="offer"><p class="offer-label">사전 예약</p><p class="offer-value">15<small>%</small></p></div><span class="pill">예약하기</span><div class="badges"><span class="eyebrow">선물</span><span class="eyebrow is-accent">마감</span></div></div>
+    </section>
+
+    <section class="tone tone-coral">
+      <div class="tone-head"><span class="chip"></span><div><p class="tone-name">Coral</p><p class="tone-hex">Mia #F1815C</p></div></div>
+      <p class="tone-for">음식점 · 세일 · 이벤트</p>
+      <div class="mini"><p class="promo-kicker">오픈 기념</p><h2>전 메뉴 할인</h2><div class="offer"><p class="offer-label">포장 주문</p><p class="offer-value">20<small>%</small></p></div><span class="pill">메뉴 보기</span><div class="badges"><span class="eyebrow">신메뉴</span><span class="eyebrow is-accent">오늘만</span></div></div>
+    </section>
+
+    <section class="tone tone-butter">
+      <div class="tone-head"><span class="chip"></span><div><p class="tone-name">Butter</p><p class="tone-hex">Winnifred #EEC151</p></div></div>
+      <p class="tone-for">카페 · 베이커리</p>
+      <div class="mini"><p class="promo-kicker">단골 고객님께</p><h2>겨울 음료 한 잔</h2><div class="offer"><p class="offer-label">음료 1잔</p><p class="offer-value">무료</p></div><span class="pill">쿠폰 받기</span><div class="badges"><span class="eyebrow">신메뉴</span><span class="eyebrow is-accent">12월까지</span></div></div>
+    </section>
+
+    <section class="tone tone-gray">
+      <div class="tone-head"><span class="chip"></span><div><p class="tone-name">Gray</p><p class="tone-hex">#111111 · #F4F4F6 · 기본값</p></div></div>
+      <p class="tone-for">헤어 · 패션 · 인테리어 · 업종을 모를 때</p>
+      <div class="mini"><p class="promo-kicker">연말 이벤트</p><h2>시술 할인 안내</h2><div class="offer"><p class="offer-label">펌 · 염색</p><p class="offer-value">20<small>%</small></p></div><span class="pill">예약하기</span><div class="badges"><span class="eyebrow">헤어</span><span class="eyebrow is-accent">휴무</span></div></div>
+    </section>
+
+  </div>
+</main>
+</body>
+</html>

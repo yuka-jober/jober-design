@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>템플릿 예시 모음</title>
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../components.css">
+<style>
+  body { margin: 0; background: var(--color-page); color: var(--color-text); font-family: var(--font-base); }
+  .wrap { padding: 40px 32px 80px; }
+  .wrap > h1 { margin: 0; font-size: var(--fs-30); letter-spacing: var(--ls-tight); }
+  .group { margin-top: 48px; }
+  .group-head { display: flex; align-items: baseline; gap: 12px; }
+  .group-head h2 { margin: 0; font-size: var(--fs-24); letter-spacing: var(--ls-tight); }
+  .row { display: flex; align-items: flex-start; gap: 24px; margin-top: 20px; overflow-x: auto; padding-bottom: 16px; }
+  .row figure { flex: none; margin: 0; }
+  .row figcaption { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .frame {
+    display: block;
+    width: 375px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--r-3xl);
+    background: var(--color-surface);
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>템플릿 예시 모음</h1>
+
+  <section class="group">
+    <div class="group-head"><h2>공지형</h2><span class="text-14 text-secondary">휴무 · 휴강 · 변경 · 모임 · 이용 안내</span></div>
+    <div class="row">
+      <figure><figcaption><b class="text-14">진료시간 변경</b><span class="badge badge-sm badge-pill badge-weak-neutral">히어로</span><span class="badge badge-sm badge-pill badge-weak-primary">Sky</span></figcaption>
+        <iframe class="frame" src="notice/clinic-hours.html" style="height:848px" scrolling="no" title="진료시간 변경"></iframe></figure>
+      <figure><figcaption><b class="text-14">송년 모임</b><span class="badge badge-sm badge-pill badge-weak-neutral">어두운 히어로</span><span class="badge badge-sm badge-pill badge-weak-success">Green</span></figcaption>
+        <iframe class="frame" src="notice/yoga.html" style="height:935px" scrolling="no" title="송년 모임"></iframe></figure>
+      <figure><figcaption><b class="text-14">휴강</b><span class="badge badge-sm badge-pill badge-weak-primary">Sky</span></figcaption>
+        <iframe class="frame" src="notice/academy.html" style="height:796px" scrolling="no" title="휴강"></iframe></figure>
+      <figure><figcaption><b class="text-14">호텔 입실</b><span class="badge badge-sm badge-pill badge-weak-warning">이미지</span><span class="badge badge-sm badge-pill badge-weak-neutral">Mint</span></figcaption>
+        <iframe class="frame" src="notice/hotel.html" style="height:1684px" scrolling="no" title="호텔 입실"></iframe></figure>
+      <figure><figcaption><b class="text-14">연말 휴무</b><span class="badge badge-sm badge-pill badge-weak-warning">이미지</span><span class="badge badge-sm badge-pill badge-weak-neutral">Lilac</span></figcaption>
+        <iframe class="frame" src="notice/aesthetic.html" style="height:1476px" scrolling="no" title="연말 휴무"></iframe></figure>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><h2>프로모션형</h2><span class="text-14 text-secondary">할인 · 이벤트 · 가격표 · 신상 소개</span></div>
+    <div class="row">
+      <figure><figcaption><b class="text-14">의원 이벤트 · 가격표</b><span class="badge badge-sm badge-pill badge-weak-warning">이미지</span><span class="badge badge-sm badge-pill badge-weak-primary">Sky</span></figcaption>
+        <iframe class="frame" src="promo/clinic.html" style="height:1194px" scrolling="no" title="의원 이벤트"></iframe></figure>
+      <figure><figcaption><b class="text-14">휴대폰 신상 · 목록형</b><span class="badge badge-sm badge-pill badge-weak-warning">이미지</span><span class="badge badge-sm badge-pill badge-weak-primary">Sky</span></figcaption>
+        <iframe class="frame" src="promo/phone-list.html" style="height:1300px" scrolling="no" title="휴대폰 신상 목록형"></iframe></figure>
+      <figure><figcaption><b class="text-14">휴대폰 신상 · 상품 카드</b><span class="badge badge-sm badge-pill badge-weak-warning">이미지</span><span class="badge badge-sm badge-pill badge-weak-primary">Sky</span></figcaption>
+        <iframe class="frame" src="promo/phone.html" style="height:1218px" scrolling="no" title="휴대폰 신상"></iframe></figure>
+      <figure><figcaption><b class="text-14">피부 관리 할인 · 혜택 판</b><span class="badge badge-sm badge-pill badge-weak-warning">이미지</span><span class="badge badge-sm badge-pill badge-weak-neutral">Lilac</span></figcaption>
+        <iframe class="frame" src="promo/aesthetic.html" style="height:1539px" scrolling="no" title="피부 관리 할인"></iframe></figure>
+      <figure><figcaption><b class="text-14">피트니스 이벤트 여러 개</b><span class="badge badge-sm badge-pill badge-weak-warning">이미지</span><span class="badge badge-sm badge-pill badge-weak-primary">Sky</span></figcaption>
+        <iframe class="frame" src="promo/fitness.html" style="height:1087px" scrolling="no" title="피트니스 이벤트"></iframe></figure>
+      <figure><figcaption><b class="text-14">카페 쿠폰 · 사진 없음</b><span class="badge badge-sm badge-pill badge-weak-neutral">Butter</span></figcaption>
+        <iframe class="frame" src="promo/cafe.html" style="height:1156px" scrolling="no" title="카페 쿠폰"></iframe></figure>
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -21,13 +21,21 @@
 .pr-intro .lead{margin:16px auto 0;max-width:none;font-size:18px;color:var(--sub)}
 
 /* 아이콘 타일 (인사관리 카드와 같음) */
-.pr-ico{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--pr-grad)}
-.pr-ico .ji{width:24px;height:24px;color:#fff}
 
 /* 건당 요금 카드 */
 .pr-prices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .pr-price{display:flex;flex-direction:column;padding:32px 32px 28px}
 .pr-price .lb{margin-top:24px;font-size:20px;font-weight:600}
+/* 단가 카드 머리: 종류 아이콘 + 이름 한 줄 (기존 시안 아이콘) */
+.pr-kind{display:flex;align-items:center;gap:8px}
+.pr-kind .lb{margin-top:0}
+.pr-kind .kic{flex:none;width:28px;height:28px}
+.pr-kind .kic+.kic{margin-left:-8px}
+.pr-kind .kic.doc{color:#69c0ff}.pr-kind .kic.pdf{color:#ff7875}.pr-kind .kic.form{color:#b37feb}
+.pr-kind .kic.talk{position:relative;display:grid;place-items:center;border-radius:9px;background:#FEE500;color:#191919}
+.pr-kind .kic.talk>svg{width:22px;height:22px}
+.pr-kind .swap-badge{position:absolute;right:-6px;bottom:-5px;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#191919;color:#fff;box-shadow:0 0 0 2px #fff}
+.pr-kind .swap-badge svg{width:11px;height:11px}
 .pr-price .amt{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px;margin-top:12px}
 .pr-price .amt b{font-size:60px;line-height:1;letter-spacing:-.045em;font-weight:700}
 .pr-price .amt span{font-size:22px;font-weight:700}
